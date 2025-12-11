@@ -4,7 +4,7 @@
 
 ### The big picture
 
-The following graph shows the contents of template_project root directory after
+The following graph shows the contents of replication_laibsonetal root directory after
 executing `pytask`
 
 ```{figure} ../figures/generated/root_bld_src.png

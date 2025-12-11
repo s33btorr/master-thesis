@@ -2,7 +2,7 @@
 
 ## Running example
 
-`template_project` that will be installed with the templates is a simple empirical
+`replication_laibsonetal` that will be installed with the templates is a simple empirical
 project. Its abstract might read:
 
 > This paper estimates the probability of smoking given age, marital status, and level

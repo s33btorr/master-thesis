@@ -3,8 +3,8 @@
 # ======================================================================================
 
 [project]
-name = "template_project"
-description = "Template for reproducible research projects in economics"
+name = "replication_laibsonetal"
+description = "Replication of paper Laibson et al 2024"
 requires-python = ">=3.11"
 dynamic = ["version"]
 keywords = [
@@ -21,10 +21,10 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
 ]
 authors = [
-    { name = "JANE DOE", email = "janedoe@example-university.com" },
+    { name = "Brenda Torres Blomer", email = "s33btorr@uni-bonn.de" },
 ]
 maintainers = [
-    { name = "JANE DOE", email = "janedoe@example-university.com" },
+    { name = "Brenda Torres Blomer", email = "s33btorr@uni-bonn.de" },
 ]
 
 [project.readme]
@@ -35,10 +35,10 @@ content-type = "text/markdown"
 text = "MIT"
 
 [project.urls]
-Changelog = "https://github.com/OpenSourceEconomics/econ-project-templates"
-Documentation = "https://github.com/OpenSourceEconomics/econ-project-templates"
-Github = "https://github.com/OpenSourceEconomics/econ-project-templates"
-Tracker = "https://github.com/OpenSourceEconomics/econ-project-templates/issues"
+Changelog = "https://github.com/s33btorr/master-thesis.git"
+Documentation = "https://github.com/s33btorr/master-thesis.git"
+Github = "https://github.com/s33btorr/master-thesis.git"
+Tracker = "https://github.com/s33btorr/master-thesis.git/issues"
 
 # ======================================================================================
 # Build system configuration
@@ -49,7 +49,7 @@ requires = ["hatchling", "hatch_vcs"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.hooks.vcs]
-version-file = "src/template_project/_version.py"
+version-file = "src/replication_laibsonetal/_version.py"
 
 [tool.hatch.build.targets.sdist]
 exclude = ["tests"]
@@ -89,7 +89,7 @@ pandas = ">=2.2"
 plotly = ">=6.1.1"
 
 [tool.pixi.pypi-dependencies]
-template_project = {path = ".", editable = true}
+replication_laibsonetal = {path = ".", editable = true}
 pdbp = "*"
 kaleido = ">=1.1"
 
@@ -125,7 +125,7 @@ docs = {features = ["docs"], solve-group = "default"}
 # ======================================================================================
 
 [tool.pytask.ini_options]
-paths = ["./src/template_project", "./documents"]
+paths = ["./src/replication_laibsonetal", "./documents"]
 pdbcls = "pdbp:Pdb"
 
 # ======================================================================================

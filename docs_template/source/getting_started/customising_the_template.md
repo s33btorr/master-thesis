@@ -3,9 +3,9 @@ meet your specific needs.
 
 ### First step: Rename the project
 
-Open the entire directory in VS Code. Search for `template_project` in the entire
+Open the entire directory in VS Code. Search for `replication_laibsonetal` in the entire
 codebase and replace it with `new_project_name`, i.e., a concise version of your
-project's name (often called a "slug"). Rename the folder `src/template_project` to
+project's name (often called a "slug"). Rename the folder `src/replication_laibsonetal` to
 `src/<new_project_name>`!
 
 ```{warning}
@@ -23,7 +23,7 @@ attributed to changes you make rather than the original template.
 1. Open a terminal and navigate to the project root
 
    ```console
-   $ cd /to/root/of/template_project
+   $ cd /to/root/of/replication_laibsonetal
    ```
 
 1. Install the pre-commit hooks
@@ -67,11 +67,11 @@ Now, search for and replace the following placeholders in the entire codebase.
 
 | Placeholder                                                   | Replacement                                       |
 | ------------------------------------------------------------- | ------------------------------------------------- |
-| JANE DOE                                                      | Your full name                                    |
-| EXAMPLE PROJECT                                               | Your project's name                               |
-| EXAMPLE UNIVERSITY                                            | Your university's name                            |
+| Brenda Torres Blomer                                                      | Your full name                                    |
+| Replication Laibson et al                                               | Your project's name                               |
+| Bonn University                                            | Your university's name                            |
 | DOE2024                                                       | Your project's citation identifier                |
-| https://github.com/OpenSourceEconomics/econ-project-templates | The GitHub repo URL corresponding to your project |
+| https://github.com/s33btorr/master-thesis.git | The GitHub repo URL corresponding to your project |
 
 #### Review and update project details
 

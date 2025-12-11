@@ -4,7 +4,7 @@ change the more it is necessary to reach out to us in advance for an discussion.
 post an issue or contact [hmgaudecker](https://github.com/hmgaudecker) via email.
 
 To get acquainted with the code base, you can also check out our
-[issue tracker](https://github.com/OpenSourceEconomics/econ-project-templates/issues)
+[issue tracker](https://github.com/s33btorr/master-thesis.git/issues)
 for some immediate and clearly defined tasks.
 
 **Please read the following steps carefully before contributing!**
@@ -12,7 +12,7 @@ for some immediate and clearly defined tasks.
 1. Download [pixi](https://pixi.sh/latest/#installation).
 
 1. Fork the
-   [repository](https://github.com/OpenSourceEconomics/econ-project-templates/). This
+   [repository](https://github.com/s33btorr/master-thesis.git/). This
    will create a copy of the repository where you have write access. Your fix will be
    implemented in your copy. After that, you will start a pull request (PR) which means
    a proposal to merge your changes into the project. If you plan to become a regular
@@ -42,11 +42,11 @@ $ browser docs_template/build/html/index.html
 1. Implement the fix or new feature.
 
 1. We validate contributions in three ways. First, we have a test suite to check the
-   implementation of template_project. Second, we correct for stylistic errors in code
+   implementation of replication_laibsonetal. Second, we correct for stylistic errors in code
    and documentation using linters. Third, we test whether the documentation builds
    successfully.
 
-   You can run the checks on template_project with `pytest` by running
+   You can run the checks on replication_laibsonetal with `pytest` by running
 
    ```console
    $ pixi run pytest

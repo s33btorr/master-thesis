@@ -1,6 +1,6 @@
 @Unpublished{DOE2024,
-    Title  = "EXAMPLE PROJECT",
-    Author = "JANE DOE",
+    Title  = "Replication Laibson et al",
+    Author = "Brenda Torres Blomer",
     Year   = "2024",
-    Url    = "https://github.com/opensourceeconomics/econ-project-templates",
+    Url    = "https://github.com/s33btorr/master-thesis.git",
 }

@@ -102,7 +102,7 @@ fatal: not a git repository (or any of the parent directories): .git
 ### Installing the template
 
 To install the template repository, first go to the
-[econ-project-templates](https://github.com/OpenSourceEconomics/econ-project-templates)
+[econ-project-templates](https://github.com/s33btorr/master-thesis.git)
 repo.
 
 Now follow the official
