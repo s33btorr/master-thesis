@@ -1,3 +1,6 @@
+# ignore data files
+data/
+
 # python
 *.egg-info
 *_version.py

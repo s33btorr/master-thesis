@@ -35,9 +35,12 @@ dependencies:
 
   # My extras
   - matplotlib
+  - seaborn
+  - scipy
 
   # Install project
   - pip:
       - -e .
       - pdbp
       - kaleido
+      - xlrd
