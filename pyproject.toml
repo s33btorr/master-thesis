@@ -77,6 +77,7 @@ platforms = ["linux-64", "osx-64", "osx-arm64", "win-64"]
 python = "~=3.13.0"
 jupyterlab = "*"
 pre-commit = "*"
+pyarrow = "*"
 pytask  = ">=0.5.0"
 pytask-latex = ">=0.4.3"
 pytask-parallel = ">=0.5.0"
@@ -87,11 +88,16 @@ statsmodels = "*"
 numpy = "*"
 pandas = ">=2.2"
 plotly = ">=6.1.1"
+matplotlib = "*"
+seaborn = "*"
+scipy = "*"
 
 [tool.pixi.pypi-dependencies]
 replication_laibsonetal = {path = ".", editable = true}
 pdbp = "*"
 kaleido = ">=1.1"
+xlrd = "*"
+ipykernel = "*"
 
 [tool.pixi.feature.docs.dependencies]
 furo = "*"
