@@ -5,7 +5,7 @@
 [project]
 name = "replication_laibsonetal"
 description = "Replication of paper Laibson et al 2024"
-requires-python = ">=3.11"
+requires-python = ">=3.14"
 dynamic = ["version"]
 keywords = [
     "Reproducible Research",
@@ -71,10 +71,10 @@ allow-direct-references = true
 
 [tool.pixi.workspace]
 channels = ["conda-forge"]
-platforms = ["linux-64", "osx-64", "osx-arm64", "win-64"]
+platforms = ["linux-64", "osx-64", "osx-arm64"]
 
 [tool.pixi.dependencies]
-python = "~=3.13.0"
+python = "~=3.14.0"
 jupyterlab = "*"
 pre-commit = "*"
 pyarrow = "*"
@@ -91,6 +91,7 @@ plotly = ">=6.1.1"
 matplotlib = "*"
 seaborn = "*"
 scipy = "*"
+pylcm = "*"
 
 [tool.pixi.pypi-dependencies]
 replication_laibsonetal = {path = ".", editable = true}
@@ -98,32 +99,6 @@ pdbp = "*"
 kaleido = ">=1.1"
 xlrd = "*"
 ipykernel = "*"
-
-[tool.pixi.feature.docs.dependencies]
-furo = "*"
-myst-parser = "*"
-nbsphinx = "*"
-pydata-sphinx-theme = ">=0.3.0"
-sphinx = "*"
-sphinx-autoapi = "*"
-sphinx-click = "*"
-sphinx-copybutton = "*"
-sphinx-panels = "*"
-sphinxcontrib-bibtex = "*"
-standard-imghdr = "*"
-
-[tool.pixi.feature.docs.tasks]
-# The 'build-docs' command can be used to build the docs locally or on ReadTheDocs. The
-# env variable READTHEDOCS_OUTPUT is set by ReadTheDocs. If it is not set, the default
-# value is used, which is what we want for local builds.
-build-docs = { cmd = "sphinx-build -T -b html -d {{ READTHEDOCS_OUTPUT }}/doctrees -D language=en . {{ READTHEDOCS_OUTPUT }}/html", cwd = "docs_template/source" , args = [{"arg" = "READTHEDOCS_OUTPUT", "default" = "../build"}]}
-# The 'check-docs-urls' command is only run locally and on the CI. It checks all URLs in
-# the documentation for validity.
-check-docs-urls = { cmd = "sphinx-build -T -b linkcheck -d ../build/doctrees -D language=en . ../build/linkcheck", cwd = "docs_template/source" }
-
-
-[tool.pixi.environments]
-docs = {features = ["docs"], solve-group = "default"}
 
 
 # ======================================================================================
@@ -139,7 +114,7 @@ pdbcls = "pdbp:Pdb"
 # ======================================================================================
 
 [tool.ruff]
-target-version = "py313"
+target-version = "py314"
 fix = true
 
 [tool.ruff.lint]
