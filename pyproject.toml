@@ -5,7 +5,7 @@
 [project]
 name = "replication_laibsonetal"
 description = "Replication of paper Laibson et al 2024"
-requires-python = ">=3.14"
+requires-python = ">=3.12"
 dynamic = ["version"]
 keywords = [
     "Reproducible Research",
@@ -71,10 +71,10 @@ allow-direct-references = true
 
 [tool.pixi.workspace]
 channels = ["conda-forge"]
-platforms = ["linux-64", "osx-64", "osx-arm64"]
+platforms = ["osx-64"]
 
 [tool.pixi.dependencies]
-python = "~=3.14.0"
+python = "~=3.12.0"
 jupyterlab = "*"
 pre-commit = "*"
 pyarrow = "*"
@@ -91,7 +91,6 @@ plotly = ">=6.1.1"
 matplotlib = "*"
 seaborn = "*"
 scipy = "*"
-pylcm = "*"
 
 [tool.pixi.pypi-dependencies]
 replication_laibsonetal = {path = ".", editable = true}
@@ -99,6 +98,7 @@ pdbp = "*"
 kaleido = ">=1.1"
 xlrd = "*"
 ipykernel = "*"
+pylcm = { path = "/Users/brendatorres/Desktop/brenda/pylcm", editable = true } # no entiendo bien lo de editable true
 
 
 # ======================================================================================
