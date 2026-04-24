@@ -31,9 +31,8 @@ def end_of_period_wealth(
     investment_x: ContinuousAction,
 ) -> FloatND:
     """Liquid wealth after consumption, before interest — working life."""
-    return wealth + investment_x # invertir
+    return wealth + investment_x
 
-# mi problema es como separo, tengo que entender como funciona la maximizacion en general.
 def next_wealth(
     end_of_period_wealth: FloatND,
     interest_rate: float,
@@ -51,7 +50,6 @@ def next_wealth(
     return (
         jnp.maximum(end_of_period_wealth, 0) * (1 + interest_rate)
         + jnp.minimum(end_of_period_wealth, 0) * (1 + interest_rate_debt) 
-        # + Ix_total * Rx
     )
 
 
