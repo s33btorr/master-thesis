@@ -1,0 +1,186 @@
+from pprint import pprint
+
+import jax.numpy as jnp
+import pandas as pd
+import plotly.express as px
+from lcm import MarkovTransition
+from lcm.typing import Period
+
+from lcm import (
+    AgeGrid,
+    DiscreteGrid,
+    LinSpacedGrid,
+    LogSpacedGrid,
+    Model,
+    Regime,
+    categorical,
+)
+from lcm.typing import (
+    BoolND,
+    ContinuousAction,
+    ContinuousState,
+    DiscreteAction,
+    FloatND,
+    ScalarInt,
+)
+
+import lcm.shocks.ar1
+import lcm.shocks.iid
+
+### Auxiliary functions ###
+
+def household_size(
+    age: float,
+    a0kids: float,
+    a1kids: float,
+    a2kids: float,
+    a0depadul: float,
+    a1depadul: float,
+    a2depadul: float,
+) -> FloatND:
+    """
+    Effective household size as a function of age.
+ 
+    Mirrors the Matlab specification (LifecycleSim.m, baseline sqrtscale=False):
+        spouse   = 2  (always)
+        kids     = a0kids * exp(a1kids*age - a2kids*age^2)
+        depadul  = a0depadul * exp(a1depadul*age - a2depadul*age^2)
+        hhs      = 1*spouse + 0.4*kids + 1*depadul
+ 
+    Parameters come from first-stage demographics regression (IPUMS-USA).
+    Loaded in main.m from: IPUMS/output/{educ}/nlsur_nkids_ndepad_est_{educ}.xlsx
+ 
+    TODO: add mortality correction to spouse term when mortalityn is implemented.
+    """
+    spouse  = 2.0
+    kids    = a0kids * jnp.exp(a1kids * age - a2kids * age ** 2)
+    depadul = a0depadul * jnp.exp(a1depadul * age - a2depadul * age ** 2)
+    return 1.0 * spouse + 0.4 * kids + 1.0 * depadul  # if sqrtscale true, then is 1, 1, 1, instead of 0.4
+
+def number_of_kids(
+        age: float,
+        a0kids: float,
+        a1kids: float,
+        a2kids: float,
+) -> FloatND:
+    return a0kids * jnp.exp((a1kids * age) - (a2kids * (age ** 2)/100))
+
+def number_of_depadul(
+        age: float,
+        a0depadul: float,
+        a1depadul: float,
+        a2depadul: float,
+) -> FloatND:
+    return a0depadul * jnp.exp((a1depadul * age) - (a2depadul * (age ** 2)/100))
+
+def liquidation_cost(
+    age: float,
+    #zilliq: float,
+) -> FloatND:
+    return 0.5 / (1 + jnp.exp((age - 50) / 10)) # tengo que incluir activos iliquidos completamente y que estos cuestan siempre 2 (200%) liquidarlos
+
+
+
+
+### Income ###
+
+def deterministic_income(
+    age: float,
+    ywork_cons: float,
+    ywork_agecoeff: float,
+    ywork_age2coeff: float,
+    ywork_age3coeff: float,
+    ywork_kidscoeff: float,
+    ywork_spousecoeff: float,
+    ywork_depadulcoeff: float,
+    number_of_kids: FloatND,
+    number_of_depadul: FloatND,
+) -> FloatND:
+    """
+    Deterministic component of log income (cubic age polynomial).
+
+    Mirrors the Matlab specification:
+        ymean = cons + age*coeff + (age^2/100)*coeff2 + (age^3/10000)*coeff3
+
+    Note: spouse, kids, depadul terms omitted for simplicity.
+    They can be added as additional float arguments once the profiles are fixed.
+    """
+    spouse = 2 # ponen que es siempre 2...
+    return (
+        ywork_cons
+        + ywork_kidscoeff * number_of_kids
+        + ywork_spousecoeff * spouse
+        + ywork_depadulcoeff * number_of_depadul
+        + ywork_agecoeff * age
+        + ywork_age2coeff * (age ** 2) / 100
+        + ywork_age3coeff * (age ** 3) / 10000     
+    ) 
+# CREAR FUNCION QUE GENERE KIDS, DEPADUL Y SPOUSE POR SEPARADO.
+
+def deterministic_retirement_income(
+    age: float,
+    yret_cons: float,
+    yret_agecoeff: float,
+) -> FloatND:
+    """
+    Deterministic component of log income (cubic age polynomial).
+
+    Mirrors the Matlab specification:
+        ymean = cons + age*coeff + (age^2/100)*coeff2 + (age^3/10000)*coeff3
+
+    Note: spouse, kids, depadul terms omitted for simplicity.
+    They can be added as additional float arguments once the profiles are fixed.
+    """
+    return (
+        yret_cons
+        + yret_agecoeff * age
+    )
+
+def earnings(
+    perm_income: ContinuousState,
+    trans_income: ContinuousState,
+    deterministic: FloatND,
+) -> FloatND:
+    """
+    Total labor earnings in levels.
+
+    Log income = deterministic_mean + permanent_AR1_shock + transitory_iid_shock.
+    Exponentiate to get level earnings.
+    """
+    return jnp.exp(deterministic + 0.5*(perm_income + trans_income)) # asi lo entiendo yo del codigo...
+
+
+
+#### UTILITY ####
+
+def consumption(
+    earnings: FloatND,
+    investment_x: ContinuousAction,
+    investment_z: ContinuousAction,
+    liquidation_cost: FloatND,
+) -> FloatND:
+    liq_cost = liquidation_cost * jnp.minimum(investment_z, 0)
+    return earnings - investment_x - investment_z + liq_cost
+
+
+def utility(
+    consumption: FloatND,
+    wealth_illiquid: ContinuousState,
+    household_size: FloatND,
+    risk_aversion: float,
+) -> FloatND:
+  
+    """CRRA utility scaled by household size.
+ 
+    Mirrors the Matlab baseline (sqrtscale=False, LifecycleSim_BackwardInduct.m):
+        U = hhs * (c/hhs)^(1-rho) / (1-rho)
+ 
+    TODO: add sqrtscale variant (divides by sqrt(hhs) instead of hhs).
+    TODO: add mortality-weighted discounting when mortalityn is implemented.
+    TODO: add bequest utility at terminal age.
+    """
+    total_consumption = consumption + (0.05 * wealth_illiquid) # 0.05 sale en el paper
+    c_per_hh = total_consumption / household_size
+    numerador = household_size * (jnp.exp((1 - risk_aversion) * jnp.log(c_per_hh)) - 1) # hice todo esto porque me estaba dando valores raros para ver si se acomoda. Asi lo hacen en matlab
+    denominador = 1 - risk_aversion
+    return jnp.where(risk_aversion == 1, household_size * jnp.log(c_per_hh), numerador / denominador)
