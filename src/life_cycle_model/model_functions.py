@@ -184,3 +184,25 @@ def utility(
     numerador = household_size * (jnp.exp((1 - risk_aversion) * jnp.log(c_per_hh)) - 1) # hice todo esto porque me estaba dando valores raros para ver si se acomoda. Asi lo hacen en matlab
     denominador = 1 - risk_aversion
     return jnp.where(risk_aversion == 1, household_size * jnp.log(c_per_hh), numerador / denominador)
+
+def beq_utility(
+        mean_hhs: float,
+        mean_hhy: float,
+        #earnings: FloatND,
+        risk_aversion: float,
+        wealth: ContinuousState,
+        wealth_illiquid: ContinuousState,
+        liquidation_cost: FloatND,
+        interest_rate: float,
+        alpha: float,
+        discount_factor: float,
+) -> FloatND:
+        """
+        Utility when agent dies.
+        """
+        # liquidation_cost = 1/3 if zilliq=1
+        beq = wealth + (wealth_illiquid * (1-liquidation_cost))
+        beq_annuity = interest_rate * (jnp.maximum(beq, 0)) # usan en matlab (jnp.maximum(interest_rate-1, 0)) porque puede ser tasa negativa... pero mi tasa 1 no es negativa, 2, seria mas bien maximo entre la tasa y 0 porque no es bruta la tasa que pongo
+        u_baseline = mean_hhs * (((mean_hhy/mean_hhs)**(1-risk_aversion))-1) / (1-risk_aversion) # me falta agregar si rho=1
+        u_bequest = mean_hhs * ((((mean_hhy + beq_annuity)/mean_hhs)**(1-risk_aversion))-1) / (1-risk_aversion)
+        return ((alpha/(1-discount_factor)) * (u_bequest - u_baseline))
