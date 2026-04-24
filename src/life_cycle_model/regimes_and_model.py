@@ -25,6 +25,14 @@ from lcm.typing import (
     ScalarInt,
 )
 
+# esto no se donde va en realidad #
+@categorical(ordered=False)
+class RegimeId:
+    working_life: int
+    retirement: int
+    dead: int
+###### ######
+
 ### From here until the other hashtags, I would put in another python file (parameters and grids and then call it here...). But for now I will leave it here. ###
 wealth_illiquid_grid = PiecewiseLogSpacedGrid(
     pieces=(
