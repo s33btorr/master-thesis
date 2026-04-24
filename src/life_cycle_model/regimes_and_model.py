@@ -25,7 +25,7 @@ from lcm.typing import (
     ScalarInt,
 )
 
-### From here until the other hashtags, I would put in another python file. But for now I will leave it here. ###
+### From here until the other hashtags, I would put in another python file (parameters and grids and then call it here...). But for now I will leave it here. ###
 wealth_illiquid_grid = PiecewiseLogSpacedGrid(
     pieces=(
         Piece(interval="[1, 100_000)", n_points=35), #n_points=40 por alguna razon, esto con menos puntos no funciona........!!!!!!!!
