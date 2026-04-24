@@ -53,8 +53,8 @@ dead_age = 91 # pongo 91 porque vive hasta los 90, pero en este caso el periodo 
 
 
 
-SRC = Path().parent.resolve()
-project_path = SRC / "brenda" / "master-thesis" / "src" / "replication_laibsonetal" / "data"
+SRC = Path(".").parent.resolve()
+project_path = SRC / "data"
 death_m_path = project_path / "DeathProbsE_M_Hist_TR2023.csv"
 death_f_path = project_path / "DeathProbsE_F_Hist_TR2023.csv"
 

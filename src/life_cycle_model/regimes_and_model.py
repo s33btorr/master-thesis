@@ -25,6 +25,29 @@ from lcm.typing import (
     ScalarInt,
 )
 
+from model_functions import (
+    utility,
+    liquidation_cost,
+    household_size,
+    deterministic_income,
+    #deterministic_retirement_income,
+    consumption,
+    number_of_kids,
+    number_of_depadul,
+    earnings,
+    end_of_period_wealth,
+    end_of_period_wealth_illiquid,
+    beq_utility,
+    next_wealth,
+    next_wealth_illiquid,
+    next_regime_working,
+    next_regime_retirement,
+    )
+
+from constraints import borrowing_constraint, illiquid_wealth_constraint, ponzi_constraint
+
+#from parameters import wealth_illiquid_grid, wealth_liquid_grid, age_grid, retirement_age, dead_age
+ 
 # esto no se donde va en realidad #
 @categorical(ordered=False)
 class RegimeId:
