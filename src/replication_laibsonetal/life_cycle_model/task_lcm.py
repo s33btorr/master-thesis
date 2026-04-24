@@ -25,7 +25,7 @@ from lcm.typing import (
     ScalarInt,
 )
 
-from regimes_and_models import model
+from regimes_and_model import model
 from parameters_and_grids import params, age_grid
 
 n_agents = 10

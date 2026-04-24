@@ -1,5 +1,5 @@
 from pprint import pprint
-
+import numpy as np
 import jax.numpy as jnp
 import pandas as pd
 import plotly.express as px

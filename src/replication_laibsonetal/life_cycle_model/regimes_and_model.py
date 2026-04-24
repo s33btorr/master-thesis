@@ -25,6 +25,9 @@ from lcm.typing import (
     ScalarInt,
 )
 
+import lcm.shocks.ar1
+import lcm.shocks.iid
+
 from model_functions import (
     utility,
     liquidation_cost,
@@ -35,16 +38,18 @@ from model_functions import (
     number_of_kids,
     number_of_depadul,
     earnings,
-    end_of_period_wealth,
-    end_of_period_wealth_illiquid,
     beq_utility,
+    )
+
+from transition_functions import (
+    end_of_period_wealth,
     next_wealth,
+    end_of_period_wealth_illiquid,
     next_wealth_illiquid,
     next_regime_working,
     next_regime_retirement,
-    )
-
-from constraints import borrowing_constraint, illiquid_wealth_constraint, ponzi_constraint
+)
+from constraints_functions import borrowing_constraint, illiquid_wealth_constraint, ponzi_constraint
 
 from parameters_and_grids import wealth_illiquid_grid, wealth_liquid_grid, age_grid, retirement_age, dead_age
  
