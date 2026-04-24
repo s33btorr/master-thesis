@@ -46,7 +46,7 @@ from model_functions import (
 
 from constraints import borrowing_constraint, illiquid_wealth_constraint, ponzi_constraint
 
-#from parameters import wealth_illiquid_grid, wealth_liquid_grid, age_grid, retirement_age, dead_age
+from parameters_and_grids import wealth_illiquid_grid, wealth_liquid_grid, age_grid, retirement_age, dead_age
  
 # esto no se donde va en realidad #
 @categorical(ordered=False)
@@ -56,27 +56,6 @@ class RegimeId:
     dead: int
 ###### ######
 
-### From here until the other hashtags, I would put in another python file (parameters and grids and then call it here...). But for now I will leave it here. ###
-wealth_illiquid_grid = PiecewiseLogSpacedGrid(
-    pieces=(
-        Piece(interval="[1, 100_000)", n_points=35), #n_points=40 por alguna razon, esto con menos puntos no funciona........!!!!!!!!
-        Piece(interval="[100_000, 3_500_000]", n_points=15), #n_points=34
-    )
-)
-
-wealth_liquid_grid = PiecewiseLinSpacedGrid(
-    pieces=(
-        Piece(interval="[-45_000, 0)", n_points=22), #n_points=45
-        Piece(interval="[0, 50_000)", n_points=25), #n_points=50
-        Piece(interval="[50_000, 400_000]", n_points=31), #n_points=62
-    )
-)
-
-age_grid = AgeGrid(start=20, stop=91, step="1Y")
-retirement_age = 64
-dead_age = 91 # pongo 91 porque vive hasta los 90, pero en este caso el periodo 91 es necesario ya que es el periodo de muerte
-
-###. Until here    ####
 
 working_life = Regime(
     transition=MarkovTransition(next_regime_working),

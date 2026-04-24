@@ -32,6 +32,10 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 
+from model_functions import load_survival_probs
+
+
+### Grids ###
 wealth_illiquid_grid = PiecewiseLogSpacedGrid(
     pieces=(
         Piece(interval="[1, 100_000)", n_points=35), #n_points=40 por alguna razon, esto con menos puntos no funciona........!!!!!!!!
@@ -48,47 +52,16 @@ wealth_liquid_grid = PiecewiseLinSpacedGrid(
 )
 
 age_grid = AgeGrid(start=20, stop=91, step="1Y")
+
+
+### Parameters ###
 retirement_age = 64
 dead_age = 91 # pongo 91 porque vive hasta los 90, pero en este caso el periodo 91 es necesario ya que es el periodo de muerte
-
-
 
 SRC = Path(".").parent.resolve()
 project_path = SRC / "data"
 death_m_path = project_path / "DeathProbsE_M_Hist_TR2023.csv"
 death_f_path = project_path / "DeathProbsE_F_Hist_TR2023.csv"
-
-
-# This does not go here #
-def load_survival_probs(survival_document_paths_woman, survival_document_paths_man):
-    
-    """
-    Uploads survival probabilities of man and woman for later use.
-
-    """
-    
-    death_m = pd.read_csv(survival_document_paths_man, skiprows=2, header=None).iloc[:, 1:].values
-    death_f = pd.read_csv(survival_document_paths_woman, skiprows=2, header=None).iloc[:, 1:].values
-
-    deat_t = (death_m + death_f) / 2
-
-    # Selección tipo MATLAB
-    deat_t = deat_t[100:105, 20:91]
-
-    # Media por columnas
-    deat_t = np.mean(deat_t, axis=0)
-
-    # Convertir a JAX
-    deat_t = jnp.array(deat_t)
-
-    # Probabilidades de supervivencia
-    surv_t = 1.0 - deat_t
-
-    # Último valor = 0
-    survival_probs = surv_t.at[-1].set(0.0)
-
-    return survival_probs
-# this # 
 
 survival_probs = load_survival_probs(death_f_path, death_m_path)
 

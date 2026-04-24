@@ -206,3 +206,35 @@ def beq_utility(
         u_baseline = mean_hhs * (((mean_hhy/mean_hhs)**(1-risk_aversion))-1) / (1-risk_aversion) # me falta agregar si rho=1
         u_bequest = mean_hhs * ((((mean_hhy + beq_annuity)/mean_hhs)**(1-risk_aversion))-1) / (1-risk_aversion)
         return ((alpha/(1-discount_factor)) * (u_bequest - u_baseline))
+
+
+### function for params ###
+
+def load_survival_probs(survival_document_paths_woman, survival_document_paths_man):
+    
+    """
+    Uploads survival probabilities of man and woman for later use.
+
+    """
+    
+    death_m = pd.read_csv(survival_document_paths_man, skiprows=2, header=None).iloc[:, 1:].values
+    death_f = pd.read_csv(survival_document_paths_woman, skiprows=2, header=None).iloc[:, 1:].values
+
+    deat_t = (death_m + death_f) / 2
+
+    # Selección tipo MATLAB
+    deat_t = deat_t[100:105, 20:91]
+
+    # Media por columnas
+    deat_t = np.mean(deat_t, axis=0)
+
+    # Convertir a JAX
+    deat_t = jnp.array(deat_t)
+
+    # Probabilidades de supervivencia
+    surv_t = 1.0 - deat_t
+
+    # Último valor = 0
+    survival_probs = surv_t.at[-1].set(0.0)
+
+    return survival_probs

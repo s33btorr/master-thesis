@@ -1,5 +1,5 @@
 from pprint import pprint
-
+import numpy as np
 import jax.numpy as jnp
 import pandas as pd
 import plotly.express as px
@@ -25,9 +25,10 @@ from lcm.typing import (
     ScalarInt,
 )
 
+from regimes_and_models import model
+from parameters_and_grids import params, age_grid
 
 n_agents = 10
-import numpy as np
 result = model.simulate(
     params=params, #log_level="debug", log_path="./debug/",
     initial_conditions={
@@ -44,7 +45,7 @@ result = model.simulate(
 
 df = result.to_dataframe(additional_targets="all")
 df["age"] = df["age"].astype(int)
-# print(df)
+print(df)
 
 bins = [21, 31, 41, 51, 61]
 labels = ["21-30", "31-40", "41-50", "51-60"]
