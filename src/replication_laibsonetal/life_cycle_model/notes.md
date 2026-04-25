@@ -28,13 +28,22 @@ We tried a grid like this:
 "investment_x": LinSpacedGrid(start=-15_000, stop=15_000, n_points=100),
 "investment_z": LinSpacedGrid(start=-15_000, stop=15_000, n_points=100),
 ```
-We can notice that is should be still inside the possible numbers of the total wealth grid in both cases. My theory is that it does not respect the restriction and then the model explodes.
+We can notice that is should be still inside the possible numbers of the total wealth grid in both cases. My theory is that it does not find any combination that respects all the restrictions and then the model explodes.
 We receive for every period (in both, backward ind and forward iter) the message: `NaN/Inf in V_arr for regime 'retirement' at age 90`.
 
 ### Second problem:
-Now we leave the first problem apart
-sirve con -150 en vez de 0.1. probar con numeros mayores... -15_000 ya no funciona
+Now we leave the first problem apart, we try the next grid:
+```python
+"wealth": LinSpacedGrid(start=-15_000, stop=400000, n_points=50), 
+"wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
+```
+It happens something similar than before, we recieved in the backward induction the message `NaN/Inf in V_arr for regime 'retirement' at age 90` for almost every age. In this case I do not have a good theory of why it is not working.
+
 ### How to run the project? 
 ```bash
 pixi run python task_lcm.py
 ```
+
+## Extra notes:
+
+`enable_jit=False` is not working for me. It does not recognize the command.
