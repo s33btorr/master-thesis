@@ -81,7 +81,7 @@ fig.show()
 
 ### Exp and naive agents ###
 
-result_exp = model_exp.simulate(
+"""result_exp = model_exp.simulate(
     params=params, #log_level="debug", log_path="./debug/",
     initial_conditions={
         "regime": np.zeros(n_agents, dtype=int),
@@ -139,4 +139,4 @@ fig_naive = px.line(
     template="plotly_dark",
 )
 
-fig_naive.show()
+fig_naive.show()"""

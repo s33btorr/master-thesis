@@ -12,7 +12,7 @@ The grids that work and the simulation runs without any problem (apparently) are
 And for the actions:
 ```python
 "investment_x": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
-"investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=50),
+"investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
 ```
 As you can see, the problem with these grids are several:
 1. The individuals are not able to get very high levels of investment (from -150 until 150) and we want that they are able to take any level that is allowed given the restrictions.
@@ -26,14 +26,14 @@ Leaving the second problem apart, we first focus on the first problem where we w
 We tried a grid like this:
 ```python
 "investment_x": LinSpacedGrid(start=-15_000, stop=15_000, n_points=100),
-"investment_z": LinSpacedGrid(start=-15_000, stop=15_000, n_points=50),
+"investment_z": LinSpacedGrid(start=-15_000, stop=15_000, n_points=100),
 ```
 We can notice that is should be still inside the possible numbers of the total wealth grid in both cases. My theory is that it does not respect the restriction and then the model explodes.
 We receive for every period (in both, backward ind and forward iter) the message: `NaN/Inf in V_arr for regime 'retirement' at age 90`.
 
 ### Second problem:
 Now we leave the first problem apart
-sirve con -150 en vez de 0.1. probar con numeros mayores...
+sirve con -150 en vez de 0.1. probar con numeros mayores... -15_000 ya no funciona
 ### How to run the project? 
 ```bash
 pixi run python task_lcm.py

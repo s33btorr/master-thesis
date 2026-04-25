@@ -107,7 +107,7 @@ working_life = Regime(
     },
     actions={
         "investment_x": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
-        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=50),
+        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
         #"investment_x":  LinSpacedGrid(start=-6_899, stop=6_899, n_points=100), # no funciona con mayor a 6,899
         #"investment_z": LinSpacedGrid(start=-1_000_000, stop=16_051, n_points=100), #no funciona con mayor a 16,051
     },
@@ -170,8 +170,8 @@ retirement = Regime(
         "wealth_illiquid": next_wealth_illiquid,
     },
      actions={
-        "investment_x": LinSpacedGrid(start=-150, stop=150, n_points=100),
-        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=50),
+        "investment_x": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
+        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
         #"investment_x":  LinSpacedGrid(start=-6_899, stop=6_899, n_points=100),
         #"investment_z": LinSpacedGrid(start=-1_000_000, stop=16_051, n_points=100),
     },
@@ -254,7 +254,7 @@ working_exp = Regime(
     },
     actions={
         "investment_x": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
-        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=50),
+        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
     },
     functions={
         "utility": utility,
@@ -302,8 +302,8 @@ retirement_exp = Regime(
         "wealth_illiquid": next_wealth_illiquid,
     },
      actions={
-        "investment_x": LinSpacedGrid(start=-150, stop=150, n_points=100),
-        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=50),
+        "investment_x": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
+        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
     },
     functions={
         "utility": utility,
@@ -362,7 +362,7 @@ working_naive = Regime(
     },
     actions={
         "investment_x": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
-        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=50),
+        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
     },
     functions={
         "utility": utility,
@@ -413,8 +413,8 @@ retirement_naive = Regime(
         "wealth_illiquid": next_wealth_illiquid,
     },
      actions={
-        "investment_x": LinSpacedGrid(start=-150, stop=150, n_points=100),
-        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=50),
+        "investment_x": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
+        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
     },
     functions={
         "utility": utility,
