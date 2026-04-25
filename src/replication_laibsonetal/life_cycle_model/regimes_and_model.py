@@ -15,6 +15,8 @@ from lcm import (
     Model,
     Regime,
     categorical,
+    SolveSimulateFunctionPair,
+
 )
 from lcm.typing import (
     BoolND,
@@ -39,6 +41,8 @@ from model_functions import (
     number_of_depadul,
     earnings,
     beq_utility,
+    exponential_H,
+    beta_delta_H,
     )
 
 from transition_functions import (
@@ -66,7 +70,7 @@ working_life = Regime(
     transition=MarkovTransition(next_regime_working),
     active=lambda age: age < retirement_age,
     states={
-        "wealth": LinSpacedGrid(start=0.1, stop=400000, n_points=50), 
+        "wealth": LinSpacedGrid(start=-1500, stop=400000, n_points=50), 
         "wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
         #"wealth": LinSpacedGrid(start=-150, stop=400_000, n_points=50),
         #"wealth_illiquid": wealth_illiquid_grid,
@@ -102,8 +106,8 @@ working_life = Regime(
         "wealth_illiquid": next_wealth_illiquid,
     },
     actions={
-        "investment_x": LinSpacedGrid(start=0.1, stop=150, n_points=100),
-        "investment_z": LinSpacedGrid(start=-50, stop=50, n_points=50),
+        "investment_x": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
+        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=50),
         #"investment_x":  LinSpacedGrid(start=-6_899, stop=6_899, n_points=100), # no funciona con mayor a 6,899
         #"investment_z": LinSpacedGrid(start=-1_000_000, stop=16_051, n_points=100), #no funciona con mayor a 16,051
     },
@@ -130,7 +134,7 @@ retirement = Regime(
     transition=MarkovTransition(next_regime_retirement),
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
-        "wealth": LinSpacedGrid(start=0.1, stop=400000, n_points=50), 
+        "wealth": LinSpacedGrid(start=-1500, stop=400000, n_points=50), 
         "wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
         #"wealth": LinSpacedGrid(start=-150, stop=400_000, n_points=50),
         #"wealth_illiquid": wealth_illiquid_grid,
@@ -166,8 +170,8 @@ retirement = Regime(
         "wealth_illiquid": next_wealth_illiquid,
     },
      actions={
-        "investment_x": LinSpacedGrid(start=0.1, stop=150, n_points=100),
-        "investment_z": LinSpacedGrid(start=-50, stop=50, n_points=50),
+        "investment_x": LinSpacedGrid(start=-150, stop=150, n_points=100),
+        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=50),
         #"investment_x":  LinSpacedGrid(start=-6_899, stop=6_899, n_points=100),
         #"investment_z": LinSpacedGrid(start=-1_000_000, stop=16_051, n_points=100),
     },
@@ -218,3 +222,226 @@ model = Model(
     regime_id_class=RegimeId,
     description="Lifecycle consumption-savings model.",
 )
+
+
+### Standard exponential model ###
+
+working_exp = Regime(
+    transition=MarkovTransition(next_regime_working),
+    active=lambda age: age < retirement_age,
+    states={
+        "wealth": LinSpacedGrid(start=-1500, stop=400000, n_points=50), 
+        "wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
+        "perm_income": lcm.shocks.ar1.Tauchen(
+            n_points=3,
+            gauss_hermite=False,
+            rho=0.840,
+            sigma=(0.057**0.5), # squared root of sigma e
+            mu=0.0,
+            n_std=1.5, #m esta en lifecycle sim pag 3
+        ),
+        "trans_income": lcm.shocks.iid.Normal(
+            n_points=5,
+            gauss_hermite=False,
+            mu=0,     # 0
+            sigma=(0.045**0.5),  # sqrt(ywork_varnu) from fs_params
+            n_std=3,
+        ),
+    },
+    state_transitions={
+        "wealth": next_wealth,
+        "wealth_illiquid": next_wealth_illiquid,
+    },
+    actions={
+        "investment_x": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
+        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=50),
+    },
+    functions={
+        "utility": utility,
+        "H": exponential_H,
+        "liquidation_cost": liquidation_cost,
+        "household_size": household_size,
+        "deterministic": deterministic_income,
+        "consumption": consumption,
+        "number_of_kids": number_of_kids,
+        "number_of_depadul": number_of_depadul,
+        "earnings": earnings,
+        "end_of_period_wealth": end_of_period_wealth,
+        "end_of_period_wealth_illiquid": end_of_period_wealth_illiquid,
+    },
+    constraints={
+        "borrowing_constraint": borrowing_constraint,
+        "illiquid_wealth_constraint": illiquid_wealth_constraint,
+    },
+)
+
+retirement_exp = Regime(
+    transition=MarkovTransition(next_regime_retirement),
+    active=lambda age: (age >= retirement_age) & (age < dead_age),
+    states={
+        "wealth": LinSpacedGrid(start=-1500, stop=400000, n_points=50), 
+        "wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
+        "perm_income": lcm.shocks.ar1.Tauchen(
+            n_points=3,
+            gauss_hermite=False,
+            rho=0.840,
+            sigma=(0.057**0.5), # squared root of sigma e
+            mu=0.0,
+            n_std=1.5, #m esta en lifecycle sim pag 3
+        ),
+        "trans_income": lcm.shocks.iid.Normal(
+            n_points=5,
+            gauss_hermite=False,
+            mu=0,     # 0
+            sigma=(0.045**0.5),  # sqrt(ywork_varnu) from fs_params
+            n_std=3,
+        ),
+    },
+    state_transitions={
+        "wealth": next_wealth,
+        "wealth_illiquid": next_wealth_illiquid,
+    },
+     actions={
+        "investment_x": LinSpacedGrid(start=-150, stop=150, n_points=100),
+        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=50),
+    },
+    functions={
+        "utility": utility,
+        "H": exponential_H,
+        "liquidation_cost": liquidation_cost,
+        "household_size": household_size,
+        "deterministic": deterministic_income,
+        "consumption": consumption,
+        "number_of_kids": number_of_kids,
+        "number_of_depadul": number_of_depadul,
+        "earnings": earnings,
+        "end_of_period_wealth": end_of_period_wealth,
+        "end_of_period_wealth_illiquid": end_of_period_wealth_illiquid,
+    },
+    constraints={
+        "borrowing_constraint": borrowing_constraint,
+        "illiquid_wealth_constraint": illiquid_wealth_constraint,
+    },
+)
+
+model_exp = Model(
+    regimes={"working_life": working_exp, "retirement": retirement_exp, "dead": dead},
+    ages=age_grid,
+    regime_id_class=RegimeId,
+    description="Lifecycle consumption-savings model with exponential agents.",
+)
+
+
+### Naive beta-delta model ###
+
+working_naive = Regime(
+    transition=MarkovTransition(next_regime_working),
+    active=lambda age: age < retirement_age,
+    states={
+        "wealth": LinSpacedGrid(start=-1500, stop=400000, n_points=50), 
+        "wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
+        "perm_income": lcm.shocks.ar1.Tauchen(
+            n_points=3,
+            gauss_hermite=False,
+            rho=0.840,
+            sigma=(0.057**0.5), # squared root of sigma e
+            mu=0.0,
+            n_std=1.5, #m esta en lifecycle sim pag 3
+        ),
+        "trans_income": lcm.shocks.iid.Normal(
+            n_points=5,
+            gauss_hermite=False,
+            mu=0,     # 0
+            sigma=(0.045**0.5),  # sqrt(ywork_varnu) from fs_params
+            n_std=3,
+        ),
+    },
+    state_transitions={
+        "wealth": next_wealth,
+        "wealth_illiquid": next_wealth_illiquid,
+    },
+    actions={
+        "investment_x": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
+        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=50),
+    },
+    functions={
+        "utility": utility,
+        "H": SolveSimulateFunctionPair(
+            solve=exponential_H,
+            simulate=beta_delta_H,
+        ),
+        "liquidation_cost": liquidation_cost,
+        "household_size": household_size,
+        "deterministic": deterministic_income,
+        "consumption": consumption,
+        "number_of_kids": number_of_kids,
+        "number_of_depadul": number_of_depadul,
+        "earnings": earnings,
+        "end_of_period_wealth": end_of_period_wealth,
+        "end_of_period_wealth_illiquid": end_of_period_wealth_illiquid,
+    },
+    constraints={
+        "borrowing_constraint": borrowing_constraint,
+        "illiquid_wealth_constraint": illiquid_wealth_constraint,
+    },
+)
+
+retirement_naive = Regime(
+    transition=MarkovTransition(next_regime_retirement),
+    active=lambda age: (age >= retirement_age) & (age < dead_age),
+    states={
+        "wealth": LinSpacedGrid(start=-1500, stop=400000, n_points=50), 
+        "wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
+        "perm_income": lcm.shocks.ar1.Tauchen(
+            n_points=3,
+            gauss_hermite=False,
+            rho=0.840,
+            sigma=(0.057**0.5), # squared root of sigma e
+            mu=0.0,
+            n_std=1.5, #m esta en lifecycle sim pag 3
+        ),
+        "trans_income": lcm.shocks.iid.Normal(
+            n_points=5,
+            gauss_hermite=False,
+            mu=0,     # 0
+            sigma=(0.045**0.5),  # sqrt(ywork_varnu) from fs_params
+            n_std=3,
+        ),
+    },
+    state_transitions={
+        "wealth": next_wealth,
+        "wealth_illiquid": next_wealth_illiquid,
+    },
+     actions={
+        "investment_x": LinSpacedGrid(start=-150, stop=150, n_points=100),
+        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=50),
+    },
+    functions={
+        "utility": utility,
+        "H": SolveSimulateFunctionPair(
+            solve=exponential_H,
+            simulate=beta_delta_H,
+        ),
+        "liquidation_cost": liquidation_cost,
+        "household_size": household_size,
+        "deterministic": deterministic_income,
+        "consumption": consumption,
+        "number_of_kids": number_of_kids,
+        "number_of_depadul": number_of_depadul,
+        "earnings": earnings,
+        "end_of_period_wealth": end_of_period_wealth,
+        "end_of_period_wealth_illiquid": end_of_period_wealth_illiquid,
+    },
+    constraints={
+        "borrowing_constraint": borrowing_constraint,
+        "illiquid_wealth_constraint": illiquid_wealth_constraint,
+    },
+)
+
+model_naive = Model(
+    regimes={"working_life": working_naive, "retirement": retirement_naive, "dead": dead},
+    ages=age_grid,
+    regime_id_class=RegimeId,
+    description="Lifecycle consumption-savings model with naive agents.",
+)
+

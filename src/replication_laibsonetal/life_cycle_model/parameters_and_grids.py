@@ -181,3 +181,119 @@ params = {
             #"risk_aversion": 2.0,
             }}
 }
+
+
+params_naive = {
+    "discount_factor":    0.96, # is it a problem that dead does not need anything and I still add them here?
+    "beta": 0.83,
+    "delta": 0.96,
+    "risk_aversion":      2.0,
+    "interest_rate":      0.0203,
+    "interest_rate_debt": 0.1059,
+    "interest_rate_illiquid": 0, # habia puesto 1 y esto hacia que explotara porque
+    "working_life": {
+        "next_regime": {
+            "last_working_age": retirement_age -1, #OJO NO ME MUESTRA ESTO EN EL DICC Y ES REPETITIVO (4 hmvg)
+            "survival_probs": survival_probs,
+        },
+       # "next_regime_working": {
+        #    "last_working_age": retirement_age -1,  # no entiendo la logica de por que hay que restar 1... lo hacen asi en el tiny sample
+         #   "final_age":        dead_age - 1,         # 89.0
+          #  "survival_probs": survival_probs,
+        #},
+        "number_of_kids": {
+            "a0kids": 0.003,
+            "a1kids": 0.358,
+            "a2kids": 0.508,
+        },
+        "number_of_depadul": {
+            "a0depadul": 0.00000459,
+            "a1depadul": 0.452,
+            "a2depadul": 0.438,
+        },
+        "deterministic": {
+            "ywork_cons":      7.563,
+            "ywork_agecoeff":  0.135,
+            "ywork_age2coeff": -0.222,
+            "ywork_age3coeff": 0.106,
+            "ywork_kidscoeff": 0.013,
+            "ywork_spousecoeff": 0.319,
+            "ywork_depadulcoeff": 0.237,
+        },
+        "borrowing_constraint": {
+            "c0credit": 0.167,
+            "c1credit": -0.002,
+            "c2credit": 0.014,
+            #"interest_rate": 0.0203,
+            #"interest_rate_debt": 0.1059,
+        },
+        "household_size": {
+            "a0kids": 0.003,
+            "a1kids": 0.358,
+            "a2kids": 0.508,
+            "a0depadul": 0.00000459,
+            "a1depadul": 0.452,
+            "a2depadul": 0.438,
+        },
+
+    },
+     "retirement": {
+         "next_regime": {
+            #"last_working_age": retirement_age -1,
+            "survival_probs": survival_probs,
+            #"final_age":        dead_age - 1,
+        },
+        #"next_regime_retirement": {
+         #   "last_working_age": retirement_age -1,  
+          #  "final_age":        dead_age - 1,
+           # "survival_probs": survival_probs,
+        #},
+        #"deterministic": {
+         #   "yret_cons":     6.0,
+          #  "yret_agecoeff": -0.01,
+        #},
+        "number_of_kids": {
+            "a0kids": 0.003,
+            "a1kids": 0.358,
+            "a2kids": 0.508,
+        },
+        "number_of_depadul": {
+            "a0depadul": 0.00000459,
+            "a1depadul": 0.452,
+            "a2depadul": 0.438,
+        },
+        "deterministic": {
+            "ywork_cons":      7.563,
+            "ywork_agecoeff":  0.135,
+            "ywork_age2coeff": -0.222,
+            "ywork_age3coeff": 0.106,
+            "ywork_kidscoeff": 0.013,
+            "ywork_spousecoeff": 0.319,
+            "ywork_depadulcoeff": 0.237,
+        },
+        "borrowing_constraint": {
+            "c0credit": 0.167,
+            "c1credit": -0.002,
+            "c2credit": 0.014,
+            #"interest_rate": 0.0203,
+            #"interest_rate_debt": 0.1059,
+        },
+        "household_size": {
+            "a0kids": 0.003,
+            "a1kids": 0.358,
+            "a2kids": 0.508,
+            "a0depadul": 0.00000459,
+            "a1depadul": 0.452,
+            "a2depadul": 0.438,
+        },
+    },
+    "dead": {
+        "utility": {
+            "alpha": 0.5, # debe haber una forma de no tener que volver a escribir todos estos numeros
+            #"delta": 0.96,
+            #"interest_rate": 0.02,
+            "mean_hhs": 2,
+            "mean_hhy": 1000,
+            #"risk_aversion": 2.0,
+            }}
+}

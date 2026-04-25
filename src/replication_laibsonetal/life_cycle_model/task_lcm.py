@@ -15,6 +15,7 @@ from lcm import (
     Model,
     Regime,
     categorical,
+    SolveSimulateFunctionPair,
 )
 from lcm.typing import (
     BoolND,
@@ -25,8 +26,8 @@ from lcm.typing import (
     ScalarInt,
 )
 
-from regimes_and_model import model
-from parameters_and_grids import params, age_grid
+from regimes_and_model import model, model_exp, model_naive
+from parameters_and_grids import params, age_grid, params_naive
 
 n_agents = 10
 result = model.simulate(
@@ -77,3 +78,65 @@ fig = px.line(
 )
 
 fig.show()
+
+### Exp and naive agents ###
+
+result_exp = model_exp.simulate(
+    params=params, #log_level="debug", log_path="./debug/",
+    initial_conditions={
+        "regime": np.zeros(n_agents, dtype=int),
+        "age": np.full(n_agents, float(age_grid.exact_values[0])),  # todos empiezan a los 20
+        "wealth": np.full(n_agents, (4709)), #np.linspace(1, 20, n_agents), wealth = np.full(n_agents, (3.5894 - 0.1923) * earnings)
+        "wealth_illiquid": np.full(n_agents, 83188),   # riqueza inicial varía de 1 a 20 np.linspace(1, 20, n_agents),  wealth = np.full(n_agents, (0.1923) * earnings)
+        "perm_income": np.zeros(n_agents),              # media del AR(1)
+        "trans_income": np.zeros(n_agents),             # media del shock iid
+        #"enable_jit": np.False,
+    },
+    period_to_regime_to_V_arr=None,
+)
+
+df_exp = result_exp.to_dataframe(additional_targets="all")
+df_exp["age"] = df_exp["age"].astype(int)
+print(df_exp)
+
+df_mean_exp = df_exp.groupby("age", as_index=False).mean(numeric_only=True)
+
+fig_exp = px.line(
+    df_mean_exp,
+    x="age",
+    y="consumption",
+    title="Consumption by Age",
+    template="plotly_dark",
+)
+
+fig_exp.show()
+
+result_naive = model_naive.simulate(
+    params=params_naive, #log_level="debug", log_path="./debug/",
+    initial_conditions={
+        "regime": np.zeros(n_agents, dtype=int),
+        "age": np.full(n_agents, float(age_grid.exact_values[0])),  # todos empiezan a los 20
+        "wealth": np.full(n_agents, (4709)), #np.linspace(1, 20, n_agents), wealth = np.full(n_agents, (3.5894 - 0.1923) * earnings)
+        "wealth_illiquid": np.full(n_agents, 83188),   # riqueza inicial varía de 1 a 20 np.linspace(1, 20, n_agents),  wealth = np.full(n_agents, (0.1923) * earnings)
+        "perm_income": np.zeros(n_agents),              # media del AR(1)
+        "trans_income": np.zeros(n_agents),             # media del shock iid
+        #"enable_jit": np.False,
+    },
+    period_to_regime_to_V_arr=None,
+)
+
+df_naive = result_naive.to_dataframe(additional_targets="all")
+df_naive["age"] = df_naive["age"].astype(int)
+print(df_naive)
+
+df_mean_naive = df_naive.groupby("age", as_index=False).mean(numeric_only=True)
+
+fig_naive = px.line(
+    df_mean_naive,
+    x="age",
+    y="consumption",
+    title="Consumption by Age",
+    template="plotly_dark",
+)
+
+fig_naive.show()

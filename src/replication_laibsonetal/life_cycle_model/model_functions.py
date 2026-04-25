@@ -14,6 +14,8 @@ from lcm import (
     Model,
     Regime,
     categorical,
+    SolveSimulateFunctionPair,
+
 )
 from lcm.typing import (
     BoolND,
@@ -207,6 +209,20 @@ def beq_utility(
         u_bequest = mean_hhs * ((((mean_hhy + beq_annuity)/mean_hhs)**(1-risk_aversion))-1) / (1-risk_aversion)
         return ((alpha/(1-discount_factor)) * (u_bequest - u_baseline))
 
+def exponential_H(
+    utility: float,
+    E_next_V: float,
+    discount_factor: float,
+) -> float:
+    return utility + discount_factor * E_next_V
+
+def beta_delta_H(
+    utility: float,
+    E_next_V: float,
+    beta: float,
+    delta: float,
+) -> float:
+    return utility + beta * delta * E_next_V
 
 ### function for params ###
 
