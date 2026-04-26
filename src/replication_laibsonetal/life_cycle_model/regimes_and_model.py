@@ -53,7 +53,7 @@ from transition_functions import (
     next_regime_working,
     next_regime_retirement,
 )
-from constraints_functions import borrowing_constraint, illiquid_wealth_constraint, ponzi_constraint
+from constraints_functions import borrowing_constraint, illiquid_wealth_constraint, ponzi_constraint, budget_constraint, consumtpion_positive
 
 from parameters_and_grids import wealth_illiquid_grid, wealth_liquid_grid, age_grid, retirement_age, dead_age
  
@@ -70,7 +70,7 @@ working_life = Regime(
     transition=MarkovTransition(next_regime_working),
     active=lambda age: age < retirement_age,
     states={
-        "wealth": LinSpacedGrid(start=-1500, stop=400000, n_points=50), 
+        "wealth": LinSpacedGrid(start=-4000, stop=400000, n_points=50), 
         "wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
         #"wealth": LinSpacedGrid(start=-150, stop=400_000, n_points=50),
         #"wealth_illiquid": wealth_illiquid_grid,
@@ -127,6 +127,8 @@ working_life = Regime(
     constraints={
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
+        "budget_constraint": budget_constraint,
+        "consumtpion_positive": consumtpion_positive,
     },
 )
 
@@ -134,7 +136,7 @@ retirement = Regime(
     transition=MarkovTransition(next_regime_retirement),
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
-        "wealth": LinSpacedGrid(start=-1500, stop=400000, n_points=50), 
+        "wealth": LinSpacedGrid(start=-4000, stop=400000, n_points=50), 
         "wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
         #"wealth": LinSpacedGrid(start=-150, stop=400_000, n_points=50),
         #"wealth_illiquid": wealth_illiquid_grid,
@@ -192,6 +194,8 @@ retirement = Regime(
     constraints={
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
+        "budget_constraint": budget_constraint,
+        "consumtpion_positive": consumtpion_positive,
         #"ponzi_constraint": ponzi_constraint,
     },
 )

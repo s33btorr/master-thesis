@@ -157,12 +157,12 @@ def earnings(
 
 def consumption(
     earnings: FloatND,
-    investment_x: ContinuousAction,
+    wealth: ContinuousState,
     investment_z: ContinuousAction,
     liquidation_cost: FloatND,
 ) -> FloatND:
     liq_cost = liquidation_cost * jnp.minimum(investment_z, 0)
-    return earnings - investment_x - investment_z + liq_cost
+    return earnings + wealth - investment_z + liq_cost
 
 
 def utility(

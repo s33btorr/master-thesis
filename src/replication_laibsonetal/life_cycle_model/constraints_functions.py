@@ -25,6 +25,14 @@ from lcm.typing import (
     ScalarInt,
 )
 
+def budget_constraint(
+        earnings: FloatND,
+        wealth: ContinuousState,
+        investment_z: ContinuousAction,
+    ) -> BoolND:
+
+    return (earnings + wealth) - investment_z >= 0
+
 def borrowing_constraint(
     end_of_period_wealth: FloatND,
     #investment_x: ContinuousAction,
