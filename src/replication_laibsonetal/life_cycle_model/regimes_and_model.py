@@ -70,7 +70,7 @@ working_life = Regime(
     transition=MarkovTransition(next_regime_working),
     active=lambda age: age < retirement_age,
     states={
-        "wealth": LinSpacedGrid(start=-4000, stop=400000, n_points=50), 
+        "wealth": LinSpacedGrid(start=-3500, stop=400000, n_points=50), 
         "wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
         #"wealth": LinSpacedGrid(start=-150, stop=400_000, n_points=50),
         #"wealth_illiquid": wealth_illiquid_grid,
@@ -116,7 +116,7 @@ working_life = Regime(
         "liquidation_cost": liquidation_cost,
         "household_size": household_size,
         "deterministic": deterministic_income,
-        "consumption": consumption,
+        #"consumption": consumption,
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
@@ -128,7 +128,7 @@ working_life = Regime(
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
-        "consumtpion_positive": consumtpion_positive,
+        #"consumtpion_positive": consumtpion_positive,
     },
 )
 
@@ -136,7 +136,7 @@ retirement = Regime(
     transition=MarkovTransition(next_regime_retirement),
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
-        "wealth": LinSpacedGrid(start=-4000, stop=400000, n_points=50), 
+        "wealth": LinSpacedGrid(start=-3500, stop=400000, n_points=50), 
         "wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
         #"wealth": LinSpacedGrid(start=-150, stop=400_000, n_points=50),
         #"wealth_illiquid": wealth_illiquid_grid,
@@ -182,7 +182,7 @@ retirement = Regime(
         "liquidation_cost": liquidation_cost,
         "household_size": household_size,
         "deterministic": deterministic_income,
-        "consumption": consumption,
+        #"consumption": consumption,
         #"deterministic": deterministic_retirement_income,
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
@@ -195,7 +195,7 @@ retirement = Regime(
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
-        "consumtpion_positive": consumtpion_positive,
+        #"consumtpion_positive": consumtpion_positive,
         #"ponzi_constraint": ponzi_constraint,
     },
 )
@@ -234,7 +234,7 @@ working_exp = Regime(
     transition=MarkovTransition(next_regime_working),
     active=lambda age: age < retirement_age,
     states={
-        "wealth": LinSpacedGrid(start=-1500, stop=400000, n_points=50), 
+        "wealth": LinSpacedGrid(start=-3000, stop=400000, n_points=50), 
         "wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
@@ -266,7 +266,7 @@ working_exp = Regime(
         "liquidation_cost": liquidation_cost,
         "household_size": household_size,
         "deterministic": deterministic_income,
-        "consumption": consumption,
+        #"consumption": consumption,
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
@@ -276,6 +276,7 @@ working_exp = Regime(
     constraints={
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
+        "budget_constraint": budget_constraint,
     },
 )
 
@@ -283,7 +284,7 @@ retirement_exp = Regime(
     transition=MarkovTransition(next_regime_retirement),
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
-        "wealth": LinSpacedGrid(start=-1500, stop=400000, n_points=50), 
+        "wealth": LinSpacedGrid(start=-3000, stop=400000, n_points=50), 
         "wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
@@ -315,7 +316,7 @@ retirement_exp = Regime(
         "liquidation_cost": liquidation_cost,
         "household_size": household_size,
         "deterministic": deterministic_income,
-        "consumption": consumption,
+        #"consumption": consumption,
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
@@ -325,6 +326,7 @@ retirement_exp = Regime(
     constraints={
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
+        "budget_constraint": budget_constraint,
     },
 )
 
@@ -342,7 +344,7 @@ working_naive = Regime(
     transition=MarkovTransition(next_regime_working),
     active=lambda age: age < retirement_age,
     states={
-        "wealth": LinSpacedGrid(start=-1500, stop=400000, n_points=50), 
+        "wealth": LinSpacedGrid(start=-3000, stop=400000, n_points=50), 
         "wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
@@ -377,7 +379,7 @@ working_naive = Regime(
         "liquidation_cost": liquidation_cost,
         "household_size": household_size,
         "deterministic": deterministic_income,
-        "consumption": consumption,
+        #"consumption": consumption,
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
@@ -387,6 +389,7 @@ working_naive = Regime(
     constraints={
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
+        "budget_constraint": budget_constraint,
     },
 )
 
@@ -394,7 +397,7 @@ retirement_naive = Regime(
     transition=MarkovTransition(next_regime_retirement),
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
-        "wealth": LinSpacedGrid(start=-1500, stop=400000, n_points=50), 
+        "wealth": LinSpacedGrid(start=-3000, stop=400000, n_points=50), 
         "wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
@@ -429,7 +432,7 @@ retirement_naive = Regime(
         "liquidation_cost": liquidation_cost,
         "household_size": household_size,
         "deterministic": deterministic_income,
-        "consumption": consumption,
+        #"consumption": consumption,
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
@@ -439,6 +442,7 @@ retirement_naive = Regime(
     constraints={
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
+        "budget_constraint": budget_constraint,
     },
 )
 
