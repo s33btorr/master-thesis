@@ -123,7 +123,7 @@ df_exp["age"] = df_exp["age"].astype(int)
 print(df_exp)
 
 df_mean_exp = df_exp.groupby("age", as_index=False).mean(numeric_only=True)
-df_mean_exp["consumption"] = df_mean_exp["wealth"] + df_mean_exp["earnings"] - df_mean_exp["investment_z"] + df_mean_exp["liquidation_cost"]
+df_mean_exp["consumption"] = df_mean_exp["wealth"] + df_mean_exp["earnings"] - df_mean_exp["investment_x"]- df_mean_exp["investment_z"] + df_mean_exp["liquidation_cost"]
 
 fig_exp = go.Figure()
 fig_exp.add_trace(go.Scatter(x=df_mean_exp["age"], y=df_mean_exp["earnings"], name="Income", line=dict(color='firebrick', width=3)))
@@ -156,7 +156,7 @@ fig_exp.show()
 
 fig_exp.show()"""
 
-result_naive = model_naive.simulate(
+"""result_naive = model_naive.simulate(
     params=params_naive, #log_level="debug", log_path="./debug/",
     initial_conditions={
         "regime": np.zeros(n_agents, dtype=int),
@@ -175,7 +175,7 @@ df_naive["age"] = df_naive["age"].astype(int)
 print(df_naive)
 
 df_mean_naive = df_naive.groupby("age", as_index=False).mean(numeric_only=True)
-df_mean_naive["consumption"] = df_mean_naive["wealth"] + df_mean_naive["earnings"] - df_mean_naive["investment_z"] + df_mean_naive["liquidation_cost"]
+df_mean_naive["consumption"] = df_mean_naive["wealth"] + df_mean_naive["earnings"] - df_mean_naive["investment_x"] - df_mean_naive["investment_z"] + df_mean_naive["liquidation_cost"]
 
 fig_naive = go.Figure()
 fig_naive.add_trace(go.Scatter(x=df_mean_naive["age"], y=df_mean_naive["earnings"], name="Income", line=dict(color='firebrick', width=3)))
@@ -196,7 +196,7 @@ fig_naive.update_layout(
     )
 )
 
-fig_naive.show()
+fig_naive.show()"""
 
 """fig_naive = px.line(
     df_mean_naive,
