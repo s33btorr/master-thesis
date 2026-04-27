@@ -1,0 +1,10 @@
+{
+  "snapshot_type": "simulate",
+  "platform": "x86_64-Linux",
+  "fields": [
+    "model",
+    "params",
+    "initial_conditions",
+    "result"
+  ]
+}

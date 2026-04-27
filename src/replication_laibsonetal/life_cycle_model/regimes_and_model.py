@@ -69,10 +69,10 @@ working_life = Regime(
     transition=MarkovTransition(next_regime_working),
     active=lambda age: age < retirement_age,
     states={
-        "wealth": LinSpacedGrid(start=-3500, stop=400000, n_points=50), 
-        "wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
-        #"wealth": LinSpacedGrid(start=-150, stop=400_000, n_points=50),
-        #"wealth_illiquid": wealth_illiquid_grid,
+        #"wealth": LinSpacedGrid(start=-3000, stop=400000, n_points=50), 
+        "wealth": wealth_liquid_grid,
+        #"wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
+        "wealth_illiquid": wealth_illiquid_grid,
         # Permanent income shock: AR(1) via Rouwenhorst
         # Preferred over Tauchen for persistent processes (rho close to 1) EN MATLAB USAN TAUCHEN...
         "perm_income": lcm.shocks.ar1.Tauchen(
@@ -135,10 +135,10 @@ retirement = Regime(
     transition=MarkovTransition(next_regime_retirement),
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
-        "wealth": LinSpacedGrid(start=-3500, stop=400000, n_points=50), 
-        "wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
-        #"wealth": LinSpacedGrid(start=-150, stop=400_000, n_points=50),
-        #"wealth_illiquid": wealth_illiquid_grid,
+        "wealth": LinSpacedGrid(start=-3000, stop=400000, n_points=50), 
+        "wealth": wealth_liquid_grid,
+        #"wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
+        "wealth_illiquid": wealth_illiquid_grid,
         # Permanent income shock: AR(1) via Rouwenhorst
         # Preferred over Tauchen for persistent processes (rho close to 1) NO SE EN REALIDAD SI ES EL AR1 QUE HACEN EN MATLAB
         #"perm_income": lcm.shocks.ar1.Rouwenhorst(
@@ -208,10 +208,10 @@ dead = Regime(
         "liquidation_cost": liquidation_cost,
         },
     states={
-        "wealth": LinSpacedGrid(start=-3000, stop=400000, n_points=50), 
-        "wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
-        #"wealth": LinSpacedGrid(start=0.1, stop=400_000, n_points=50), # esta grilla hago que empiece en cero porque el wealth de dead no puede ser negatuvo
-        #"wealth_illiquid": wealth_illiquid_grid,
+        #"wealth": LinSpacedGrid(start=-3000, stop=400000, n_points=50), 
+        "wealth": wealth_liquid_grid,
+        #"wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
+        "wealth_illiquid": wealth_illiquid_grid,
     },
 )
 

@@ -46,9 +46,9 @@ wealth_illiquid_grid = PiecewiseLogSpacedGrid(
 
 wealth_liquid_grid = PiecewiseLinSpacedGrid(
     pieces=(
-        Piece(interval="[-45_000, 0)", n_points=22), #n_points=45
-        Piece(interval="[0, 50_000)", n_points=25), #n_points=50
-        Piece(interval="[50_000, 400_000]", n_points=31), #n_points=62
+        Piece(interval="[-4_000, 0)", n_points=25), #n_points=45
+        Piece(interval="[0, 4_000)", n_points=25), #n_points=50
+        #Piece(interval="[50_000, 400_000]", n_points=31), #n_points=62
     )
 )
 
@@ -184,9 +184,9 @@ params = {
 
 
 params_naive = {
-    "discount_factor":    0.90, # is it a problem that dead does not need anything and I still add them here?
+    "discount_factor":    0.99, # is it a problem that dead does not need anything and I still add them here?
     "beta": 0.53,
-    "delta": 0.90,
+    "delta": 0.99,
     "risk_aversion":      1.9,
     "interest_rate":      0.0203, 
     "interest_rate_debt": 0.1059, 
