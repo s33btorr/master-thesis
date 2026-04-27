@@ -71,9 +71,9 @@ survival_probs = load_survival_probs(death_f_path, death_m_path)
 
 params = {
     "discount_factor":    0.96, # is it a problem that dead does not need anything and I still add them here?
-    "risk_aversion":      2.0,
+    "risk_aversion":      1.5,
     "interest_rate":      0.0203,
-    "interest_rate_debt": 0.1059,
+    "interest_rate_debt": 0.1059, 
     "interest_rate_illiquid": 0, # habia puesto 1 y esto hacia que explotara porque
     "working_life": {
         "next_regime": {
@@ -184,12 +184,12 @@ params = {
 
 
 params_naive = {
-    "discount_factor":    0.96, # is it a problem that dead does not need anything and I still add them here?
-    "beta": 0.83,
-    "delta": 0.96,
-    "risk_aversion":      2.0,
-    "interest_rate":      0.0203,
-    "interest_rate_debt": 0.1059,
+    "discount_factor":    0.90, # is it a problem that dead does not need anything and I still add them here?
+    "beta": 0.53,
+    "delta": 0.90,
+    "risk_aversion":      1.9,
+    "interest_rate":      0.0203, 
+    "interest_rate_debt": 0.1059, 
     "interest_rate_illiquid": 0, # habia puesto 1 y esto hacia que explotara porque
     "working_life": {
         "next_regime": {

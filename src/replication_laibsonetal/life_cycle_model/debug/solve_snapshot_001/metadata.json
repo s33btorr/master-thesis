@@ -1,0 +1,8 @@
+{
+  "snapshot_type": "solve",
+  "platform": "x86_64-Linux",
+  "fields": [
+    "model",
+    "params"
+  ]
+}

@@ -41,6 +41,7 @@ It happens something similar than before, we recieved in the backward induction 
 
 ### How to run the project? 
 ```bash
+pixi shell -e cuda12
 pixi run python task_lcm.py
 ```
 

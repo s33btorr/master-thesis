@@ -36,7 +36,6 @@ from model_functions import (
     household_size,
     deterministic_income,
     #deterministic_retirement_income,
-    consumption,
     number_of_kids,
     number_of_depadul,
     earnings,
@@ -209,7 +208,7 @@ dead = Regime(
         "liquidation_cost": liquidation_cost,
         },
     states={
-        "wealth": LinSpacedGrid(start=0.1, stop=400000, n_points=50), 
+        "wealth": LinSpacedGrid(start=-3000, stop=400000, n_points=50), 
         "wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
         #"wealth": LinSpacedGrid(start=0.1, stop=400_000, n_points=50), # esta grilla hago que empiece en cero porque el wealth de dead no puede ser negatuvo
         #"wealth_illiquid": wealth_illiquid_grid,
@@ -257,7 +256,7 @@ working_exp = Regime(
         "wealth_illiquid": next_wealth_illiquid,
     },
     actions={
-        "investment_x": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
+        "investment_x": LinSpacedGrid(start=-3000, stop=1500, n_points=100),
         "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
     },
     functions={
@@ -307,7 +306,7 @@ retirement_exp = Regime(
         "wealth_illiquid": next_wealth_illiquid,
     },
      actions={
-        "investment_x": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
+        "investment_x": LinSpacedGrid(start=-3000, stop=1500, n_points=100),
         "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
     },
     functions={
@@ -443,6 +442,7 @@ retirement_naive = Regime(
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
+        "ponzi_constraint": ponzi_constraint,
     },
 )
 
