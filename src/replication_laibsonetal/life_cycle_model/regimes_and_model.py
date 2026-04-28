@@ -54,7 +54,7 @@ from transition_functions import (
 )
 from constraints_functions import borrowing_constraint, illiquid_wealth_constraint, ponzi_constraint, budget_constraint, consumtpion_positive
 
-from parameters_and_grids import wealth_illiquid_grid, wealth_liquid_grid, age_grid, retirement_age, dead_age
+from parameters_and_grids import wealth_illiquid_grid, wealth_liquid_grid, age_grid, retirement_age, dead_age, investment_x_grid, investment_z_grid
  
 # esto no se donde va en realidad #
 @categorical(ordered=False)
@@ -105,8 +105,8 @@ working_life = Regime(
         "wealth_illiquid": next_wealth_illiquid,
     },
     actions={
-        "investment_x": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
-        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
+        "investment_x": investment_x_grid,
+        "investment_z": investment_z_grid,
         #"investment_x":  LinSpacedGrid(start=-6_899, stop=6_899, n_points=100), # no funciona con mayor a 6,899
         #"investment_z": LinSpacedGrid(start=-1_000_000, stop=16_051, n_points=100), #no funciona con mayor a 16,051
     },
@@ -171,8 +171,8 @@ retirement = Regime(
         "wealth_illiquid": next_wealth_illiquid,
     },
      actions={
-        "investment_x": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
-        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
+        "investment_x": investment_x_grid,
+        "investment_z": investment_z_grid,
         #"investment_x":  LinSpacedGrid(start=-6_899, stop=6_899, n_points=100),
         #"investment_z": LinSpacedGrid(start=-1_000_000, stop=16_051, n_points=100),
     },
@@ -205,7 +205,7 @@ dead = Regime(
     #active=lambda age: age >= dead_age,
     functions={
         "utility": beq_utility,
-        #"liquidation_cost": liquidation_cost,
+        "liquidation_cost": liquidation_cost,
         },
     states={
         #"wealth": LinSpacedGrid(start=-3000, stop=400000, n_points=50), 

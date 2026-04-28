@@ -52,6 +52,10 @@ wealth_liquid_grid = PiecewiseLinSpacedGrid(
     )
 )
 
+investment_x_grid = LinSpacedGrid(start=-500, stop=500, n_points=100) 
+
+investment_z_grid = LinSpacedGrid(start=-5000, stop=5000, n_points=100) # ando probando otros grids...
+
 age_grid = AgeGrid(start=20, stop=91, step="1Y")
 
 
