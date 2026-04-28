@@ -178,7 +178,7 @@ def utility(
     consumption = earnings - investment_x - investment_z + liq_cost
     total_consumption = consumption + (0.05 * wealth_illiquid) # 0.05 sale en el paper
     c_per_hh = total_consumption / household_size
-    numerador = household_size * (jnp.exp((1 - risk_aversion) * jnp.log(c_per_hh)) - 1) # hice todo esto porque me estaba dando valores raros para ver si se acomoda. Asi lo hacen en matlab
+    numerador = household_size * ((c_per_hh**(1 - risk_aversion)) - 1) # hice todo esto porque me estaba dando valores raros para ver si se acomoda. Asi lo hacen en matlab
     denominador = 1 - risk_aversion
     return jnp.where(risk_aversion == 1, household_size * jnp.log(c_per_hh), numerador / denominador)
 

@@ -46,8 +46,8 @@ wealth_illiquid_grid = PiecewiseLogSpacedGrid(
 
 wealth_liquid_grid = PiecewiseLinSpacedGrid(
     pieces=(
-        Piece(interval="[-4_000, 0)", n_points=25), #n_points=45
-        Piece(interval="[0, 4_000)", n_points=25), #n_points=50
+        Piece(interval="[-15_000, 0)", n_points=25), #n_points=45
+        Piece(interval="[0, 15_000)", n_points=25), #n_points=50
         #Piece(interval="[50_000, 400_000]", n_points=31), #n_points=62
     )
 )

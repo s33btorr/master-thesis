@@ -135,7 +135,7 @@ retirement = Regime(
     transition=MarkovTransition(next_regime_retirement),
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
-        "wealth": LinSpacedGrid(start=-3000, stop=400000, n_points=50), 
+        #"wealth": LinSpacedGrid(start=-3000, stop=400000, n_points=50), 
         "wealth": wealth_liquid_grid,
         #"wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
         "wealth_illiquid": wealth_illiquid_grid,
@@ -158,7 +158,7 @@ retirement = Regime(
 
         # Transitory income shock: iid Normal TAMBIEN VER SI ES IGUAL EN MATLAB IID SHOCKS
         "trans_income": lcm.shocks.iid.Normal(
-            n_points=5,
+            n_points=3,
             gauss_hermite=False,
             mu=0,     # 0
             sigma=(0.045**0.5),  # sqrt(ywork_varnu) from fs_params
@@ -205,7 +205,7 @@ dead = Regime(
     #active=lambda age: age >= dead_age,
     functions={
         "utility": beq_utility,
-        "liquidation_cost": liquidation_cost,
+        #"liquidation_cost": liquidation_cost,
         },
     states={
         #"wealth": LinSpacedGrid(start=-3000, stop=400000, n_points=50), 
