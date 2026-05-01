@@ -32,6 +32,7 @@ import lcm.shocks.iid
 
 from model_functions import (
     utility,
+    total_consumption,
     liquidation_cost,
     household_size,
     deterministic_income,
@@ -115,7 +116,7 @@ working_life = Regime(
         "liquidation_cost": liquidation_cost,
         "household_size": household_size,
         "deterministic": deterministic_income,
-        #"consumption": consumption,
+        "total_consumption": total_consumption,
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
@@ -181,7 +182,7 @@ retirement = Regime(
         "liquidation_cost": liquidation_cost,
         "household_size": household_size,
         "deterministic": deterministic_income,
-        #"consumption": consumption,
+        "total_consumption": total_consumption,
         #"deterministic": deterministic_retirement_income,
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,

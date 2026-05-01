@@ -51,9 +51,9 @@ from model_functions import load_survival_probs
         #Piece(interval="[50_000, 400_000]", n_points=31), #n_points=62
     )
 )"""
-wealth_liquid_grid    = LinSpacedGrid(start=-10_000, stop=200_000, n_points=50)
+wealth_liquid_grid    = LinSpacedGrid(start=-68_500, stop=200_000, n_points=50)
 wealth_illiquid_grid  = LinSpacedGrid(start=0.1, stop=400_000, n_points=50)
-investment_x_grid     = LinSpacedGrid(start=-15_000, stop=15_000, n_points=200)
+investment_x_grid     = LinSpacedGrid(start=-15_000, stop=70_000, n_points=200)
 investment_z_grid     = LinSpacedGrid(start=-100_000, stop=100_000, n_points=200)
 
 age_grid = AgeGrid(start=20, stop=91, step="1Y")

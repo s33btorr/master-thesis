@@ -26,15 +26,12 @@ from lcm.typing import (
 )
 
 def budget_constraint(
-        earnings: FloatND,
-        investment_z: ContinuousAction,
-        investment_x: ContinuousAction,
-        liquidation_cost: FloatND,   
+        total_consumption: FloatND,
     ) -> BoolND:
-
-    liq_cost = liquidation_cost * jnp.minimum(investment_z, 0)
-    consumption = earnings - investment_x - investment_z + liq_cost
-    return consumption >= 0 # I am not sure if it is necessary to put >0 or is enough with >=0, the problem is that in utility we do log(consumption) and if 0 is included, it is -inf
+    """
+    Consumption needs to be positive
+    """
+    return total_consumption > 0 
 
 def borrowing_constraint(
     end_of_period_wealth: FloatND,
