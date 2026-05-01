@@ -224,6 +224,7 @@ model = Model(
     ages=age_grid,
     regime_id_class=RegimeId,
     description="Lifecycle consumption-savings model.",
+    #enable_jit=False, # QUITAR CUANDO LO RESUELVA
 )
 
 

@@ -37,24 +37,24 @@ from model_functions import load_survival_probs
 
 
 ### Grids ###
-wealth_illiquid_grid = PiecewiseLogSpacedGrid(
+"""wealth_illiquid_grid = PiecewiseLogSpacedGrid(
     pieces=(
         Piece(interval="[1, 100_000)", n_points=35), #n_points=40 por alguna razon, esto con menos puntos no funciona........!!!!!!!!
         Piece(interval="[100_000, 3_500_000]", n_points=15), #n_points=34
     )
-)
+)"""
 
-wealth_liquid_grid = PiecewiseLinSpacedGrid(
+"""wealth_liquid_grid = PiecewiseLinSpacedGrid(
     pieces=(
         Piece(interval="[-15_000, 0)", n_points=25), #n_points=45
-        Piece(interval="[0, 15_000)", n_points=25), #n_points=50
+        Piece(interval="[0, 45_000)", n_points=25), #n_points=50
         #Piece(interval="[50_000, 400_000]", n_points=31), #n_points=62
     )
-)
-
-investment_x_grid = LinSpacedGrid(start=-500, stop=500, n_points=100) 
-
-investment_z_grid = LinSpacedGrid(start=-5000, stop=5000, n_points=100) # ando probando otros grids...
+)"""
+wealth_liquid_grid    = LinSpacedGrid(start=-10_000, stop=200_000, n_points=50)
+wealth_illiquid_grid  = LinSpacedGrid(start=0.1, stop=400_000, n_points=50)
+investment_x_grid     = LinSpacedGrid(start=-15_000, stop=15_000, n_points=200)
+investment_z_grid     = LinSpacedGrid(start=-100_000, stop=100_000, n_points=200)
 
 age_grid = AgeGrid(start=20, stop=91, step="1Y")
 

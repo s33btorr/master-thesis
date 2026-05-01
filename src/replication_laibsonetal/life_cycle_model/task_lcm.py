@@ -40,7 +40,6 @@ result = model.simulate(
         "wealth_illiquid": np.full(n_agents, 83188),   # riqueza inicial varía de 1 a 20 np.linspace(1, 20, n_agents),  wealth = np.full(n_agents, (0.1923) * earnings)
         "perm_income": np.zeros(n_agents),              # media del AR(1)
         "trans_income": np.zeros(n_agents),             # media del shock iid
-        #"enable_jit": np.False,
     },
     period_to_regime_to_V_arr=None,
 )
@@ -71,22 +70,12 @@ summary = (
 df_mean = df.groupby("age", as_index=False).mean(numeric_only=True)
 df_mean["consumption"] = df_mean["earnings"] - df_mean["investment_x"] - df_mean["investment_z"] #+ df_mean["liquidation_cost"]
 
-fig = px.line(
-    df_mean,
-    x="age",
-    y="consumption",
-    title="Consumption by Age",
-    template="plotly_dark",
-)
-
-fig.show()
-
 fig = go.Figure()
 fig.add_trace(go.Scatter(x=df_mean["age"], y=df_mean["earnings"], name="Income", line=dict(color='firebrick', width=3)))
-fig.add_trace(go.Scatter(x=df_mean["age"], y=df_mean["consumption"], name="Total Consumption", line=dict(color='royalblue', width=3)))
+fig.add_trace(go.Scatter(x=df_mean["age"], y=df_mean["consumption"], name="Prox Total Consumption", line=dict(color='royalblue', width=3)))
 fig.add_trace(go.Scatter(x=df_mean["age"], y=df_mean["wealth"], name="Liquid Assets", line=dict(color='forestgreen', width=3)))
-fig.add_trace(go.Scatter(x=df_mean["age"], y=df_mean["wealth_illiquid"] / 10, name="Illiquid Assets/10", line=dict(color='goldenrod', width=3)))
-
+fig.add_trace(go.Scatter(x=df_mean["age"], y=df_mean["wealth_illiquid"]/10, name="Illiquid Assets/10", line=dict(color='goldenrod', width=3)))
+# borre /10 porque no es ni tan grande al dividir...
 fig.update_layout(
     title="Average Lifecycle Profile",
     xaxis_title="Age",
