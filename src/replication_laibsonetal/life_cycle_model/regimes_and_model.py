@@ -53,7 +53,7 @@ from transition_functions import (
     next_regime_working,
     next_regime_retirement,
 )
-from constraints_functions import borrowing_constraint, illiquid_wealth_constraint, ponzi_constraint, budget_constraint, consumtpion_positive
+from constraints_functions import borrowing_constraint, illiquid_wealth_constraint, ponzi_constraint, budget_constraint, special_constraint
 
 from parameters_and_grids import wealth_illiquid_grid, wealth_liquid_grid, age_grid, retirement_age, dead_age, investment_x_grid, investment_z_grid
  
@@ -70,9 +70,7 @@ working_life = Regime(
     transition=MarkovTransition(next_regime_working),
     active=lambda age: age < retirement_age,
     states={
-        #"wealth": LinSpacedGrid(start=-3000, stop=400000, n_points=50), 
         "wealth": wealth_liquid_grid,
-        #"wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
         "wealth_illiquid": wealth_illiquid_grid,
         # Permanent income shock: AR(1) via Rouwenhorst
         # Preferred over Tauchen for persistent processes (rho close to 1) EN MATLAB USAN TAUCHEN...
@@ -102,14 +100,11 @@ working_life = Regime(
     },
     state_transitions={
         "wealth": next_wealth,
-        # perm_income and trans_income manage their own transitions
         "wealth_illiquid": next_wealth_illiquid,
     },
     actions={
         "investment_x": investment_x_grid,
         "investment_z": investment_z_grid,
-        #"investment_x":  LinSpacedGrid(start=-6_899, stop=6_899, n_points=100), # no funciona con mayor a 6,899
-        #"investment_z": LinSpacedGrid(start=-1_000_000, stop=16_051, n_points=100), #no funciona con mayor a 16,051
     },
     functions={
         "utility": utility,
@@ -122,13 +117,13 @@ working_life = Regime(
         "earnings": earnings,
         "end_of_period_wealth": end_of_period_wealth,
         "end_of_period_wealth_illiquid": end_of_period_wealth_illiquid,
-        #"investment_illiquid_constrained": investment_illiquid_constrained
+        
     },
     constraints={
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
-        #"consumtpion_positive": consumtpion_positive,
+        "special_constraint": special_constraint,
     },
 )
 
@@ -136,9 +131,7 @@ retirement = Regime(
     transition=MarkovTransition(next_regime_retirement),
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
-        #"wealth": LinSpacedGrid(start=-3000, stop=400000, n_points=50), 
         "wealth": wealth_liquid_grid,
-        #"wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
         "wealth_illiquid": wealth_illiquid_grid,
         # Permanent income shock: AR(1) via Rouwenhorst
         # Preferred over Tauchen for persistent processes (rho close to 1) NO SE EN REALIDAD SI ES EL AR1 QUE HACEN EN MATLAB
@@ -157,7 +150,6 @@ retirement = Regime(
             n_std=1.5, #m esta en lifecycle sim pag 3
         ),
 
-        # Transitory income shock: iid Normal TAMBIEN VER SI ES IGUAL EN MATLAB IID SHOCKS
         "trans_income": lcm.shocks.iid.Normal(
             n_points=3,
             gauss_hermite=False,
@@ -168,14 +160,11 @@ retirement = Regime(
     },
     state_transitions={
         "wealth": next_wealth,
-        # perm_income and trans_income manage their own transitions
         "wealth_illiquid": next_wealth_illiquid,
     },
      actions={
         "investment_x": investment_x_grid,
         "investment_z": investment_z_grid,
-        #"investment_x":  LinSpacedGrid(start=-6_899, stop=6_899, n_points=100),
-        #"investment_z": LinSpacedGrid(start=-1_000_000, stop=16_051, n_points=100),
     },
     functions={
         "utility": utility,
@@ -189,14 +178,13 @@ retirement = Regime(
         "earnings": earnings,
         "end_of_period_wealth": end_of_period_wealth,
         "end_of_period_wealth_illiquid": end_of_period_wealth_illiquid,
-        #"investment_illiquid_constrained": investment_illiquid_constrained
     },
     constraints={
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
-        #"consumtpion_positive": consumtpion_positive,
-        #"ponzi_constraint": ponzi_constraint,
+        "special_constraint": special_constraint,
+        "ponzi_constraint": ponzi_constraint,
     },
 )
 

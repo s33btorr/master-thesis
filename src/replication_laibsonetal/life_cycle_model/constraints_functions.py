@@ -63,12 +63,6 @@ def illiquid_wealth_constraint(
     return end_of_period_wealth_illiquid >= 0 # quiza agregar que ocurre cuando es falso esto
 
 
-def consumtpion_positive(
-    consumption: FloatND,
-) -> BoolND:
-    return consumption >= 0
-# ME FALTA RESTRINGIR QUE EN EL ULTIMO PERIODO NO SE PUEDE MORIR CON DEUDAS
-
 #El fragmento EV____(1:currix0-1,:,:,t) = -Inf; es fundamental. Evita que el agente muera con deudas. Al asignar una utilidad de −∞ a cualquier estado donde los activos sean negativos al final de la vida, el modelo obliga al agente a pagar todas sus deudas antes de que el ciclo termine.
 
 def ponzi_constraint(
@@ -76,6 +70,14 @@ def ponzi_constraint(
     age: float,
 ) -> BoolND:
     return jnp.where(age == 90, end_of_period_wealth>0, True)
+
+def special_constraint(
+    end_of_period_wealth: FloatND,
+) -> BoolND:
+    """
+    Simple borrowing constraint.
+    """
+    return end_of_period_wealth >= - 68_501
 
 """def liquid_wealth_constraint_last_period(
     end_of_period_wealth: FloatND,
