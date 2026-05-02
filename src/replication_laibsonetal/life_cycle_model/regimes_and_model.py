@@ -53,7 +53,14 @@ from transition_functions import (
     next_regime_working,
     next_regime_retirement,
 )
-from constraints_functions import borrowing_constraint, illiquid_wealth_constraint, ponzi_constraint, budget_constraint, special_constraint
+from constraints_functions import (
+    borrowing_constraint, 
+    illiquid_wealth_constraint, 
+    ponzi_constraint, 
+    budget_constraint, 
+    special_constraint,
+    special_illiquid_constraint
+)
 
 from parameters_and_grids import wealth_illiquid_grid, wealth_liquid_grid, age_grid, retirement_age, dead_age, investment_x_grid, investment_z_grid
  
@@ -124,6 +131,7 @@ working_life = Regime(
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
         "special_constraint": special_constraint,
+        "special_illiquid_constraint": special_illiquid_constraint,
     },
 )
 
@@ -185,21 +193,19 @@ retirement = Regime(
         "budget_constraint": budget_constraint,
         "special_constraint": special_constraint,
         "ponzi_constraint": ponzi_constraint,
+        "special_illiquid_constraint": special_illiquid_constraint,
     },
 )
 
 dead = Regime(
     transition=None,
     active=lambda age: True,
-    #active=lambda age: age >= dead_age,
     functions={
         "utility": beq_utility,
         "liquidation_cost": liquidation_cost,
         },
     states={
-        #"wealth": LinSpacedGrid(start=-3000, stop=400000, n_points=50), 
         "wealth": wealth_liquid_grid,
-        #"wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
         "wealth_illiquid": wealth_illiquid_grid,
     },
 )
@@ -223,8 +229,8 @@ working_exp = Regime(
     transition=MarkovTransition(next_regime_working),
     active=lambda age: age < retirement_age,
     states={
-        "wealth": LinSpacedGrid(start=-3000, stop=400000, n_points=50), 
-        "wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
+        "wealth": wealth_liquid_grid,
+        "wealth_illiquid": wealth_illiquid_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
@@ -246,8 +252,8 @@ working_exp = Regime(
         "wealth_illiquid": next_wealth_illiquid,
     },
     actions={
-        "investment_x": LinSpacedGrid(start=-3000, stop=1500, n_points=100),
-        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
+        "investment_x": investment_x_grid,
+        "investment_z": investment_z_grid,
     },
     functions={
         "utility": utility,
@@ -255,7 +261,7 @@ working_exp = Regime(
         "liquidation_cost": liquidation_cost,
         "household_size": household_size,
         "deterministic": deterministic_income,
-        #"consumption": consumption,
+        "total_consumption": total_consumption,
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
@@ -266,6 +272,8 @@ working_exp = Regime(
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
+        "special_constraint": special_constraint,
+        "special_illiquid_constraint": special_illiquid_constraint,
     },
 )
 
@@ -273,8 +281,8 @@ retirement_exp = Regime(
     transition=MarkovTransition(next_regime_retirement),
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
-        "wealth": LinSpacedGrid(start=-3000, stop=400000, n_points=50), 
-        "wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
+        "wealth": wealth_liquid_grid,
+        "wealth_illiquid": wealth_illiquid_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
@@ -296,8 +304,8 @@ retirement_exp = Regime(
         "wealth_illiquid": next_wealth_illiquid,
     },
      actions={
-        "investment_x": LinSpacedGrid(start=-3000, stop=1500, n_points=100),
-        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
+        "investment_x": investment_x_grid,
+        "investment_z": investment_z_grid,
     },
     functions={
         "utility": utility,
@@ -305,17 +313,21 @@ retirement_exp = Regime(
         "liquidation_cost": liquidation_cost,
         "household_size": household_size,
         "deterministic": deterministic_income,
-        #"consumption": consumption,
+        "total_consumption": total_consumption,
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
         "end_of_period_wealth": end_of_period_wealth,
         "end_of_period_wealth_illiquid": end_of_period_wealth_illiquid,
+        
     },
     constraints={
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
+        "special_constraint": special_constraint,
+        "special_illiquid_constraint": special_illiquid_constraint,
+        "ponzi_constraint": ponzi_constraint,
     },
 )
 
@@ -333,8 +345,8 @@ working_naive = Regime(
     transition=MarkovTransition(next_regime_working),
     active=lambda age: age < retirement_age,
     states={
-        "wealth": LinSpacedGrid(start=-3000, stop=400000, n_points=50), 
-        "wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
+        "wealth": wealth_liquid_grid,
+        "wealth_illiquid": wealth_illiquid_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
@@ -356,8 +368,8 @@ working_naive = Regime(
         "wealth_illiquid": next_wealth_illiquid,
     },
     actions={
-        "investment_x": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
-        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
+        "investment_x": investment_x_grid,
+        "investment_z": investment_z_grid,
     },
     functions={
         "utility": utility,
@@ -368,7 +380,7 @@ working_naive = Regime(
         "liquidation_cost": liquidation_cost,
         "household_size": household_size,
         "deterministic": deterministic_income,
-        #"consumption": consumption,
+        "total_consumption": total_consumption,
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
@@ -379,6 +391,8 @@ working_naive = Regime(
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
+        "special_constraint": special_constraint,
+        "special_illiquid_constraint": special_illiquid_constraint,
     },
 )
 
@@ -386,8 +400,8 @@ retirement_naive = Regime(
     transition=MarkovTransition(next_regime_retirement),
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
-        "wealth": LinSpacedGrid(start=-3000, stop=400000, n_points=50), 
-        "wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
+        "wealth": wealth_liquid_grid,
+        "wealth_illiquid": wealth_illiquid_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
@@ -409,8 +423,8 @@ retirement_naive = Regime(
         "wealth_illiquid": next_wealth_illiquid,
     },
      actions={
-        "investment_x": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
-        "investment_z": LinSpacedGrid(start=-1500, stop=1500, n_points=100),
+        "investment_x": investment_x_grid,
+        "investment_z": investment_z_grid,
     },
     functions={
         "utility": utility,
@@ -421,7 +435,7 @@ retirement_naive = Regime(
         "liquidation_cost": liquidation_cost,
         "household_size": household_size,
         "deterministic": deterministic_income,
-        #"consumption": consumption,
+        "total_consumption": total_consumption,
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
@@ -432,6 +446,8 @@ retirement_naive = Regime(
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
+        "special_constraint": special_constraint,
+        "special_illiquid_constraint": special_illiquid_constraint,
         "ponzi_constraint": ponzi_constraint,
     },
 )

@@ -53,8 +53,8 @@ from model_functions import load_survival_probs
 )"""
 wealth_liquid_grid    = LinSpacedGrid(start=-68_500, stop=200_000, n_points=50)
 wealth_illiquid_grid  = LinSpacedGrid(start=0.1, stop=400_000, n_points=50)
-investment_x_grid     = LinSpacedGrid(start=-15_000, stop=70_000, n_points=200)
-investment_z_grid     = LinSpacedGrid(start=-100_000, stop=100_000, n_points=200)
+investment_x_grid     = LinSpacedGrid(start=-68_500, stop=68_500, n_points=200)
+investment_z_grid     = LinSpacedGrid(start=-68_500, stop=68_500, n_points=200)
 
 age_grid = AgeGrid(start=20, stop=91, step="1Y")
 
@@ -181,7 +181,7 @@ params = {
             #"delta": 0.96,
             #"interest_rate": 0.02,
             "mean_hhs": 2,
-            "mean_hhy": 1000,
+            "mean_hhy": 20_000, # este numero es la media de ingreso... es mucho mayor y cuando lo incremento, da todo errror
             #"risk_aversion": 2.0,
             }}
 }
@@ -297,7 +297,7 @@ params_naive = {
             #"delta": 0.96,
             #"interest_rate": 0.02,
             "mean_hhs": 2,
-            "mean_hhy": 1000,
+            "mean_hhy": 20_000,
             #"risk_aversion": 2.0,
             }}
 }
