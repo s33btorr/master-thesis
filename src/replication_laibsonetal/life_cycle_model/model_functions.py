@@ -152,6 +152,44 @@ def earnings(
     return jnp.exp(deterministic + 0.5*(perm_income + trans_income)) # asi lo entiendo yo del codigo...
 
 
+def average_earnings(
+    ywork_cons: float,
+    ywork_agecoeff: float,
+    ywork_age2coeff: float,
+    ywork_age3coeff: float,
+    ywork_kidscoeff: float,
+    ywork_spousecoeff: float,
+    ywork_depadulcoeff: float,
+    a0kids: float,
+    a1kids: float,
+    a2kids: float,
+    a0depadul: float,
+    a1depadul: float,
+    a2depadul: float,
+) -> float:
+    """
+    The shocks are mot included because they have expected value 0.
+    """
+    ages = jnp.arange(20, 91, dtype=jnp.float32)
+    spouse = 2
+
+    number_of_kids    = a0kids    * jnp.exp((a1kids    * ages) - (a2kids    * (ages ** 2) / 100))
+    number_of_depadul = a0depadul * jnp.exp((a1depadul * ages) - (a2depadul * (ages ** 2) / 100))
+
+    deterministic_profile = (
+        ywork_cons
+        + ywork_kidscoeff    * number_of_kids
+        + ywork_spousecoeff  * spouse
+        + ywork_depadulcoeff * number_of_depadul
+        + ywork_agecoeff     * ages
+        + ywork_age2coeff    * (ages ** 2) / 100
+        + ywork_age3coeff    * (ages ** 3) / 10000
+    )
+
+    expected_earnings = jnp.exp(deterministic_profile)
+
+    return jnp.mean(expected_earnings)
+
 
 #### UTILITY ####
 
@@ -189,8 +227,7 @@ def utility(
 
 def beq_utility(
         mean_hhs: float,
-        mean_hhy: float,
-        #earnings: FloatND,
+        average_earnings: float,
         risk_aversion: float,
         wealth: ContinuousState,
         wealth_illiquid: ContinuousState,
@@ -205,8 +242,8 @@ def beq_utility(
         # liquidation_cost = 1/3 if zilliq=1
         beq = wealth + (wealth_illiquid * (1-liquidation_cost))
         beq_annuity = interest_rate * (jnp.maximum(beq, 0)) # usan en matlab (jnp.maximum(interest_rate-1, 0)) porque puede ser tasa negativa... pero mi tasa 1 no es negativa, 2, seria mas bien maximo entre la tasa y 0 porque no es bruta la tasa que pongo
-        u_baseline = mean_hhs * (((mean_hhy/mean_hhs)**(1-risk_aversion))-1) / (1-risk_aversion) # me falta agregar si rho=1
-        u_bequest = mean_hhs * ((((mean_hhy + beq_annuity)/mean_hhs)**(1-risk_aversion))-1) / (1-risk_aversion)
+        u_baseline = mean_hhs * (((average_earnings/mean_hhs)**(1-risk_aversion))-1) / (1-risk_aversion) # me falta agregar si rho=1
+        u_bequest = mean_hhs * ((((average_earnings + beq_annuity)/mean_hhs)**(1-risk_aversion))-1) / (1-risk_aversion)
         return (alpha/(1-discount_factor)) * (u_bequest - u_baseline)
 
 def exponential_H(

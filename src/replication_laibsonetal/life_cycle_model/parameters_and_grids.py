@@ -181,8 +181,23 @@ params = {
             #"delta": 0.96,
             #"interest_rate": 0.02,
             "mean_hhs": 2,
-            "mean_hhy": 20_000, # este numero es la media de ingreso... es mucho mayor y cuando lo incremento, da todo errror
+            #"mean_hhy": 20_000, # este numero es la media de ingreso... es mucho mayor y cuando lo incremento, da todo errror
             #"risk_aversion": 2.0,
+        },
+        "average_earnings": {
+            "ywork_cons":      7.563,
+            "ywork_agecoeff":  0.135,
+            "ywork_age2coeff": -0.222,
+            "ywork_age3coeff": 0.106,
+            "ywork_kidscoeff": 0.013,
+            "ywork_spousecoeff": 0.319,
+            "ywork_depadulcoeff": 0.237,
+            "a0kids": 0.003,
+            "a1kids": 0.358,
+            "a2kids": 0.508,
+            "a0depadul": 0.00000459,
+            "a1depadul": 0.452,
+            "a2depadul": 0.438,
             }}
 }
 
@@ -297,7 +312,7 @@ params_naive = {
             #"delta": 0.96,
             #"interest_rate": 0.02,
             "mean_hhs": 2,
-            "mean_hhy": 20_000,
+            #"mean_hhy": 20_000,
             #"risk_aversion": 2.0,
             }}
 }

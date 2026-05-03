@@ -41,6 +41,7 @@ from model_functions import (
     number_of_depadul,
     earnings,
     beq_utility,
+    average_earnings,
     exponential_H,
     beta_delta_H,
     )
@@ -203,6 +204,7 @@ dead = Regime(
     functions={
         "utility": beq_utility,
         "liquidation_cost": liquidation_cost,
+        "average_earnings": average_earnings,
         },
     states={
         "wealth": wealth_liquid_grid,
