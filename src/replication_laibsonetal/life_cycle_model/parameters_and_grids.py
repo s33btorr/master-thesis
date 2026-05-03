@@ -51,10 +51,19 @@ from model_functions import load_survival_probs
         #Piece(interval="[50_000, 400_000]", n_points=31), #n_points=62
     )
 )"""
-wealth_liquid_grid    = LinSpacedGrid(start=-68_500, stop=200_000, n_points=50)
-wealth_illiquid_grid  = LinSpacedGrid(start=0.1, stop=400_000, n_points=50)
-investment_x_grid     = LinSpacedGrid(start=-68_500, stop=68_500, n_points=200)
-investment_z_grid     = LinSpacedGrid(start=-68_500, stop=68_500, n_points=200)
+#wealth_liquid_grid    = LinSpacedGrid(start=-68_500, stop=200_000, n_points=50) # con menos falla pero no me hace logica. max de deuda posible es 30.000 anyways
+#wealth_illiquid_grid  = LinSpacedGrid(start=0.1, stop=400_000, n_points=50)
+#investment_x_grid     = LinSpacedGrid(start=-68_500, stop=70_500, n_points=200)
+#investment_z_grid     = LinSpacedGrid(start=-68_500, stop=70_500, n_points=200)
+
+wealth_liquid_grid    = LinSpacedGrid(start=-10_000, stop=10_000, n_points=25) # con menos falla pero no me hace logica. max de deuda posible es 30.000 anyways
+wealth_illiquid_grid  = LinSpacedGrid(start=0.1, stop=400_000, n_points=25)
+investment_x_grid     = LinSpacedGrid(start=-10_000, stop=20_000, n_points=100)
+investment_z_grid     = LinSpacedGrid(start=-50_000, stop=50_000, n_points=100)
+
+wealth_liquid_grid_retirement = LinSpacedGrid(start=-68_000, stop=200_000, n_points=50)
+wealth_liquid_grid_dead = LinSpacedGrid(start=0.0, stop=200_000, n_points=50)
+
 
 age_grid = AgeGrid(start=20, stop=91, step="1Y")
 
@@ -112,6 +121,9 @@ params = {
             "c0credit": 0.167,
             "c1credit": -0.002,
             "c2credit": 0.014,
+            "ywork_auto": 0.840,
+            "ywork_vareps": 0.057,
+            "ywork_varnu": 0.045,
             #"interest_rate": 0.0203,
             #"interest_rate_debt": 0.1059,
         },
@@ -163,6 +175,9 @@ params = {
             "c0credit": 0.167,
             "c1credit": -0.002,
             "c2credit": 0.014,
+            "ywork_auto": 0.840,
+            "ywork_vareps": 0.057,
+            "ywork_varnu": 0.045,
             #"interest_rate": 0.0203,
             #"interest_rate_debt": 0.1059,
         },
@@ -198,6 +213,9 @@ params = {
             "a0depadul": 0.00000459,
             "a1depadul": 0.452,
             "a2depadul": 0.438,
+            "ywork_auto": 0.840,
+            "ywork_vareps": 0.057,
+            "ywork_varnu": 0.045,
             }}
 }
 

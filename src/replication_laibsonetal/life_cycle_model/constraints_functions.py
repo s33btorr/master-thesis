@@ -40,7 +40,10 @@ def borrowing_constraint(
     c0credit: float,
     c1credit: float,
     c2credit: float,
-    earnings: FloatND,
+    ywork_auto: float,
+    ywork_vareps: float,
+    ywork_varnu: float,
+    deterministic: FloatND,
 ) -> BoolND:
     """
     Fixed borrowing constraint: end-of-period wealth >= -credit_limit.
@@ -52,7 +55,12 @@ def borrowing_constraint(
         credit_limit(age) = c0credit + c1credit*age + c2credit*age^2
     """
     credit_limit = c0credit + (c1credit*age) + (c2credit*(age**2)/100) # en el paper esta con el (age**2)/ 100, en el codigo esta sin el 100... PROBAR CON AMBOS
-    return end_of_period_wealth >= - (earnings * credit_limit)
+    ywork_eps = ywork_vareps * 0.5
+    ywork_nu = ywork_varnu * 0.5
+    var_ar1 = ywork_eps / (1 - ywork_auto**2)
+    var_iid = ywork_nu
+    Ymean = jnp.exp(deterministic + 0.5*(var_ar1 + var_iid))
+    return end_of_period_wealth >= - (Ymean * credit_limit)
 
 def illiquid_wealth_constraint(
     end_of_period_wealth_illiquid: FloatND,

@@ -63,7 +63,13 @@ from constraints_functions import (
     special_illiquid_constraint
 )
 
-from parameters_and_grids import wealth_illiquid_grid, wealth_liquid_grid, age_grid, retirement_age, dead_age, investment_x_grid, investment_z_grid
+from parameters_and_grids import (
+    wealth_illiquid_grid, 
+    wealth_liquid_grid, age_grid, 
+    retirement_age, dead_age, 
+    investment_x_grid, 
+    investment_z_grid,
+)
  
 # esto no se donde va en realidad #
 @categorical(ordered=False)
@@ -131,8 +137,8 @@ working_life = Regime(
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
-        "special_constraint": special_constraint,
-        "special_illiquid_constraint": special_illiquid_constraint,
+        #"special_constraint": special_constraint,
+        #"special_illiquid_constraint": special_illiquid_constraint,
     },
 )
 
@@ -192,9 +198,9 @@ retirement = Regime(
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
-        "special_constraint": special_constraint,
+        #"special_constraint": special_constraint,
         "ponzi_constraint": ponzi_constraint,
-        "special_illiquid_constraint": special_illiquid_constraint,
+        #"special_illiquid_constraint": special_illiquid_constraint,
     },
 )
 

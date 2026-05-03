@@ -166,6 +166,9 @@ def average_earnings(
     a0depadul: float,
     a1depadul: float,
     a2depadul: float,
+    ywork_auto: float,
+    ywork_vareps: float,
+    ywork_varnu: float,
 ) -> float:
     """
     The shocks are mot included because they have expected value 0.
@@ -186,7 +189,12 @@ def average_earnings(
         + ywork_age3coeff    * (ages ** 3) / 10000
     )
 
-    expected_earnings = jnp.exp(deterministic_profile)
+    ywork_eps = ywork_vareps * 0.5
+    ywork_nu = ywork_varnu * 0.5
+    var_ar1 = ywork_eps / (1 - ywork_auto**2)
+    var_iid = ywork_nu
+
+    expected_earnings = jnp.exp(deterministic_profile + 0.5*(var_ar1 + var_iid))
 
     return jnp.mean(expected_earnings)
 
