@@ -137,8 +137,8 @@ working_life = Regime(
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
-        #"special_constraint": special_constraint,
-        #"special_illiquid_constraint": special_illiquid_constraint,
+        "special_constraint": special_constraint,
+        "special_illiquid_constraint": special_illiquid_constraint,
     },
 )
 
@@ -198,9 +198,9 @@ retirement = Regime(
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
-        #"special_constraint": special_constraint,
+        "special_constraint": special_constraint,
         "ponzi_constraint": ponzi_constraint,
-        #"special_illiquid_constraint": special_illiquid_constraint,
+        "special_illiquid_constraint": special_illiquid_constraint,
     },
 )
 

@@ -77,7 +77,7 @@ def ponzi_constraint(
     end_of_period_wealth: FloatND,
     age: float,
 ) -> BoolND:
-    return jnp.where(age == 90, end_of_period_wealth>0, True)
+    return jnp.where(age == 90, end_of_period_wealth>=0, True)
 
 def special_constraint(
     end_of_period_wealth: FloatND,
@@ -86,7 +86,7 @@ def special_constraint(
     I do not 100% understand why I need it...
     It does not work because it starts acumulating under the grid
     """
-    return end_of_period_wealth > - 68_500
+    return (end_of_period_wealth >= -10_000) & (end_of_period_wealth <= 20_000)
 
 def special_illiquid_constraint(
     end_of_period_wealth_illiquid: FloatND,
@@ -95,7 +95,7 @@ def special_illiquid_constraint(
     I do not 100% understand it...
     It does not work because it starts acumulating under the grid
     """
-    return end_of_period_wealth_illiquid < 400_000
+    return end_of_period_wealth_illiquid <= 400_000
 
 """def liquid_wealth_constraint_last_period(
     end_of_period_wealth: FloatND,
