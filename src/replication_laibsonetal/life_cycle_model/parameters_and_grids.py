@@ -61,10 +61,6 @@ wealth_illiquid_grid  = LinSpacedGrid(start=0.1, stop=400_000, n_points=25)
 investment_x_grid     = LinSpacedGrid(start=-10_000, stop=20_000, n_points=100)
 investment_z_grid     = LinSpacedGrid(start=-40_000, stop=40_000, n_points=100)
 
-wealth_liquid_grid_retirement = LinSpacedGrid(start=-68_000, stop=200_000, n_points=50)
-wealth_liquid_grid_dead = LinSpacedGrid(start=0.0, stop=200_000, n_points=50)
-
-
 age_grid = AgeGrid(start=20, stop=91, step="1Y")
 
 

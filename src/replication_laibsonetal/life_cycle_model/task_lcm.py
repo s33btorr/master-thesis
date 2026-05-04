@@ -30,8 +30,8 @@ from lcm.typing import (
 from regimes_and_model import model, model_exp, model_naive
 from parameters_and_grids import params, age_grid, params_naive
 
-n_agents = 10
-"""result = model.simulate(
+n_agents = 10_000
+result = model.simulate(
     params=params, log_level="debug", log_path="./debug/",
     initial_conditions={
         "regime": np.zeros(n_agents, dtype=int),
@@ -77,7 +77,7 @@ fig.add_trace(go.Scatter(x=df_mean["age"], y=df_mean["wealth"], name="Liquid Ass
 fig.add_trace(go.Scatter(x=df_mean["age"], y=df_mean["wealth_illiquid"]/10, name="Illiquid Assets/10", line=dict(color='goldenrod', width=3)))
 # borre /10 porque no es ni tan grande al dividir...
 fig.update_layout(
-    title="Average Lifecycle Profile",
+    title="Average Lifecycle Profile for Exponential Estimate",
     xaxis_title="Age",
     #yaxis_title="Units (x 10^4)",
     template="plotly_white", # Fondo blanco como en la foto
@@ -90,7 +90,7 @@ fig.update_layout(
 )
 
 fig.show()
-"""
+
 ### Exp and naive agents ###
 
 """result_exp = model_exp.simulate(
@@ -173,7 +173,7 @@ fig_naive.add_trace(go.Scatter(x=df_mean_naive["age"], y=df_mean_naive["wealth"]
 fig_naive.add_trace(go.Scatter(x=df_mean_naive["age"], y=df_mean_naive["wealth_illiquid"] / 10, name="Illiquid Assets/10", line=dict(color='goldenrod', width=3)))
 
 fig_naive.update_layout(
-    title="Average Lifecycle Profile",
+    title="Average lifecycle profile for present-biased estimate",
     xaxis_title="Age",
     #yaxis_title="Units (x 10^4)",
     template="plotly_white", # Fondo blanco como en la foto
