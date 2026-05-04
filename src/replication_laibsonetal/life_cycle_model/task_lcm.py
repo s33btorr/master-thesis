@@ -31,7 +31,7 @@ from regimes_and_model import model, model_exp, model_naive
 from parameters_and_grids import params, age_grid, params_naive
 
 n_agents = 10
-result = model.simulate(
+"""result = model.simulate(
     params=params, log_level="debug", log_path="./debug/",
     initial_conditions={
         "regime": np.zeros(n_agents, dtype=int),
@@ -90,7 +90,7 @@ fig.update_layout(
 )
 
 fig.show()
-
+"""
 ### Exp and naive agents ###
 
 """result_exp = model_exp.simulate(
@@ -145,7 +145,7 @@ fig_exp.show()"""
 
 fig_exp.show()"""
 
-"""result_naive = model_naive.simulate(
+result_naive = model_naive.simulate(
     params=params_naive, log_level="debug", log_path="./debug/",
     initial_conditions={
         "regime": np.zeros(n_agents, dtype=int),
@@ -185,7 +185,7 @@ fig_naive.update_layout(
     )
 )
 
-fig_naive.show()"""
+fig_naive.show()
 
 """fig_naive = px.line(
     df_mean_naive,
