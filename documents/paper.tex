@@ -83,6 +83,93 @@
 \section{Introduction} % (fold)
 \label{sec:introduction}
 
+\section{Structure}
+\label{sec:structure}
+
+\subsection{Objective of the paper}
+The paper we are replicating is called Estimating Discount Functions with Consumption Choices over the Lifecycle by \citet{laibson2024estimating}. 
+The main objective of the paper is to simulate a lifecycle model that generates different moments (e.g. share of households carrying credit card debt, average amount of credit card debt carried, average net wealth among households carrying credit card debt and households not carrying credit card debt) in order to estimate parameters (specifically: discounting factors $\beta$ and $\delta$, and the risk aversion coefficient $\rho$) given the moments obtained from different datasets in the United States. The reason the paper develops this idea is because of the lack of models including behavioral components into the,, specifically, present bias.
+
+\subsection{Methodology}
+The paper follows a methodology that consists of combining a simulation of lifecycle models with a two-stage Method of Simulated Moments (MSM) to estimate the parameters of households.
+
+\subsubsection{The Lifecycle Model}
+The model they follow is the one analysed by \citet{angeletos2001hyperbolic}. In this model, all households starts from 20 years old and live until 90 (dying at the end of the period they turn 90). There is a survival probability that increase with age. The structure of the household, amount of kids, number of dependent adults, also changes with age. They assume to always have two heads of the households. Moreover, the income follows a polynomial function that includes an AR(1) and i.i.d. shocks. 
+
+The model allows households to save and borrow in different ways. The first way to save and borrow is by using the liquid asset denominated by $X_t$ which represents the total amount of liquid assets a houdehold holds in period t. The total liquid asset has a credit limit (that is the percentage of the average income among the years of life) that is a quadratic function varying with age. The liquid assets have two interest rates, one is used when the total amount is negative (debt interest rate $R^{CC}$) and the other is used when the total amount is positive (saving interest rate $R$). And the second way for the household to save or invest is via the illiquid asset denominated by $Z_t$ which represents the total amount of illiquid assets a houdehold holds in period t. The household is not allowed to borrow using the illiquid assets. The interest rate for this asset equals zero but there is a rate of $\gamma = 0.05$ from holding this asset. There is a liquidity cost that the houdehold assumes when they want to sell an amount of illiquid asset and it is depending on age $\kappa_t = \frac{0.5}{1+e^{(t-50)/10}}$. 
+
+There are two main actions in this model. One actions is the amount of liquid asset the households will use for consumption at period t $I_t^X,$ the other action is the amount of illiquid asset the household will choose to increase or decrease the total illiquid asset at period t $I_t^Z,$. The flow of consumption looks like this:
+
+\begin{equation}
+C_t = Y_t - I_t^X - I_t^Z + \kappa_t \min(I_t^Z, 0)
+\end{equation}
+
+The utility function for every household follows a CRRA function with risk aversion coefficient $\rho$.
+
+\begin{equation}
+u(C_t) = n_t \cdot \frac{{\frac{C_t^ + \gamma Z_t}{n_t}}^{1-\rho} - 1} -1}{1-\gamma}
+\end{equation}
+
+And they also have a utility when they leave wealth after dying, the bequest payoff.
+
+The value function depends on the type of household. When $$\beta = 1$$ the household is has an exponential disounting factor and no bias. When $$\beta < 1$$ the household is present-biased, meaning that they have a higher discounting factor for the present than for the future. Inside the second type of households they could be sophisticated or naive. In this model only naive households are considered, meaning that they do not take into account the fact that they will have a present bias in the future when they make decisions in the present.
+
+%% PONER FUNCIONES DE V
+
+The amount of households simulated is 10,000 and they start with the average wealth calculated from the SCF data for the age of 20 to 24. 
+
+\subsubsection{The Two-Stage MSM}
+
+\subsection{Data}
+
+\subsection{Main Results}
+
+\subsection{Relevance for This Thesis}
+
+
+They started by collecting the data from different datasets:
+1. Aca explicar IPMUS
+2. PSID
+3. SCF
+y los otros detalles. Tambien explicar de que anos proviene la data y que variables se forman con esta y como.
+
+To compare which model a better job explaining the data and with which specific parameters this happened, they used a econometrical method known as Method of Simulated Moments.
+
+Explicar un poco este metodo y como funciona. Escogieron 16 momentos, explicarlos.
+
+The bootsrap was done xxx times where inside of it a lifecycle model was also being run.
+
+The lifecycle model was also build with specific characteristics.
+1.
+1.
+1.
+1.
+1.
+...
+Todos los detalles del modelo (edades, AR1, restricciones, funciones, TODO)
+
+Programas que utilizaron: Stata (para recoleccion de data) y Matlab (para la programacion del lifecycle model y del MSM).
+
+Resultados que obtuvieron.
+
+Limitaciones. Entre ellas lo complejo que es el codigo y poco flexible maybe????
+
+\section{Replication Methodology Framework}
+\label{sec:Replication Methodology Framework}
+
+\section{Implementation}
+\label{sec:Implementation}
+
+\section{Results and Discussion}
+\label{sec:Results and Discussion}
+
+\section{Conclusion}
+\label{sec:Conclusion}
+
+\section{Bibliography}
+\label{sec:Bibliography}
+
+
 If you are using this template, please cite this item from the references:
 \citet{GaudeckerEconProjectTemplates}.
 
