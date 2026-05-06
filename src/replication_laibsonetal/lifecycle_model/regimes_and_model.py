@@ -30,7 +30,7 @@ from lcm.typing import (
 import lcm.shocks.ar1
 import lcm.shocks.iid
 
-from model_functions import (
+from lifecycle_model.model_functions import (
     utility,
     total_consumption,
     liquidation_cost,
@@ -46,7 +46,7 @@ from model_functions import (
     beta_delta_H,
     )
 
-from transition_functions import (
+from lifecycle_model.transition_functions import (
     end_of_period_wealth,
     next_wealth,
     end_of_period_wealth_illiquid,
@@ -54,7 +54,7 @@ from transition_functions import (
     next_regime_working,
     next_regime_retirement,
 )
-from constraints_functions import (
+from lifecycle_model.constraints_functions import (
     borrowing_constraint, 
     illiquid_wealth_constraint, 
     ponzi_constraint, 
@@ -63,7 +63,7 @@ from constraints_functions import (
     special_illiquid_constraint
 )
 
-from parameters_and_grids import (
+from lifecycle_model.parameters_and_grids import (
     wealth_illiquid_grid, 
     wealth_liquid_grid, age_grid, 
     retirement_age, dead_age, 

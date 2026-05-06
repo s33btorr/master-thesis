@@ -20,7 +20,16 @@ Uso:
 import numpy as np
 import pandas as pd
 
-from msm import run_msm
+from final.msm_functions import run_msm
+
+from final.hardcoded_data import (
+    DATA_MOMENTS,
+    VCV_SECONDSTAGE,
+    VCV_INCOME,
+    VCV_CREDITLIM,
+    VCV_DEMOGRAPHICS,
+)
+
 
 # =============================================================================
 # IMPORTS DEL MODELO
@@ -55,17 +64,17 @@ INTEREST_RATE_DEBT      = 0.1059   # R_CC - 1
 # Equivalente a fs_params.alive_ en Matlab
 # Cargarlo de tus datos reales:
 # alive_ = np.load("data/alive_.npy")
-alive_ = None  # reemplazar
+# alive_ = None  # reemplazar
 
 # Momentos empíricos — array de 16 valores
 # Equivalente a est_secondstage[:, 0] en Matlab
 # data_moments = np.load("data/data_moments.npy")
-data_moments = None  # reemplazar
+data_moments = DATA_MOMENTS  # reemplazar
 
 # Matriz de covarianza de momentos — 16x16
 # Equivalente a VCV_secondstage en Matlab
 # vcv_secondstage = np.load("data/vcv_secondstage.npy")
-vcv_secondstage = None  # reemplazar
+vcv_secondstage = VCV_SECONDSTAGE  # reemplazar
 
 
 # =============================================================================
@@ -124,7 +133,6 @@ def task_msm_naive(model_naive, params_base, age_grid):
         params_base=params_base,
         age_grid=age_grid,
         n_agents=N_AGENTS,
-        alive_=alive_,
         data_moments=data_moments,
         vcv_secondstage=vcv_secondstage,
         model_type="naive",
@@ -163,7 +171,6 @@ def task_msm_exp(model_exp, params_base, age_grid):
         params_base=params_base,
         age_grid=age_grid,
         n_agents=N_AGENTS,
-        alive_=alive_,
         data_moments=data_moments,
         vcv_secondstage=vcv_secondstage,
         model_type="exp",
@@ -208,10 +215,11 @@ def task_compare_moments(res_naive, res_exp, data_moments):
 if __name__ == "__main__":
 
     # --- imports del modelo (ajustar al nombre de tu archivo) ---
-    # from model_pylcm import model_naive, model_exp, params_base, age_grid
+    from lifecycle_model.regimes_and_model import model_naive 
+    from lifecycle_model.parameters_and_grids import params_naive, age_grid
 
     # --- task 2: MSM naive ---
-    # res_naive = task_msm_naive(model_naive, params_base, age_grid)
+    res_naive = task_msm_naive(model_naive, params_naive, age_grid)
 
     # --- task 3: MSM exponencial ---
     # res_exp = task_msm_exp(model_exp, params_base, age_grid)

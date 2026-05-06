@@ -10,7 +10,7 @@ corre el modelo con lcm y devuelve los momentos simulados.
 import numpy as np
 import pandas as pd
 
-from moments import compute_simulated_moments, MOMENT_NAMES
+from final.moments_calculation import compute_simulated_moments, MOMENT_NAMES
 
 
 # =============================================================================
@@ -25,6 +25,7 @@ INITIAL_WEALTH          = 4709.0    # med_liq_wealth * Ymean_(1)
 INITIAL_WEALTH_ILLIQUID = 83188.0   # (med_total_wealth - med_liq_wealth) * Ymean_(1)
 
 
+
 def simulate_moments(
     params: pd.DataFrame,
     *,
@@ -32,7 +33,6 @@ def simulate_moments(
     params_base: dict,
     age_grid,
     n_agents: int,
-    alive_: np.ndarray,
 ) -> pd.Series:
     """
     Corre el modelo y devuelve momentos simulados.
@@ -40,7 +40,7 @@ def simulate_moments(
     Equivalente a LifecycleSim.m en Matlab.
 
     Args:
-        params      : pd.DataFrame con columnas ['value'] — formato estimagic.
+        params      : pd.DataFrame con columnas ['value'] — formato optimagic.
                       Index: ['beta', 'delta', 'rho']
         model       : modelo lcm (model_exp o model_naive)
         params_base : dict con todos los parámetros del modelo excepto
@@ -85,4 +85,4 @@ def simulate_moments(
     df = result.to_dataframe(additional_targets="all")
     df["age"] = df["age"].astype(int)
 
-    return compute_simulated_moments(df, alive_)
+    return compute_simulated_moments(df)

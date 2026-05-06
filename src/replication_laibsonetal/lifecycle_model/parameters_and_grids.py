@@ -33,7 +33,7 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 
-from model_functions import load_survival_probs
+from lifecycle_model.model_functions import load_survival_probs
 
 
 ### Grids ###
@@ -71,7 +71,7 @@ dead_age = 91 # pongo 91 porque vive hasta los 90, pero en este caso el periodo 
 SRC = Path('.').resolve().parent
 #print("CWD:", Path('.').resolve().parent)
 
-project_path = SRC / "data"
+project_path = SRC/ "replication_laibsonetal" / "data" # ojo que cambie esto, por si no funciona a futuro quitar "replication_laibsonetal" OJOOOOO1!!!!
 death_m_path = project_path / "DeathProbsE_M_Hist_TR2023.csv"
 death_f_path = project_path / "DeathProbsE_F_Hist_TR2023.csv"
 

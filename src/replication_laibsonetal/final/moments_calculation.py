@@ -53,7 +53,6 @@ def compute_avg_income_by_age(df: pd.DataFrame) -> pd.Series:
 
 def compute_simulated_moments(
     df: pd.DataFrame,
-    alive_: np.ndarray,
 ) -> pd.Series:
     """
     Calcula los 16 momentos simulados.
@@ -62,10 +61,7 @@ def compute_simulated_moments(
 
     Args:
         df      : DataFrame con resultados del modelo (output de to_dataframe)
-        alive_  : array de longitud 71 con probabilidades de supervivencia
-                  por edad (ages 20-90). alive_[i] = prob de estar vivo a age 20+i.
-                  Viene de fs_params.alive_ en Matlab.
-
+        
     Returns:
         pd.Series con 16 momentos, indexados por MOMENT_NAMES.
     """
@@ -99,18 +95,14 @@ def compute_simulated_moments(
 
         # ponderación por alive_ — igual que Matlab
         # fborr_all_ag = sum(mean(simL__<0)[ages] .* alive_[ages]) / sum(alive_[ages])
-        alive_ag = np.array([alive_[a - 20] for a in ages])
-        avg_y    = np.array([avg_income.get(a, 1.0) for a in ages])
-
+        
         # fracción con deuda
         fborr_by_age = (
             df_group.groupby("age")["liquid_before_income"]
             .apply(lambda x: (x < 0).mean())
             .reindex(ages).fillna(0).values
         )
-        fborr_all.append(
-            np.sum(fborr_by_age * alive_ag) / np.sum(alive_ag)
-        )
+        fborr_all.append(fborr_by_age.mean())
 
         # deuda media / ingreso
         # mborr_all_ag = -sum(mean(min(0,simL__))[ages] ./ avgY_[ages] .* alive_[ages])
@@ -121,7 +113,7 @@ def compute_simulated_moments(
             .reindex(ages).fillna(0).values
         )
         mborr_all.append(
-            -np.sum((debt_by_age / avg_y) * alive_ag) / np.sum(alive_ag)
+            -(debt_by_age.mean())
         )
 
         # riqueza total condicional en deuda / sin deuda por edad
@@ -129,23 +121,19 @@ def compute_simulated_moments(
         wnd_ag = []
         for i, a in enumerate(ages):
             df_age      = df_group[df_group["age"] == a]
-            avg_y_a     = avg_y[i]
+
             debt_mask   = df_age["liquid_before_income"] < 0
             nodebt_mask = ~debt_mask
 
             wd  = df_age.loc[debt_mask,   "total_wealth"].mean() if debt_mask.any()   else 0.0
             wnd = df_age.loc[nodebt_mask, "total_wealth"].mean() if nodebt_mask.any() else 0.0
 
-            wd_ag.append(wd   / avg_y_a)
-            wnd_ag.append(wnd / avg_y_a)
+            wd_ag.append(wd)
+            wnd_ag.append(wnd)
 
         # wealth_debt_ag = sum(wd_ag ./ avgY_[ages] .* alive_[ages]) / sum(alive_[ages])
-        wealth_debt.append(
-            np.sum(np.array(wd_ag) * alive_ag) / np.sum(alive_ag)
-        )
-        wealth_nodebt.append(
-            np.sum(np.array(wnd_ag) * alive_ag) / np.sum(alive_ag)
-        )
+        wealth_debt.append(np.mean(wd_ag))
+        wealth_nodebt.append(np.mean(wnd_ag))
 
     sim_moments = np.array(fborr_all + mborr_all + wealth_debt + wealth_nodebt)
     return pd.Series(sim_moments, index=MOMENT_NAMES)

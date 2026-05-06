@@ -1,7 +1,7 @@
 """
 msm.py
 ======
-Función principal que corre el MSM con estimagic.
+Función principal que corre el MSM con optimagic.
 
 Equivalente a MSMfunction.m en Matlab.
 
@@ -15,10 +15,10 @@ Dos modelos:
 
 import numpy as np
 import pandas as pd
-import estimagic as em
+import optimagic as om
 
-from moments import load_empirical_moments, compute_weighting_matrix, MOMENT_NAMES
-from simulate import simulate_moments
+from final.moments_calculation import load_empirical_moments, MOMENT_NAMES
+from final.simulate_model import simulate_moments
 
 
 # =============================================================================
@@ -49,13 +49,12 @@ def run_msm(
     params_base: dict,
     age_grid,
     n_agents: int,
-    alive_: np.ndarray,
     data_moments: np.ndarray,
     vcv_secondstage: np.ndarray,
     model_type: str = "naive",
     weighting_method: int = 0,
     optimize_options: str = "scipy_neldermead",
-) -> em.MomentsResult:
+) -> om.MomentsResult:
     """
     Corre el MSM y devuelve resultados con errores estándar.
 
@@ -74,7 +73,7 @@ def run_msm(
         optimize_options : algoritmo de optimización
 
     Returns:
-        MomentsResult de estimagic con optprefs, errores estándar, etc.
+        MomentsResult de optimagic con optprefs, errores estándar, etc.
     """
     # --- momentos empíricos y covarianza ---
     empirical_moments, moments_cov = load_empirical_moments(
@@ -82,9 +81,17 @@ def run_msm(
     )
 
     # --- weighting matrix ---
-    # equivalente al switch 'weighting' en EDFbatch_baseline.m
-    W = compute_weighting_matrix(vcv_secondstage, method=weighting_method)
-    W_df = pd.DataFrame(W, index=MOMENT_NAMES, columns=MOMENT_NAMES)
+    # optimagic builds the actual matrix internally from moments_cov.
+    weighting_options = {
+        0: "diagonal",
+        1: "identity",
+        2: "optimal",
+    }
+    if weighting_method not in weighting_options:
+        raise ValueError(
+            f"weighting method {weighting_method} no reconocido. Usa 0, 1 o 2."
+        )
+    weights = weighting_options[weighting_method]
 
     # --- parámetros iniciales y bounds ---
     # equivalente a setup.init_prefs y setup.matchbdr en Matlab
@@ -119,7 +126,7 @@ def run_msm(
 
     # --- correr MSM ---
     # equivalente a fminsearch(@MSMobj, ...) en Matlab
-    res = em.estimate_msm(
+    res = om.estimate_msm(
         simulate_moments,
         empirical_moments,
         moments_cov,
@@ -129,9 +136,8 @@ def run_msm(
             "params_base": params_base,
             "age_grid":    age_grid,
             "n_agents":    n_agents,
-            "alive_":      alive_,
         },
-        weights=W_df,
+        weights=weights,
         optimize_options=optimize_options,
     )
 

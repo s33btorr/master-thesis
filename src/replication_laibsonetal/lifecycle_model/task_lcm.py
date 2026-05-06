@@ -27,8 +27,8 @@ from lcm.typing import (
     ScalarInt,
 )
 
-from regimes_and_model import model, model_exp, model_naive
-from parameters_and_grids import params, age_grid, params_naive
+from lifecycle_model.regimes_and_model import model, model_exp, model_naive
+from lifecycle_model.parameters_and_grids import params, age_grid, params_naive
 
 n_agents = 10_000
 result = model.simulate(
