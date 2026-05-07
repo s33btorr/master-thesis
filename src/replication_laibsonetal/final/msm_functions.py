@@ -1,7 +1,7 @@
 """
 msm.py
 ======
-Función principal que corre el MSM con optimagic.
+Función principal que corre el MSM con estimagic.
 
 Equivalente a MSMfunction.m en Matlab.
 
@@ -15,7 +15,7 @@ Dos modelos:
 
 import numpy as np
 import pandas as pd
-import optimagic as om
+import estimagic as em
 
 from final.moments_calculation import load_empirical_moments, MOMENT_NAMES
 from final.simulate_model import simulate_moments
@@ -39,6 +39,8 @@ INIT_PREFS_EXP = {
     "rho":   2.60,
 }
 
+MAX_DISCOUNT_FACTOR = 0.999
+
 
 # =============================================================================
 # Función principal
@@ -54,7 +56,7 @@ def run_msm(
     model_type: str = "naive",
     weighting_method: int = 0,
     optimize_options: str = "scipy_neldermead",
-) -> om.MomentsResult:
+) -> em.MomentsResult:
     """
     Corre el MSM y devuelve resultados con errores estándar.
 
@@ -73,7 +75,7 @@ def run_msm(
         optimize_options : algoritmo de optimización
 
     Returns:
-        MomentsResult de optimagic con optprefs, errores estándar, etc.
+        MomentsResult de estimagic con optprefs, errores estándar, etc.
     """
     # --- momentos empíricos y covarianza ---
     empirical_moments, moments_cov = load_empirical_moments(
@@ -81,7 +83,7 @@ def run_msm(
     )
 
     # --- weighting matrix ---
-    # optimagic builds the actual matrix internally from moments_cov.
+    # estimagic builds the actual matrix internally from moments_cov.
     weighting_options = {
         0: "diagonal",
         1: "identity",
@@ -104,7 +106,7 @@ def run_msm(
                                 INIT_PREFS_NAIVE["delta"],
                                 INIT_PREFS_NAIVE["rho"]],
                 "lower_bound": [0.0,  0.0, 0.0],
-                "upper_bound": [1.0,  1.0, np.inf],
+                "upper_bound": [1.0,  MAX_DISCOUNT_FACTOR, np.inf],
             },
             index=["beta", "delta", "rho"],
         )
@@ -117,7 +119,7 @@ def run_msm(
                                 INIT_PREFS_EXP["delta"],
                                 INIT_PREFS_EXP["rho"]],
                 "lower_bound": [1.0,  0.0, 0.0],   # beta fijo en 1
-                "upper_bound": [1.0,  1.0, np.inf], # beta fijo en 1
+                "upper_bound": [1.0,  MAX_DISCOUNT_FACTOR, np.inf], # beta fijo en 1
             },
             index=["beta", "delta", "rho"],
         )
@@ -126,7 +128,7 @@ def run_msm(
 
     # --- correr MSM ---
     # equivalente a fminsearch(@MSMobj, ...) en Matlab
-    res = om.estimate_msm(
+    res = em.estimate_msm(
         simulate_moments,
         empirical_moments,
         moments_cov,

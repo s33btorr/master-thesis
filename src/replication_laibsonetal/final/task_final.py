@@ -143,7 +143,7 @@ def task_msm_naive(model_naive, params_base, age_grid):
     print("\nResultados Naive:")
     print(res.summary())
     print(f"\noptprefs: {res.params['value'].to_dict()}")
-    print(f"optq:     {res.criterion}")
+    print(f"optq:     {res.res.value}")
 
     return res
 

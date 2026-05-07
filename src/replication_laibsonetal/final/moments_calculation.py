@@ -13,6 +13,20 @@ Momentos (16 en total) — igual que LifecycleSim.m:
 Grupos de edad (igual que Matlab):
     ag = num2cell(reshape(2:41, [10,4])', 2)
     → ages 21-30, 31-40, 41-50, 51-60
+
+Equivalencias con Matlab (LifecycleSim.m):
+    simL__ = simX__ - simY__  →  df["wealth"]           (riqueza líquida)
+    simW__ = simZ__ + simX__ - simY__  →  df["wealth_illiquid"] + df["wealth"]
+    avgY_  = mean(simY__)     →  compute_avg_income_by_age(df)
+
+    En el Matlab simX__ ya incluye el ingreso del período actual (simY__),
+    por eso restan simY__ para obtener la riqueza ANTES de recibirlo.
+    En lcm, wealth es la riqueza al inicio del período — ANTES de recibir
+    el ingreso — así que no hay que restar nada.
+
+    NO se usa alive_ porque en nuestro modelo los agentes muertos ya no
+    aparecen en el DataFrame (régimen dead). En el Matlab todos viven hasta
+    los 90 y alive_ corrige artificialmente por mortalidad.
 """
 
 import numpy as np
@@ -31,6 +45,8 @@ MOMENT_NAMES = (
 )
 
 # Grupos de edad — igual que Matlab: ages 21-30, 31-40, 41-50, 51-60
+# ag = num2cell(reshape(2:41, [10,4])', 2) en Matlab
+# índices 2:41 → ages 21-60 (startage=20, age = 20 + index - 1)
 AGE_GROUPS = [
     list(range(21, 31)),
     list(range(31, 41)),
@@ -51,38 +67,31 @@ def compute_avg_income_by_age(df: pd.DataFrame) -> pd.Series:
     return df[df["regime"] != "dead"].groupby("age")["earnings"].mean()
 
 
-def compute_simulated_moments(
-    df: pd.DataFrame,
-) -> pd.Series:
+def compute_simulated_moments(df: pd.DataFrame) -> pd.Series:
     """
     Calcula los 16 momentos simulados.
 
     Equivalente a la sección 'Compute Moments' de LifecycleSim.m.
 
     Args:
-        df      : DataFrame con resultados del modelo (output de to_dataframe)
-        
+        df: DataFrame con resultados del modelo (output de to_dataframe).
+
     Returns:
         pd.Series con 16 momentos, indexados por MOMENT_NAMES.
     """
-    # excluir agentes muertos
-    # equivalente a ponderar por alive_ en Matlab — en nuestro modelo
-    # los agentes muertos ya no tienen decisiones, así que simplemente
-    # los excluimos del cálculo
+    # excluir agentes muertos — equivalente a ponderar por alive_ en Matlab
     df_alive = df[df["regime"] != "dead"].copy()
 
-    # riqueza líquida ANTES de recibir ingreso
-    # simL__ = simX__ - simY__ en Matlab
-    df_alive["liquid_before_income"] = df_alive["wealth"] - df_alive["earnings"]
+    # simL__ en Matlab = riqueza líquida ANTES de recibir ingreso
+    # en lcm, wealth ya es la riqueza al inicio del período (antes del ingreso)
+    # por lo que simL__ = wealth directamente
+    df_alive["simL"] = df_alive["wealth"]
 
-    # riqueza total ANTES de recibir ingreso
-    # simW__ = simZ__ + simX__ - simY__ en Matlab
-    df_alive["total_wealth"] = (
-        df_alive["wealth_illiquid"]
-        + df_alive["wealth"]
-        - df_alive["earnings"]
-    )
+    # simW__ en Matlab = riqueza total ANTES de recibir ingreso
+    # = illiquid + liquid (antes de ingreso)
+    df_alive["simW"] = df_alive["wealth_illiquid"] + df_alive["wealth"]
 
+    # ingreso promedio por edad — avgY_ en Matlab
     avg_income = compute_avg_income_by_age(df_alive)
 
     fborr_all     = []
@@ -92,46 +101,45 @@ def compute_simulated_moments(
 
     for ages in AGE_GROUPS:
         df_group = df_alive[df_alive["age"].isin(ages)]
+        avg_y    = np.array([avg_income.get(a, 1.0) for a in ages])
 
-        # ponderación por alive_ — igual que Matlab
-        # fborr_all_ag = sum(mean(simL__<0)[ages] .* alive_[ages]) / sum(alive_[ages])
-        
-        # fracción con deuda
+        # --- fborr_all ---
+        # fracción con deuda líquida (simL__ < 0)
+        # Matlab: mean(simL__ < 0) por edad, luego promedio del grupo
         fborr_by_age = (
-            df_group.groupby("age")["liquid_before_income"]
+            df_group.groupby("age")["simL"]
             .apply(lambda x: (x < 0).mean())
             .reindex(ages).fillna(0).values
         )
         fborr_all.append(fborr_by_age.mean())
 
-        # deuda media / ingreso
-        # mborr_all_ag = -sum(mean(min(0,simL__))[ages] ./ avgY_[ages] .* alive_[ages])
-        #                / sum(alive_[ages])
+        # --- mborr_all ---
+        # deuda media / ingreso promedio
+        # Matlab: -mean(min(0, simL__)) ./ avgY_ por edad, luego promedio del grupo
         debt_by_age = (
-            df_group.groupby("age")["liquid_before_income"]
+            df_group.groupby("age")["simL"]
             .apply(lambda x: np.minimum(x, 0).mean())
             .reindex(ages).fillna(0).values
         )
-        mborr_all.append(
-            -(debt_by_age.mean())
-        )
+        mborr_all.append((-debt_by_age / avg_y).mean())
 
-        # riqueza total condicional en deuda / sin deuda por edad
+        # --- wealth_debt y wealth_nodebt ---
+        # riqueza total media / ingreso, condicional en tener/no tener deuda
+        # Matlab: mean(simW__(debt,a)) ./ avgY_(a) por edad, luego promedio del grupo
         wd_ag  = []
         wnd_ag = []
         for i, a in enumerate(ages):
             df_age      = df_group[df_group["age"] == a]
-
-            debt_mask   = df_age["liquid_before_income"] < 0
+            avg_y_a     = avg_y[i]
+            debt_mask   = df_age["simL"] < 0
             nodebt_mask = ~debt_mask
 
-            wd  = df_age.loc[debt_mask,   "total_wealth"].mean() if debt_mask.any()   else 0.0
-            wnd = df_age.loc[nodebt_mask, "total_wealth"].mean() if nodebt_mask.any() else 0.0
+            wd  = df_age.loc[debt_mask,   "simW"].mean() if debt_mask.any()   else 0.0
+            wnd = df_age.loc[nodebt_mask, "simW"].mean() if nodebt_mask.any() else 0.0
 
-            wd_ag.append(wd)
-            wnd_ag.append(wnd)
+            wd_ag.append(wd   / avg_y_a)
+            wnd_ag.append(wnd / avg_y_a)
 
-        # wealth_debt_ag = sum(wd_ag ./ avgY_[ages] .* alive_[ages]) / sum(alive_[ages])
         wealth_debt.append(np.mean(wd_ag))
         wealth_nodebt.append(np.mean(wnd_ag))
 
@@ -150,9 +158,7 @@ def load_empirical_moments(
 
     Args:
         data_moments    : array de 16 momentos empíricos
-                          (est_secondstage[:, 0] en Matlab)
         vcv_secondstage : matriz 16x16 de covarianza de momentos empíricos
-                          (VCV_secondstage en Matlab)
 
     Returns:
         empirical_moments : pd.Series con 16 momentos
@@ -175,9 +181,9 @@ def compute_weighting_matrix(
     Calcula la matriz de pesos W.
 
     Equivalente al switch 'weighting' en EDFbatch_baseline.m:
-        0 → diagonal de la VCV (benchmark)
+        0 → diagonal de la VCV (benchmark): inv(diag(diag(VCV)))
         1 → matriz identidad
-        2 → VCV completa
+        2 → VCV completa inversa
 
     Args:
         vcv_secondstage : matriz 16x16 de covarianza
@@ -187,7 +193,6 @@ def compute_weighting_matrix(
         W : matriz de pesos 16x16
     """
     if method == 0:
-        # benchmark — igual que Matlab: inv(diag(diag(ss_moments.VCV)))
         return np.diag(1.0 / np.diag(vcv_secondstage))
     elif method == 1:
         return np.eye(len(vcv_secondstage))
