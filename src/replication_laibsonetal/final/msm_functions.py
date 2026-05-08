@@ -53,9 +53,9 @@ def run_msm(
     n_agents: int,
     data_moments: np.ndarray,
     vcv_secondstage: np.ndarray,
-    model_type: str = "naive",
-    weighting_method: int = 0,
-    optimize_options: str = "scipy_neldermead",
+    model_type: str,
+    weighting_method: int,
+    optimize_options: str,
 ) -> em.MomentsResult:
     """
     Corre el MSM y devuelve resultados con errores estándar.

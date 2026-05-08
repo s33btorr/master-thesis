@@ -137,7 +137,15 @@ def task_msm_naive(model_naive, params_base, age_grid):
         vcv_secondstage=vcv_secondstage,
         model_type="naive",
         weighting_method=0,         # benchmark: diagonal VCV
-        optimize_options="scipy_neldermead",
+        optimize_options={
+            "algorithm": "scipy_neldermead",
+            "algo_options": {
+                "maxfun": 50,          # Dale al menos 50 para que la zancada sirva de algo
+                "adaptive": True,      # <--- CLAVE: Ajusta el salto según la complejidad
+                "xatol": 1e-2,         # Tolerancia grande = para antes
+                "fatol": 1e-2,         # No te obsesiones con decimales del error
+            },
+        },
     )
 
     print("\nResultados Naive:")

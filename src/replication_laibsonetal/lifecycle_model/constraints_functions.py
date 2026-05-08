@@ -59,7 +59,7 @@ def borrowing_constraint(
     ywork_nu = ywork_varnu * 0.5
     var_ar1 = ywork_eps / (1 - ywork_auto**2)
     var_iid = ywork_nu
-    Ymean = jnp.exp(deterministic + 0.5*(var_ar1 + var_iid))
+    Ymean = jnp.exp(deterministic + 0.5*(var_ar1 + var_iid)) # 1 function 
     return end_of_period_wealth >= - (Ymean * credit_limit)
 
 def illiquid_wealth_constraint(

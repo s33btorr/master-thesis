@@ -105,7 +105,7 @@ working_life = Regime(
 
         # Transitory income shock: iid Normal EN MATLAB CREO QUE ESTO ES MIL VECES MAS COMPLEJO... parece que sigue una grilla toda complicada...
         "trans_income": lcm.shocks.iid.Normal(
-            n_points=5,
+            n_points=3,
             gauss_hermite=False,
             mu=0,     # 0
             sigma=(0.045**0.5),  # sqrt(ywork_varnu) from fs_params
