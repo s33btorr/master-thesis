@@ -35,15 +35,7 @@ def budget_constraint(
 
 def borrowing_constraint(
     end_of_period_wealth: FloatND,
-    #investment_x: ContinuousAction,
-    age: float,
-    c0credit: float,
-    c1credit: float,
-    c2credit: float,
-    ywork_auto: float,
-    ywork_vareps: float,
-    ywork_varnu: float,
-    deterministic: FloatND,
+    credit_limit: float,
 ) -> BoolND:
     """
     Fixed borrowing constraint: end-of-period wealth >= -credit_limit.
@@ -54,13 +46,7 @@ def borrowing_constraint(
     TODO: replace with age-varying limit:
         credit_limit(age) = c0credit + c1credit*age + c2credit*age^2
     """
-    credit_limit = c0credit + (c1credit*age) + (c2credit*(age**2)/100) # en el paper esta con el (age**2)/ 100, en el codigo esta sin el 100... PROBAR CON AMBOS
-    ywork_eps = ywork_vareps * 0.5
-    ywork_nu = ywork_varnu * 0.5
-    var_ar1 = ywork_eps / (1 - ywork_auto**2)
-    var_iid = ywork_nu
-    Ymean = jnp.exp(deterministic + 0.5*(var_ar1 + var_iid)) # 1 function 
-    return end_of_period_wealth >= - (Ymean * credit_limit)
+    return end_of_period_wealth >= - (credit_limit)
 
 def illiquid_wealth_constraint(
     end_of_period_wealth_illiquid: FloatND,
@@ -86,7 +72,7 @@ def special_constraint(
     I do not 100% understand why I need it...
     It does not work because it starts acumulating under the grid
     """
-    return (end_of_period_wealth >= -10_000) & (end_of_period_wealth <= 20_000)
+    return (end_of_period_wealth >= -5_000) & (end_of_period_wealth <= 400_000)
 
 def special_illiquid_constraint(
     end_of_period_wealth_illiquid: FloatND,
@@ -95,7 +81,7 @@ def special_illiquid_constraint(
     I do not 100% understand it...
     It does not work because it starts acumulating under the grid
     """
-    return end_of_period_wealth_illiquid <= 400_000
+    return end_of_period_wealth_illiquid <= 3_500_000
 
 """def liquid_wealth_constraint_last_period(
     end_of_period_wealth: FloatND,

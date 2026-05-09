@@ -149,10 +149,10 @@ def earnings(
     Log income = deterministic_mean + permanent_AR1_shock + transitory_iid_shock.
     Exponentiate to get level earnings.
     """
-    return jnp.exp(deterministic + 0.5*(perm_income + trans_income)) # asi lo entiendo yo del codigo...
+    return jnp.exp(deterministic + (perm_income + trans_income)) # asi lo entiendo yo del codigo...
 
 
-def average_earnings(
+def average_earnings( # separar Y cambiar nombre.. confunde con la otra (es mas como average among years)
     ywork_cons: float,
     ywork_agecoeff: float,
     ywork_age2coeff: float,
@@ -198,6 +198,29 @@ def average_earnings(
 
     return jnp.mean(expected_earnings)
 
+### CREDIT LIMIT ###
+
+def average_income(
+    deterministic: FloatND,
+    ywork_auto: float,
+    ywork_vareps: float,
+    ywork_varnu: float,
+) -> float:
+    ywork_eps = ywork_vareps * 0.5
+    ywork_nu = ywork_varnu * 0.5
+    var_ar1 = ywork_eps / (1 - ywork_auto**2)
+    var_iid = ywork_nu
+    return jnp.exp(deterministic + 0.5*(var_ar1 + var_iid))
+
+def credit_limit(
+    age: float,
+    c0credit: float,
+    c1credit: float,
+    c2credit: float,
+    average_income: float,
+) -> float:
+    credit_limit_rate = c0credit + (c1credit*age) + (c2credit*(age**2)/100) # en el paper esta con el (age**2)/ 100, en el codigo esta sin el 100... PROBAR CON AMBOS
+    return average_income * credit_limit_rate
 
 #### UTILITY ####
 

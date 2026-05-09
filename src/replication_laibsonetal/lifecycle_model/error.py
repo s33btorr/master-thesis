@@ -2,7 +2,7 @@ import h5py
 import plotly.graph_objects as go
 import numpy as np
 
-with h5py.File("/home/brto/brenda/master-thesis/src/replication_laibsonetal/lifecycle_model/debug/solve_snapshot_069/arrays.h5", "r") as f:
+with h5py.File("/home/brto/brenda/master-thesis/src/replication_laibsonetal/debug/solve_snapshot_019/arrays.h5", "r") as f:
     V = f["70/retirement/V_arr"][:]
 
 fig = go.Figure(data=go.Heatmap(z=V[0,0]))

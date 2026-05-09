@@ -75,7 +75,7 @@ sim_dist = get_simulation_distribution(
     model=model_naive,
     params_base=params_naive,
     age_grid=age_grid,
-    n_agents=1_000 # Nota: En Matlab usaban 10,000. Si tu PC aguanta, súbelo a 10,000 para reducir el ruido.
+    n_agents=10_000 # Nota: En Matlab usaban 10,000. Si tu PC aguanta, súbelo a 10,000 para reducir el ruido.
 )
 
 # 1. Calculamos la media y el error estándar de nuestras propias simulaciones
@@ -105,42 +105,3 @@ comparison_with_paper = pd.DataFrame({
 print(comparison_with_empirics)
 print (comparison_with_paper)
 
-"""
-para latex
-
-# 1. Diccionario para cambiar los nombres técnicos a nombres de tesis
-clean_names = {
-    "fborr_21_30": "Fracción con Deuda Visa (21-30)",
-    "fborr_31_40": "Fracción con Deuda Visa (31-40)",
-    "fborr_41_50": "Fracción con Deuda Visa (41-50)",
-    "fborr_51_60": "Fracción con Deuda Visa (51-60)",
-    "mborr_21_30": "Media Deuda Visa (21-30)",
-    "mborr_31_40": "Media Deuda Visa (31-40)",
-    "mborr_41_50": "Media Deuda Visa (41-50)",
-    "mborr_51_60": "Media Deuda Visa (51-60)",
-    "wdebt_21_30": "Riqueza neta | Deuda (21-30)",
-    "wdebt_31_40": "Riqueza neta | Deuda (31-40)",
-    "wdebt_41_50": "Riqueza neta | Deuda (41-50)",
-    "wdebt_51_60": "Riqueza neta | Deuda (51-60)",
-    "wnodebt_21_30": "Riqueza neta | Sin Deuda (21-30)",
-    "wnodebt_31_40": "Riqueza neta | Sin Deuda (31-40)",
-    "wnodebt_41_50": "Riqueza neta | Sin Deuda (41-50)",
-    "wnodebt_51_60": "Riqueza neta | Sin Deuda (51-60)"
-}
-
-# 2. Aplicar los nombres al DataFrame
-df_clean = comparison.copy()
-df_clean.index = df_clean.index.map(clean_names)
-
-# 3. Exportar a LaTeX (requiere \usepackage{booktabs} en tu .tex principal)
-latex_code = df_clean.to_latex(
-    index=True,
-    column_format='lcccc',  # l=left para nombres, c=center para números
-    caption="Bondad de Ajuste: Momentos Simulados vs. Referencia",
-    label="tab:bondad_ajuste",
-    float_format="%.3f",    # 3 decimales
-)
-
-with open("tabla_tesis_momentos.tex", "w") as f:
-    f.write(latex_code)
-"""

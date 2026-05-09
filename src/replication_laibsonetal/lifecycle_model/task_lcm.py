@@ -91,8 +91,6 @@ fig.update_layout(
 
 fig.show()
 
-### Exp and naive agents ###
-
 """result_exp = model_exp.simulate(
     params=params, #log_level="debug", log_path="./debug/",
     initial_conditions={
@@ -145,6 +143,7 @@ fig_exp.show()"""
 
 fig_exp.show()"""
 
+
 result_naive = model_naive.simulate(
     params=params_naive, log_level="debug", log_path="./debug/",
     initial_conditions={
@@ -196,3 +195,41 @@ fig_naive.show()
 )
 
 fig_naive.show()"""
+# filtrar age == 90
+df_90 = df[df["age"] == 90]
+
+# fila con el earnings mínimo
+min_row = df_90.loc[df_90["earnings"].idxmin()]
+
+# imprimir earnings y liquidation_cost asociados
+print("Min earnings:", min_row["earnings"])
+print("Liquidation cost:", min_row["liquidation_cost"])
+
+# filtrar age == 90
+df_90 = df_naive[df_naive["age"] == 90]
+
+# fila con el earnings mínimo
+min_row = df_90.loc[df_90["earnings"].idxmin()]
+
+# imprimir earnings y liquidation_cost asociados
+print("Min earnings:", min_row["earnings"])
+print("Liquidation cost:", min_row["liquidation_cost"])
+
+
+print(df["credit_limit"].max())
+print(df_naive["credit_limit"].max())
+
+print(df["wealth"].max())
+print(df_naive["wealth"].max())
+print(df["wealth_illiquid"].max())
+print(df_naive["wealth_illiquid"].max())
+
+
+print(df["investment_x"].max())
+print(df_naive["investment_x"].max())
+print(df["investment_z"].max())
+print(df_naive["investment_z"].max())
+print(df["investment_x"].min())
+print(df_naive["investment_x"].min())
+print(df["investment_z"].min())
+print(df_naive["investment_z"].min())

@@ -44,6 +44,8 @@ from lifecycle_model.model_functions import (
     average_earnings,
     exponential_H,
     beta_delta_H,
+    average_income,
+    credit_limit,
     )
 
 from lifecycle_model.transition_functions import (
@@ -131,7 +133,8 @@ working_life = Regime(
         "earnings": earnings,
         "end_of_period_wealth": end_of_period_wealth,
         "end_of_period_wealth_illiquid": end_of_period_wealth_illiquid,
-        
+        "average_income": average_income,
+        "credit_limit": credit_limit,
     },
     constraints={
         "borrowing_constraint": borrowing_constraint,
@@ -139,6 +142,7 @@ working_life = Regime(
         "budget_constraint": budget_constraint,
         "special_constraint": special_constraint,
         "special_illiquid_constraint": special_illiquid_constraint,
+        "ponzi_constraint": ponzi_constraint,
     },
 )
 
@@ -193,6 +197,8 @@ retirement = Regime(
         "earnings": earnings,
         "end_of_period_wealth": end_of_period_wealth,
         "end_of_period_wealth_illiquid": end_of_period_wealth_illiquid,
+        "average_income": average_income,
+        "credit_limit": credit_limit,
     },
     constraints={
         "borrowing_constraint": borrowing_constraint,
@@ -275,6 +281,8 @@ working_exp = Regime(
         "earnings": earnings,
         "end_of_period_wealth": end_of_period_wealth,
         "end_of_period_wealth_illiquid": end_of_period_wealth_illiquid,
+        "average_income": average_income,
+        "credit_limit": credit_limit,
     },
     constraints={
         "borrowing_constraint": borrowing_constraint,
@@ -327,7 +335,8 @@ retirement_exp = Regime(
         "earnings": earnings,
         "end_of_period_wealth": end_of_period_wealth,
         "end_of_period_wealth_illiquid": end_of_period_wealth_illiquid,
-        
+        "average_income": average_income,
+        "credit_limit": credit_limit,
     },
     constraints={
         "borrowing_constraint": borrowing_constraint,
@@ -394,6 +403,8 @@ working_naive = Regime(
         "earnings": earnings,
         "end_of_period_wealth": end_of_period_wealth,
         "end_of_period_wealth_illiquid": end_of_period_wealth_illiquid,
+        "average_income": average_income,
+        "credit_limit": credit_limit,
     },
     constraints={
         "borrowing_constraint": borrowing_constraint,
@@ -449,6 +460,8 @@ retirement_naive = Regime(
         "earnings": earnings,
         "end_of_period_wealth": end_of_period_wealth,
         "end_of_period_wealth_illiquid": end_of_period_wealth_illiquid,
+        "average_income": average_income,
+        "credit_limit": credit_limit,
     },
     constraints={
         "borrowing_constraint": borrowing_constraint,

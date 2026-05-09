@@ -56,10 +56,15 @@ wealth_illiquid_grid  = LinSpacedGrid(start=0.1, stop=3_500_000, n_points=25)
 investment_x_grid     = LinSpacedGrid(start=-45_000, stop=100_000, n_points=100)
 investment_z_grid     = LinSpacedGrid(start=-400_000, stop=400_000, n_points=100)"""
 
-wealth_liquid_grid    = LinSpacedGrid(start=-10_000, stop=20_000, n_points=25) # con menos falla pero no me hace logica. max de deuda posible es 30.000 anyways
+"""wealth_liquid_grid    = LinSpacedGrid(start=-10_000, stop=20_000, n_points=25) # cORIGINALES QUE FUNCIONAN CON 0.5...
 wealth_illiquid_grid  = LinSpacedGrid(start=0.1, stop=400_000, n_points=25)
 investment_x_grid     = LinSpacedGrid(start=-10_000, stop=20_000, n_points=100)
-investment_z_grid     = LinSpacedGrid(start=-40_000, stop=40_000, n_points=100)
+investment_z_grid     = LinSpacedGrid(start=-40_000, stop=40_000, n_points=100)"""
+
+wealth_liquid_grid    = LinSpacedGrid(start=-5_000, stop=400_000, n_points=25) 
+wealth_illiquid_grid  = LinSpacedGrid(start=2_000, stop=3_500_000, n_points=25)
+investment_x_grid     = LinSpacedGrid(start=-50_000, stop=50_000, n_points=100) # poner -50 y 50 y -100 y 100
+investment_z_grid     = LinSpacedGrid(start=-100_000, stop=100_000, n_points=100)
 
 age_grid = AgeGrid(start=20, stop=91, step="1Y")
 
@@ -113,16 +118,6 @@ params = {
             "ywork_spousecoeff": 0.319,
             "ywork_depadulcoeff": 0.237,
         },
-        "borrowing_constraint": {
-            "c0credit": 0.167,
-            "c1credit": -0.002,
-            "c2credit": 0.014,
-            "ywork_auto": 0.840,
-            "ywork_vareps": 0.057,
-            "ywork_varnu": 0.045,
-            #"interest_rate": 0.0203,
-            #"interest_rate_debt": 0.1059,
-        },
         "household_size": {
             "a0kids": 0.003,
             "a1kids": 0.358,
@@ -131,7 +126,16 @@ params = {
             "a1depadul": 0.452,
             "a2depadul": 0.438,
         },
-
+        "average_income": {
+            "ywork_auto": 0.840,
+            "ywork_vareps": 0.057,
+            "ywork_varnu": 0.045,
+        },
+        "credit_limit": {
+            "c0credit": 0.167,
+            "c1credit": -0.002,
+            "c2credit": 0.014,
+        },
     },
      "retirement": {
          "next_regime": {
@@ -167,16 +171,6 @@ params = {
             "ywork_spousecoeff": 0.319,
             "ywork_depadulcoeff": 0.237,
         },
-        "borrowing_constraint": {
-            "c0credit": 0.167,
-            "c1credit": -0.002,
-            "c2credit": 0.014,
-            "ywork_auto": 0.840,
-            "ywork_vareps": 0.057,
-            "ywork_varnu": 0.045,
-            #"interest_rate": 0.0203,
-            #"interest_rate_debt": 0.1059,
-        },
         "household_size": {
             "a0kids": 0.003,
             "a1kids": 0.358,
@@ -184,6 +178,16 @@ params = {
             "a0depadul": 0.00000459,
             "a1depadul": 0.452,
             "a2depadul": 0.438,
+        },
+        "average_income": {
+            "ywork_auto": 0.840,
+            "ywork_vareps": 0.057,
+            "ywork_varnu": 0.045,
+        },
+        "credit_limit": {
+            "c0credit": 0.167,
+            "c1credit": -0.002,
+            "c2credit": 0.014,
         },
     },
     "dead": {
@@ -253,13 +257,15 @@ params_naive = {
             "ywork_spousecoeff": 0.319,
             "ywork_depadulcoeff": 0.237,
         },
-        "borrowing_constraint": {
-            "c0credit": 0.167,
-            "c1credit": -0.002,
-            "c2credit": 0.014,
+        "average_income": {
             "ywork_auto": 0.840,
             "ywork_vareps": 0.057,
             "ywork_varnu": 0.045,
+        },
+        "credit_limit": {
+            "c0credit": 0.167,
+            "c1credit": -0.002,
+            "c2credit": 0.014,
         },
         "household_size": {
             "a0kids": 0.003,
@@ -305,13 +311,15 @@ params_naive = {
             "ywork_spousecoeff": 0.319,
             "ywork_depadulcoeff": 0.237,
         },
-        "borrowing_constraint": {
-            "c0credit": 0.167,
-            "c1credit": -0.002,
-            "c2credit": 0.014,
+        "average_income": {
             "ywork_auto": 0.840,
             "ywork_vareps": 0.057,
             "ywork_varnu": 0.045,
+        },
+        "credit_limit": {
+            "c0credit": 0.167,
+            "c1credit": -0.002,
+            "c2credit": 0.014,
         },
         "household_size": {
             "a0kids": 0.003,
