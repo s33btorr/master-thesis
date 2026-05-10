@@ -56,6 +56,7 @@ from lifecycle_model.transition_functions import (
     next_regime_working,
     next_regime_retirement,
 )
+
 from lifecycle_model.constraints_functions import (
     borrowing_constraint, 
     illiquid_wealth_constraint, 
@@ -290,6 +291,7 @@ working_exp = Regime(
         "budget_constraint": budget_constraint,
         "special_constraint": special_constraint,
         "special_illiquid_constraint": special_illiquid_constraint,
+        "ponzi_constraint": ponzi_constraint,
     },
 )
 
@@ -412,6 +414,8 @@ working_naive = Regime(
         "budget_constraint": budget_constraint,
         "special_constraint": special_constraint,
         "special_illiquid_constraint": special_illiquid_constraint,
+        "ponzi_constraint": ponzi_constraint,
+
     },
 )
 

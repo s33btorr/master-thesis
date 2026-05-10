@@ -200,19 +200,23 @@ df_90 = df[df["age"] == 90]
 
 # fila con el earnings mínimo
 min_row = df_90.loc[df_90["earnings"].idxmin()]
+max_row = df_naive["earnings"].max()
 
 # imprimir earnings y liquidation_cost asociados
 print("Min earnings:", min_row["earnings"])
 print("Liquidation cost:", min_row["liquidation_cost"])
+print("Max earnings:", max_row)
 
 # filtrar age == 90
 df_90 = df_naive[df_naive["age"] == 90]
 
 # fila con el earnings mínimo
 min_row = df_90.loc[df_90["earnings"].idxmin()]
+max_row = df_naive["earnings"].max()
 
 # imprimir earnings y liquidation_cost asociados
 print("Min earnings:", min_row["earnings"])
+print("Max earnings:", max_row)
 print("Liquidation cost:", min_row["liquidation_cost"])
 
 
