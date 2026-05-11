@@ -63,8 +63,8 @@ investment_z_grid     = LinSpacedGrid(start=-40_000, stop=40_000, n_points=100)"
 
 wealth_liquid_grid    = LinSpacedGrid(start=-5_000, stop=400_000, n_points=25) 
 wealth_illiquid_grid  = LinSpacedGrid(start=2_000, stop=3_500_000, n_points=25)
-investment_x_grid     = LinSpacedGrid(start=-100_000, stop=100_000, n_points=200) # poner -50 y 50 y -100 y 100
-investment_z_grid     = LinSpacedGrid(start=-300_000, stop=300_000, n_points=200)
+investment_x_grid     = LinSpacedGrid(start=-50_000, stop=50_000, n_points=100) # poner -100 y 100 y -300 y 300 con 200 puntos
+investment_z_grid     = LinSpacedGrid(start=-100_000, stop=100_000, n_points=100)
 
 age_grid = AgeGrid(start=20, stop=91, step="1Y")
 
@@ -74,7 +74,6 @@ retirement_age = 64
 dead_age = 91 # pongo 91 porque vive hasta los 90, pero en este caso el periodo 91 es necesario ya que es el periodo de muerte
 
 SRC = Path('.').resolve().parent
-#print("CWD:", Path('.').resolve().parent)
 
 project_path = SRC/ "replication_laibsonetal" / "data" # ojo que cambie esto, por si no funciona a futuro quitar "replication_laibsonetal" OJOOOOO1!!!!
 death_m_path = project_path / "DeathProbsE_M_Hist_TR2023.csv"

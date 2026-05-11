@@ -1,58 +1,8 @@
-"""
-moments.py
-==========
-Calcula los momentos simulados y empíricos del modelo.
-
-Momentos (16 en total) — igual que LifecycleSim.m:
-    4 grupos de edad x 4 estadísticos:
-    1. fborr_all    : fracción de agentes con deuda líquida
-    2. mborr_all    : deuda media / ingreso medio
-    3. wealth_debt  : riqueza total media / ingreso (condicional en tener deuda)
-    4. wealth_nodebt: riqueza total media / ingreso (condicional en NO tener deuda)
-
-Grupos de edad (igual que Matlab):
-    ag = num2cell(reshape(2:41, [10,4])', 2)
-    → ages 21-30, 31-40, 41-50, 51-60
-
-Equivalencias con Matlab (LifecycleSim.m):
-    simL__ = simX__ - simY__  →  df["wealth"]           (riqueza líquida)
-    simW__ = simZ__ + simX__ - simY__  →  df["wealth_illiquid"] + df["wealth"]
-    avgY_  = mean(simY__)     →  compute_avg_income_by_age(df)
-
-    En el Matlab simX__ ya incluye el ingreso del período actual (simY__),
-    por eso restan simY__ para obtener la riqueza ANTES de recibirlo.
-    En lcm, wealth es la riqueza al inicio del período — ANTES de recibir
-    el ingreso — así que no hay que restar nada.
-
-    NO se usa alive_ porque en nuestro modelo los agentes muertos ya no
-    aparecen en el DataFrame (régimen dead). En el Matlab todos viven hasta
-    los 90 y alive_ corrige artificialmente por mortalidad.
-"""
-
 import numpy as np
 import pandas as pd
+from config import MOMENT_NAMES, AGE_GROUPS
 
 
-# =============================================================================
-# Nombres de los momentos
-# =============================================================================
-
-MOMENT_NAMES = (
-    [f"fborr_{g}" for g in ["21_30", "31_40", "41_50", "51_60"]]
-    + [f"mborr_{g}" for g in ["21_30", "31_40", "41_50", "51_60"]]
-    + [f"wdebt_{g}" for g in ["21_30", "31_40", "41_50", "51_60"]]
-    + [f"wnodebt_{g}" for g in ["21_30", "31_40", "41_50", "51_60"]]
-)
-
-# Grupos de edad — igual que Matlab: ages 21-30, 31-40, 41-50, 51-60
-# ag = num2cell(reshape(2:41, [10,4])', 2) en Matlab
-# índices 2:41 → ages 21-60 (startage=20, age = 20 + index - 1)
-AGE_GROUPS = [
-    list(range(21, 31)),
-    list(range(31, 41)),
-    list(range(41, 51)),
-    list(range(51, 61)),
-]
 
 
 # =============================================================================

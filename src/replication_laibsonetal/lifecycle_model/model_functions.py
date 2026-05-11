@@ -229,14 +229,15 @@ def total_consumption(
     investment_x: ContinuousAction, 
     investment_z: ContinuousAction, 
     liquidation_cost: FloatND,
+    wealth_illiquid: ContinuousState,
 ) -> FloatND:
     liq_cost = liquidation_cost * jnp.minimum(investment_z, 0)
-    return earnings - investment_x - investment_z + liq_cost
+    consumption = earnings - investment_x - investment_z + liq_cost
+    return consumption + (0.05*wealth_illiquid)
+
 
 def utility(
     total_consumption: FloatND,
-    liquidation_cost: FloatND,   
-    wealth_illiquid: ContinuousState,
     household_size: FloatND,
     risk_aversion: float,
 ) -> FloatND:
@@ -250,8 +251,7 @@ def utility(
     TODO: add mortality-weighted discounting when mortalityn is implemented.
     TODO: add bequest utility at terminal age.
     """
-    total_value = total_consumption + (0.05*wealth_illiquid)
-    c_per_hh = total_value / household_size
+    c_per_hh = total_consumption / household_size
     numerador = household_size * ((c_per_hh**(1 - risk_aversion)) - 1) # hice todo esto porque me estaba dando valores raros para ver si se acomoda. Asi lo hacen en matlab
     denominador = 1 - risk_aversion
     return jnp.where(risk_aversion == 1, household_size * jnp.log(c_per_hh), numerador / denominador)

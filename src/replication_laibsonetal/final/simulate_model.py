@@ -33,7 +33,7 @@ def simulate_moments(
     params_base: dict,
     age_grid,
     n_agents: int,
-    #seed: int,
+    seed: int,
 ) -> pd.Series:
     """
     Corre el modelo y devuelve momentos simulados.
@@ -81,7 +81,7 @@ def simulate_moments(
             "trans_income":    np.zeros(n_agents),
         },
         period_to_regime_to_V_arr=None,
-        #seed=seed,
+        seed=seed,
     )
 
     df = result.to_dataframe(additional_targets="all")

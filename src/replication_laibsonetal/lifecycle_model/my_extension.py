@@ -1,27 +1,27 @@
 from pprint import pprint
+
+from pathlib import Path
 import numpy as np
 import jax.numpy as jnp
 import pandas as pd
 import plotly.express as px
-from lcm import MarkovTransition
-from lcm.typing import Period
-from lcm import PiecewiseLogSpacedGrid, PiecewiseLinSpacedGrid, Piece
 import plotly.graph_objects as go
 
 from lifecycle_model.regimes_and_model import model, model_exp, model_naive
 from lifecycle_model.parameters_and_grids import params, age_grid, params_naive
 
+SRC = Path('.').resolve().parent
 
 n_agents = 10_000
 result = model.simulate(
     params=params,
     initial_conditions={
         "regime": np.zeros(n_agents, dtype=int),
-        "age": np.full(n_agents, float(age_grid.exact_values[0])),  # todos empiezan a los 20
-        "wealth": np.full(n_agents, (4709)), #np.linspace(1, 20, n_agents), wealth = np.full(n_agents, (3.5894 - 0.1923) * earnings)
-        "wealth_illiquid": np.full(n_agents, 83188),   # riqueza inicial varía de 1 a 20 np.linspace(1, 20, n_agents),  wealth = np.full(n_agents, (0.1923) * earnings)
-        "perm_income": np.zeros(n_agents),              # media del AR(1)
-        "trans_income": np.zeros(n_agents),             # media del shock iid
+        "age": np.full(n_agents, float(age_grid.exact_values[0])),  
+        "wealth": np.full(n_agents, (4709)), 
+        "wealth_illiquid": np.full(n_agents, 83188),   
+        "perm_income": np.zeros(n_agents),          
+        "trans_income": np.zeros(n_agents),
     },
     period_to_regime_to_V_arr=None,
 )
@@ -138,6 +138,10 @@ for group in groups:
         )
     )
 
+    safe_group = group.replace(" ", "_").replace("%", "pct")
+    output_path = SRC / "bld" / "figures" / f"lifecycle_exponential_{safe_group}.png"
+    output_path.resolve().parent.mkdir(parents=True, exist_ok=True)
+    fig.write_html(output_path)
     fig.show()
 
 
@@ -267,4 +271,8 @@ for group in groups:
         )
     )
 
+    safe_group = group.replace(" ", "_").replace("%", "pct")
+    output_path = SRC / "bld" / "figures" / f"lifecycle_present_biased_{safe_group}.png"
+    output_path.resolve().parent.mkdir(parents=True, exist_ok=True)
+    fig.write_html(output_path)
     fig.show()
