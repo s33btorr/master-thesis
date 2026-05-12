@@ -10,7 +10,8 @@ from IPython.display import display
 from analysis.simulate_distribution import dataframe_results
 from config import RESULTS_PRESENT_BIASED, RESULTS_EXPONENTIAL, test_params_present_biased, test_params_exponential
 
-SRC = Path('.').resolve().parent
+from config import BLD, SRC
+
 
 
 number_of_simulations=100
@@ -46,7 +47,7 @@ latex_table = (
         )
     )
 
-output_path = SRC / "bld" / "tables" / "present_biased.tex"
+output_path = SRC / BLD / "tables" / "present_biased.tex"
 output_path.resolve().parent.mkdir(parents=True, exist_ok=True)
 output_path.write_text(latex_table)
 
@@ -80,6 +81,6 @@ latex_table = (
         )
     )
 
-output_path = SRC / "bld" / "tables" / "exponential.tex"
+output_path = SRC / BLD / "tables" / "exponential.tex"
 output_path.resolve().parent.mkdir(parents=True, exist_ok=True)
 output_path.write_text(latex_table)

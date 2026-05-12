@@ -10,7 +10,7 @@ import plotly.graph_objects as go
 from lifecycle_model.regimes_and_model import model, model_exp, model_naive
 from lifecycle_model.parameters_and_grids import params, age_grid, params_naive
 
-SRC = Path('.').resolve().parent
+from config import BLD, SRC
 
 n_agents = 10_000
 result = model.simulate(
@@ -139,7 +139,7 @@ for group in groups:
     )
 
     safe_group = group.replace(" ", "_").replace("%", "pct")
-    output_path = SRC / "bld" / "figures" / f"lifecycle_exponential_{safe_group}.png"
+    output_path = SRC / BLD / "figures" / f"lifecycle_exponential_{safe_group}.png"
     output_path.resolve().parent.mkdir(parents=True, exist_ok=True)
     fig.write_html(output_path)
     fig.show()
@@ -272,7 +272,7 @@ for group in groups:
     )
 
     safe_group = group.replace(" ", "_").replace("%", "pct")
-    output_path = SRC / "bld" / "figures" / f"lifecycle_present_biased_{safe_group}.png"
+    output_path = SRC / BLD / "figures" / f"lifecycle_present_biased_{safe_group}.png"
     output_path.resolve().parent.mkdir(parents=True, exist_ok=True)
     fig.write_html(output_path)
     fig.show()
