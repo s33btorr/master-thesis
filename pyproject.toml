@@ -92,6 +92,9 @@ plotly = ">=6.1.1"
 matplotlib = "*"
 seaborn = "*"
 scipy = "*"
+optimagic = "*"
+latexmk = ">=4.88,<5"
+texlive-core = ">=20230313,<20230314"
 
 [tool.pixi.feature.cuda12]
 platforms = ["linux-64"]
@@ -111,6 +114,7 @@ pdbp = "*"
 kaleido = ">=1.1"
 xlrd = "*"
 ipykernel = "*"
+openpyxl = "*"
 pylcm = { git = "https://github.com/OpenSourceEconomics/pylcm.git", rev = "main" }
 
 # ======================================================================================
