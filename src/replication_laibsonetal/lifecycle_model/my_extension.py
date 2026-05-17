@@ -19,7 +19,7 @@ result = model.simulate(
         "regime": np.zeros(n_agents, dtype=int),
         "age": np.full(n_agents, float(age_grid.exact_values[0])),  
         "wealth": np.full(n_agents, (4709)), 
-        "wealth_illiquid": np.full(n_agents, 83188),   
+        "wealth_illiquid": np.linspace(1, 83188, n_agents),   
         "perm_income": np.zeros(n_agents),          
         "trans_income": np.zeros(n_agents),
     },
@@ -39,6 +39,7 @@ income_lifetime = (
     .mean()
     .reset_index(name="avg_lifetime_income")
 )
+
 
 # =========================================================
 # 2. Percentiles
@@ -89,12 +90,6 @@ for group in groups:
         .mean(numeric_only=True)
     )
 
-    df_mean["consumption"] = (
-        df_mean["earnings"]
-        - df_mean["investment_x"]
-        - df_mean["investment_z"]
-    )
-
     fig = go.Figure()
 
     fig.add_trace(go.Scatter(
@@ -106,7 +101,7 @@ for group in groups:
 
     fig.add_trace(go.Scatter(
         x=df_mean["age"],
-        y=df_mean["consumption"],
+        y=df_mean["total_consumption"],
         name="Consumption",
         line=dict(color='royalblue', width=3)
     ))
@@ -124,6 +119,7 @@ for group in groups:
         name="Illiquid Assets / 10",
         line=dict(color='goldenrod', width=3)
     ))
+
 
     fig.update_layout(
         title=f"Lifecycle Profile - {group}",
@@ -222,12 +218,7 @@ for group in groups:
         .mean(numeric_only=True)
     )
 
-    df_mean["consumption"] = (
-        df_mean["earnings"]
-        - df_mean["investment_x"]
-        - df_mean["investment_z"]
-    )
-
+    
     fig = go.Figure()
 
     fig.add_trace(go.Scatter(
@@ -239,7 +230,7 @@ for group in groups:
 
     fig.add_trace(go.Scatter(
         x=df_mean["age"],
-        y=df_mean["consumption"],
+        y=df_mean["total_consumption"],
         name="Consumption",
         line=dict(color='royalblue', width=3)
     ))
@@ -257,6 +248,7 @@ for group in groups:
         name="Illiquid Assets / 10",
         line=dict(color='goldenrod', width=3)
     ))
+
 
     fig.update_layout(
         title=f"Lifecycle Profile - {group}",
@@ -276,3 +268,7 @@ for group in groups:
     output_path.resolve().parent.mkdir(parents=True, exist_ok=True)
     fig.write_html(output_path)
     fig.show()
+
+
+
+
