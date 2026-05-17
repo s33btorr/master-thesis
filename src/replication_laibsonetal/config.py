@@ -13,6 +13,8 @@ DOCUMENTS = ROOT.joinpath("documents").resolve()
 
 TEMPLATE_GROUPS = ["marital_status", "highest_qualification"]
 
+SEED = 9700
+
 # Moments names and age groups
 
 MOMENT_NAMES = (

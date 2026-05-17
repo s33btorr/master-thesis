@@ -33,7 +33,7 @@ result = model.simulate(
         "trans_income": np.zeros(n_agents),          
     },
     period_to_regime_to_V_arr=None,
-    seed=9700,
+    seed=SEED,
 )
 
 

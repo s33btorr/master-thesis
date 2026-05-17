@@ -10,12 +10,12 @@ from IPython.display import display
 from analysis.simulate_distribution import dataframe_results
 from config import RESULTS_PRESENT_BIASED, RESULTS_EXPONENTIAL, test_params_present_biased, test_params_exponential
 
-from config import BLD, SRC
+from config import BLD, SRC, SEED
 
 
 
 number_of_simulations=100
-seed=9700
+seed=SEED
 agents_in_simulation=10_000
 
 comparison_with_paper = dataframe_results(

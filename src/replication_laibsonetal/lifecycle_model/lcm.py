@@ -11,7 +11,7 @@ from lifecycle_model.regimes_and_model import model, model_exp, model_naive
 from lifecycle_model.parameters_and_grids import params, age_grid, params_naive
 from final.moments_calculation import compute_simulated_moments
 
-from config import BLD, SRC
+from config import BLD, SRC, SEED
 
 
 n_agents = 10_000
@@ -26,6 +26,7 @@ result = model.simulate(
         "trans_income": np.zeros(n_agents),          
     },
     period_to_regime_to_V_arr=None,
+    seed=SEED,
 )
 
 df = result.to_dataframe(additional_targets="all")
@@ -96,6 +97,7 @@ result_naive = model_naive.simulate(
         #"enable_jit": np.False,
     },
     period_to_regime_to_V_arr=None,
+    seed=SEED,
 )
 
 df_naive = result_naive.to_dataframe(additional_targets="all")
