@@ -72,7 +72,7 @@ def special_constraint(
     I do not 100% understand why I need it...
     It does not work because it starts acumulating under the grid
     """
-    return (end_of_period_wealth >= -24_000) & (end_of_period_wealth <= 400_000)
+    return (end_of_period_wealth >= -5000) & (end_of_period_wealth <= 400_000)
 
 def special_illiquid_constraint(
     end_of_period_wealth_illiquid: FloatND,
@@ -83,8 +83,7 @@ def special_illiquid_constraint(
     """
     return end_of_period_wealth_illiquid <= 3_500_000
 
-"""def liquid_wealth_constraint_last_period(
-    end_of_period_wealth: FloatND,
+def minimum_consumption(
+    consumption: FloatND,
 ) -> BoolND:
-    
-    return end_of_period_wealth >= 0 """
+    return consumption>= 2_000

@@ -131,3 +131,10 @@ fig_naive.show()
 
 moments = compute_simulated_moments(df_naive)
 print(moments)
+
+print(df.loc[df["total_consumption"].idxmin()])
+
+print((df["total_consumption"] < 12000).sum())
+print(df_naive.loc[df["total_consumption"].idxmin()])
+
+print((df_naive["total_consumption"] < 12000).sum())

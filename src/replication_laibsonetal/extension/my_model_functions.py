@@ -223,16 +223,20 @@ def credit_limit(
     return average_income * credit_limit_rate
 
 #### UTILITY ####
-
-def total_consumption(
+def consumption(
     earnings: FloatND, 
     investment_x: ContinuousAction, 
     investment_z: ContinuousAction, 
     liquidation_cost: FloatND,
-    wealth_illiquid: ContinuousState,
 ) -> FloatND:
     liq_cost = liquidation_cost * jnp.minimum(investment_z, 0)
-    consumption = earnings - investment_x - investment_z + liq_cost
+    return earnings - investment_x - investment_z + liq_cost
+
+
+def total_consumption(
+    consumption: FloatND,
+    wealth_illiquid: ContinuousState,
+) -> FloatND:
     return consumption + (0.05*wealth_illiquid)
 
 
