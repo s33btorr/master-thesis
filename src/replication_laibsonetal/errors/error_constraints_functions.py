@@ -20,8 +20,8 @@ def error1_special_constraint(
     end_of_period_wealth: FloatND,
 ) -> BoolND:
     """
-    I do not 100% understand why I need it...
-    It does not work because it starts acumulating under the grid
+    Function that limits state grid: Liquid Wealth. 
+    Used to obtain error when changing lowest value in wealth_x_grid.
     """
     return (end_of_period_wealth >= -45_000) & (end_of_period_wealth <= 400_000)
 
@@ -29,7 +29,7 @@ def error2_special_constraint(
     end_of_period_wealth: FloatND,
 ) -> BoolND:
     """
-    I do not 100% understand why I need it...
-    It does not work because it starts acumulating under the grid
+    Function that limits state grid: Liquid Wealth. 
+    Used to obtain error when changing lowest value in wealth_z_grid.
     """
     return (end_of_period_wealth >= -6_000) & (end_of_period_wealth <= 400_000)

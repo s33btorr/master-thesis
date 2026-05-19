@@ -46,7 +46,7 @@ def borrowing_constraint(
     TODO: replace with age-varying limit:
         credit_limit(age) = c0credit + c1credit*age + c2credit*age^2
     """
-    return end_of_period_wealth >= - (credit_limit)
+    return end_of_period_x_wealth>= - (credit_limit)
 
 def illiquid_wealth_constraint(
     end_of_period_wealth_illiquid: FloatND,
@@ -72,7 +72,7 @@ def special_constraint(
     I do not 100% understand why I need it...
     It does not work because it starts acumulating under the grid
     """
-    return (end_of_period_wealth >= -5000) & (end_of_period_wealth <= 400_000)
+    return (end_of_period_x_wealth>= -5000) & (end_of_period_x_wealth<= 400_000)
 
 def special_illiquid_constraint(
     end_of_period_wealth_illiquid: FloatND,
