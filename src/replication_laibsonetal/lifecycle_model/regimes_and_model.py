@@ -62,8 +62,8 @@ from lifecycle_model.constraints_functions import (
     illiquid_wealth_constraint, 
     ponzi_constraint, 
     budget_constraint, 
-    special_constraint,
-    special_illiquid_constraint
+    special_x_constraint,
+    special_z_constraint
 )
 
 from lifecycle_model.parameters_and_grids import (
@@ -141,8 +141,8 @@ working_life = Regime(
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
-        "special_constraint": special_constraint,
-        "special_illiquid_constraint": special_illiquid_constraint,
+        "special_x_constraint": special_x_constraint,
+        "special_z_constraint": special_z_constraint,
         "ponzi_constraint": ponzi_constraint,
     },
 )
@@ -205,9 +205,9 @@ retirement = Regime(
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
-        "special_constraint": special_constraint,
+        "special_x_constraint": special_x_constraint,
         "ponzi_constraint": ponzi_constraint,
-        "special_illiquid_constraint": special_illiquid_constraint,
+        "special_z_constraint": special_z_constraint,
     },
 )
 
@@ -289,8 +289,8 @@ working_exp = Regime(
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
-        "special_constraint": special_constraint,
-        "special_illiquid_constraint": special_illiquid_constraint,
+        "special_x_constraint": special_x_constraint,
+        "special_z_constraint": special_z_constraint,
         "ponzi_constraint": ponzi_constraint,
     },
 )
@@ -344,8 +344,8 @@ retirement_exp = Regime(
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
-        "special_constraint": special_constraint,
-        "special_illiquid_constraint": special_illiquid_constraint,
+        "special_x_constraint": special_x_constraint,
+        "special_z_constraint": special_z_constraint,
         "ponzi_constraint": ponzi_constraint,
     },
 )
@@ -412,8 +412,8 @@ working_naive = Regime(
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
-        "special_constraint": special_constraint,
-        "special_illiquid_constraint": special_illiquid_constraint,
+        "special_x_constraint": special_x_constraint,
+        "special_z_constraint": special_z_constraint,
         "ponzi_constraint": ponzi_constraint,
 
     },
@@ -471,8 +471,8 @@ retirement_naive = Regime(
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
-        "special_constraint": special_constraint,
-        "special_illiquid_constraint": special_illiquid_constraint,
+        "special_x_constraint": special_x_constraint,
+        "special_z_constraint": special_z_constraint,
         "ponzi_constraint": ponzi_constraint,
     },
 )

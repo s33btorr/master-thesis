@@ -65,7 +65,7 @@ def ponzi_constraint(
 ) -> BoolND:
     return jnp.where(age == 90, end_of_period_wealth>=0, True)
 
-def special_constraint(
+def special_x_constraint(
     end_of_period_wealth: FloatND,
 ) -> BoolND:
     """
@@ -74,7 +74,7 @@ def special_constraint(
     """
     return (end_of_period_x_wealth>= -5000) & (end_of_period_x_wealth<= 400_000)
 
-def special_illiquid_constraint(
+def special_z_constraint(
     end_of_period_z_wealth: FloatND,
 ) -> BoolND:
     """

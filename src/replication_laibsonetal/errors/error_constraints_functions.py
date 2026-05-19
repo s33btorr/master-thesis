@@ -16,7 +16,7 @@ from lcm.typing import (
     ScalarInt,
 )
 
-def error1_special_constraint(
+def error1_special_x_constraint(
     end_of_period_x_wealth: FloatND,
 ) -> BoolND:
     """
@@ -25,7 +25,7 @@ def error1_special_constraint(
     """
     return (end_of_period_x_wealth >= -45_000) & (end_of_period_x_wealth <= 400_000)
 
-def error2_special_constraint(
+def error2_special_x_constraint(
     end_of_period_x_wealth: FloatND,
 ) -> BoolND:
     """

@@ -62,8 +62,8 @@ from extension.my_constraints_functions import (
     illiquid_wealth_constraint, 
     ponzi_constraint, 
     budget_constraint, 
-    special_constraint,
-    special_illiquid_constraint,
+    special_x_constraint,
+    special_z_constraint,
     minimum_consumption,
 )
 
@@ -133,8 +133,8 @@ working_life = Regime(
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
-        "special_constraint": special_constraint,
-        "special_illiquid_constraint": special_illiquid_constraint,
+        "special_x_constraint": special_x_constraint,
+        "special_z_constraint": special_z_constraint,
         "ponzi_constraint": ponzi_constraint,
         #"minimum_consumption": minimum_consumption,
     },
@@ -189,9 +189,9 @@ retirement = Regime(
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
-        "special_constraint": special_constraint,
+        "special_x_constraint": special_x_constraint,
         "ponzi_constraint": ponzi_constraint,
-        "special_illiquid_constraint": special_illiquid_constraint,
+        "special_z_constraint": special_z_constraint,
         #"minimum_consumption": minimum_consumption,
     },
 )

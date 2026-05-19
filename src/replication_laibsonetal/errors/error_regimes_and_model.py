@@ -62,8 +62,8 @@ from lifecycle_model.constraints_functions import (
     illiquid_wealth_constraint, 
     ponzi_constraint, 
     budget_constraint, 
-    special_constraint,
-    special_illiquid_constraint
+    special_x_constraint,
+    special_z_constraint
 )
 
 from lifecycle_model.parameters_and_grids import (
@@ -74,7 +74,7 @@ from lifecycle_model.parameters_and_grids import (
     investment_z_grid,
 )
 
-from errors.error_constraints_functions import(error1_special_constraint, error2_special_constraint)
+from errors.error_constraints_functions import(error1_special_x_constraint, error2_special_x_constraint)
 
 from errors.error_grids import(error1_wealth_x_grid, error2_wealth_z_grid, error2_wealth_x_grid)
  
@@ -134,8 +134,8 @@ error1_working_life = Regime(
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
-        "error1_special_constraint": error1_special_constraint,
-        "special_illiquid_constraint": special_illiquid_constraint,
+        "error1_special_x_constraint": error1_special_x_constraint,
+        "special_z_constraint": special_z_constraint,
         "ponzi_constraint": ponzi_constraint,
     },
 )
@@ -188,9 +188,9 @@ error1_retirement = Regime(
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
-        "error1_special_constraint": error1_special_constraint,
+        "error1_special_x_constraint": error1_special_x_constraint,
         "ponzi_constraint": ponzi_constraint,
-        "special_illiquid_constraint": special_illiquid_constraint,
+        "special_z_constraint": special_z_constraint,
     },
 )
 
@@ -270,8 +270,8 @@ error2_working_life = Regime(
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
-        "error2_special_constraint": error2_special_constraint,
-        "special_illiquid_constraint": special_illiquid_constraint,
+        "error2_special_x_constraint": error2_special_x_constraint,
+        "special_z_constraint": special_z_constraint,
         "ponzi_constraint": ponzi_constraint,
     },
 )
@@ -324,9 +324,9 @@ error2_retirement = Regime(
         "borrowing_constraint": borrowing_constraint,
         "illiquid_wealth_constraint": illiquid_wealth_constraint,
         "budget_constraint": budget_constraint,
-        "error2_special_constraint": error2_special_constraint,
+        "error2_special_x_constraint": error2_special_x_constraint,
         "ponzi_constraint": ponzi_constraint,
-        "special_illiquid_constraint": special_illiquid_constraint,
+        "special_z_constraint": special_z_constraint,
     },
 )
 
