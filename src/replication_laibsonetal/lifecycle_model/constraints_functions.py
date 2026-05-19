@@ -48,7 +48,7 @@ def borrowing_constraint(
     """
     return end_of_period_x_wealth>= - (credit_limit)
 
-def illiquid_wealth_constraint(
+def z_wealth_constraint(
     end_of_period_z_wealth: FloatND,
 ) -> BoolND:
     """

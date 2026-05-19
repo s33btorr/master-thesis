@@ -59,7 +59,7 @@ from extension.my_transition_functions import (
 
 from extension.my_constraints_functions import (
     borrowing_constraint, 
-    illiquid_wealth_constraint, 
+    z_wealth_constraint, 
     ponzi_constraint, 
     budget_constraint, 
     special_x_constraint,
@@ -131,7 +131,7 @@ working_life = Regime(
     },
     constraints={
         "borrowing_constraint": borrowing_constraint,
-        "illiquid_wealth_constraint": illiquid_wealth_constraint,
+        "z_wealth_constraint": z_wealth_constraint,
         "budget_constraint": budget_constraint,
         "special_x_constraint": special_x_constraint,
         "special_z_constraint": special_z_constraint,
@@ -187,7 +187,7 @@ retirement = Regime(
     },
     constraints={
         "borrowing_constraint": borrowing_constraint,
-        "illiquid_wealth_constraint": illiquid_wealth_constraint,
+        "z_wealth_constraint": z_wealth_constraint,
         "budget_constraint": budget_constraint,
         "special_x_constraint": special_x_constraint,
         "ponzi_constraint": ponzi_constraint,
