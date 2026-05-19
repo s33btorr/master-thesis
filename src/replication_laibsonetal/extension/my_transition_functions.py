@@ -30,7 +30,7 @@ def end_of_period_x_wealth(
     wealth_x: ContinuousState,
     investment_x: ContinuousAction,
 ) -> FloatND:
-    """Liquid wealth after consumption, before interest — working life."""
+    """Total liquid wealth after adding investment in liquid wealth."""
     return wealth_x + investment_x
 
 def next_wealth_x(
@@ -39,14 +39,10 @@ def next_wealth_x(
     interest_rate_debt: float,
 ) -> ContinuousState:
    
-    """Wealth at start of next period, with two interest rates.
- 
+    """
+    Liquid wealth at start of next period, with two interest rates.
     Savings earn interest_rate, debt accrues at interest_rate_debt (higher).
- 
-    Mirrors the Matlab (LifecycleSim_BackwardInduct.m):
-        possibleX_ = max(nextX_/R, 0) + min(nextX_/R_CC, 0)
-    where R is the savings rate and R_CC is the credit card rate.
-   """
+    """
     return (
         jnp.maximum(end_of_period_x_wealth, 0) * (1 + interest_rate)
         + jnp.minimum(end_of_period_x_wealth, 0) * (1 + interest_rate_debt) 
@@ -59,7 +55,7 @@ def end_of_period_z_wealth(
     wealth_z: ContinuousState,
     investment_z: ContinuousAction,
 ) -> FloatND:
-    """Illiquid wealth."""
+    """Total illiquid wealth after adding investment in illiquid wealth."""
     return wealth_z + investment_z
     
 
@@ -67,6 +63,9 @@ def next_wealth_z(
     end_of_period_z_wealth: FloatND,
     interest_rate_illiquid: float,
 ) -> ContinuousState:
+    """
+    Iliquid wealth at start of next period, with interest rates for illiquid assets.
+    """
     return (end_of_period_z_wealth) * (1 + interest_rate_illiquid)
 
 
@@ -78,6 +77,10 @@ def next_regime_working(
     survival_probs: FloatND,
     last_working_age: float,
 ) -> FloatND:
+    
+    """
+    Transition from working regime to death with probabilities coming from data.
+    """
     sp = survival_probs[period]
     return jnp.where(
         age >= last_working_age,
@@ -89,5 +92,8 @@ def next_regime_retirement(
     period: Period,
     survival_probs: FloatND,
 ) -> FloatND:
+    """
+    Transition from retirement regime to death with probabilities coming from data.
+    """
     sp = survival_probs[period]
     return jnp.array([0.0, sp, 1 - sp])
