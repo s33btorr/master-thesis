@@ -76,7 +76,7 @@ def simulate_moments(
             "regime":          np.zeros(n_agents, dtype=int),
             "age":             np.full(n_agents, float(age_grid.exact_values[0])),
             "wealth":          np.full(n_agents, INITIAL_WEALTH),
-            "wealth_illiquid": np.full(n_agents, INITIAL_WEALTH_ILLIQUID),
+            "wealth_z": np.full(n_agents, INITIAL_wealth_z),
             "perm_income":     np.zeros(n_agents),
             "trans_income":    np.zeros(n_agents),
         },

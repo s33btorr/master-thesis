@@ -26,15 +26,15 @@ from lcm.typing import (
 
 ### Liquid Wealth X ###
 
-def end_of_period_wealth(
-    wealth: ContinuousState,
+def end_of_period_x_wealth(
+    wealth_x: ContinuousState,
     investment_x: ContinuousAction,
 ) -> FloatND:
     """Liquid wealth after consumption, before interest — working life."""
-    return wealth + investment_x
+    return wealth_x + investment_x
 
-def next_wealth(
-    end_of_period_wealth: FloatND,
+def next_wealth_x(
+    end_of_period_x_wealth: FloatND,
     interest_rate: float,
     interest_rate_debt: float,
 ) -> ContinuousState:
@@ -48,19 +48,19 @@ def next_wealth(
     where R is the savings rate and R_CC is the credit card rate.
    """
     return (
-        jnp.maximum(end_of_period_wealth, 0) * (1 + interest_rate)
-        + jnp.minimum(end_of_period_wealth, 0) * (1 + interest_rate_debt) 
+        jnp.maximum(end_of_period_x_wealth, 0) * (1 + interest_rate)
+        + jnp.minimum(end_of_period_x_wealth, 0) * (1 + interest_rate_debt) 
     )
 
 
 ### Illiquid Wealth Z ###
 
 def end_of_period_z_wealth(
-    wealth_illiquid: ContinuousState,
+    wealth_z: ContinuousState,
     investment_z: ContinuousAction,
 ) -> FloatND:
     """Illiquid wealth."""
-    return wealth_illiquid + investment_z
+    return wealth_z + investment_z
     
 
 def next_wealth_z(

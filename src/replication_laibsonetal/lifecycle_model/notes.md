@@ -7,7 +7,7 @@ The problem is with the grids of total wealth (liquid and illiquid) and with the
 The grids that work and the simulation runs without any problem (apparently) are, for the states:
 ```python
 "wealth": LinSpacedGrid(start=-1500, stop=400000, n_points=50), 
-"wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
+"wealth_z": LinSpacedGrid(start=0, stop=3500000, n_points=50),
 ```
 And for the actions:
 ```python
@@ -35,7 +35,7 @@ We receive for every period (in both, backward ind and forward iter) the message
 Now we leave the first problem apart, we try the next grid:
 ```python
 "wealth": LinSpacedGrid(start=-15_000, stop=400000, n_points=50), 
-"wealth_illiquid": LinSpacedGrid(start=0, stop=3500000, n_points=50),
+"wealth_z": LinSpacedGrid(start=0, stop=3500000, n_points=50),
 ```
 It happens something similar than before, we recieved in the backward induction the message `NaN/Inf in V_arr for regime 'retirement' at age 90` for almost every age. In this case I do not have a good theory of why it is not working.
 

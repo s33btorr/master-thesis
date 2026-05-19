@@ -56,11 +56,11 @@ def next_wealth(
 ### Illiquid Wealth Z ###
 
 def end_of_period_z_wealth(
-    wealth_illiquid: ContinuousState,
+    wealth_z: ContinuousState,
     investment_z: ContinuousAction,
 ) -> FloatND:
     """Illiquid wealth."""
-    return wealth_illiquid + investment_z
+    return wealth_z + investment_z
     
 
 def next_wealth_z(

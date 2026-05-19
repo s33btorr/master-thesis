@@ -24,7 +24,7 @@ result = model.simulate(
         "regime": np.zeros(n_agents, dtype=int),
         "age": np.full(n_agents, float(age_grid.exact_values[0])), 
         "wealth": np.full(n_agents, (4709)), 
-        "wealth_illiquid": np.full(n_agents, 83188),  
+        "wealth_z": np.full(n_agents, 83188),  
         "perm_income": np.zeros(n_agents),            
         "trans_income": np.zeros(n_agents),          
     },
@@ -65,7 +65,7 @@ fig = go.Figure()
 fig.add_trace(go.Scatter(x=df_mean["age"], y=df_mean["earnings"], name="Income", line=dict(color='firebrick', width=3)))
 fig.add_trace(go.Scatter(x=df_mean["age"], y=df_mean["total_consumption"], name="Total Consumption", line=dict(color='royalblue', width=3)))
 fig.add_trace(go.Scatter(x=df_mean["age"], y=df_mean["wealth"], name="Liquid Assets", line=dict(color='forestgreen', width=3)))
-fig.add_trace(go.Scatter(x=df_mean["age"], y=df_mean["wealth_illiquid"]/10, name="Illiquid Assets/10", line=dict(color='goldenrod', width=3)))
+fig.add_trace(go.Scatter(x=df_mean["age"], y=df_mean["wealth_z"]/10, name="Illiquid Assets/10", line=dict(color='goldenrod', width=3)))
 
 fig.update_layout(
     title="Average Lifecycle Profile for Exponential Estimate",
@@ -94,7 +94,7 @@ result_naive = model_naive.simulate(
         "regime": np.zeros(n_agents, dtype=int),
         "age": np.full(n_agents, float(age_grid.exact_values[0])),  # todos empiezan a los 20
         "wealth": np.full(n_agents, (4709)), #np.linspace(1, 20, n_agents), wealth = np.full(n_agents, (3.5894 - 0.1923) * earnings)
-        "wealth_illiquid": np.full(n_agents, 83188),   # riqueza inicial varía de 1 a 20 np.linspace(1, 20, n_agents),  wealth = np.full(n_agents, (0.1923) * earnings)
+        "wealth_z": np.full(n_agents, 83188),   # riqueza inicial varía de 1 a 20 np.linspace(1, 20, n_agents),  wealth = np.full(n_agents, (0.1923) * earnings)
         "perm_income": np.zeros(n_agents),              # media del AR(1)
         "trans_income": np.zeros(n_agents),             # media del shock iid
         #"enable_jit": np.False,
@@ -114,7 +114,7 @@ fig_naive = go.Figure()
 fig_naive.add_trace(go.Scatter(x=df_mean_naive["age"], y=df_mean_naive["earnings"], name="Income", line=dict(color='firebrick', width=3)))
 fig_naive.add_trace(go.Scatter(x=df_mean_naive["age"], y=df_mean_naive["total_consumption"], name="Total Consumption", line=dict(color='royalblue', width=3)))
 fig_naive.add_trace(go.Scatter(x=df_mean_naive["age"], y=df_mean_naive["wealth"], name="Liquid Assets", line=dict(color='forestgreen', width=3)))
-fig_naive.add_trace(go.Scatter(x=df_mean_naive["age"], y=df_mean_naive["wealth_illiquid"] / 10, name="Illiquid Assets/10", line=dict(color='goldenrod', width=3)))
+fig_naive.add_trace(go.Scatter(x=df_mean_naive["age"], y=df_mean_naive["wealth_z"] / 10, name="Illiquid Assets/10", line=dict(color='goldenrod', width=3)))
 
 fig_naive.update_layout(
     title="Average lifecycle profile for present-biased estimate",
@@ -147,46 +147,3 @@ print((df_naive["total_consumption"] < 12000).sum())
 
 
 
-import matplotlib.pyplot as plt
-import matplotlib as mpl
-
-mpl.rcParams["font.family"] = "serif"
-mpl.rcParams["axes.linewidth"] = 1.0
-mpl.rcParams["font.size"] = 13
-mpl.rcParams["axes.labelsize"] = 13
-mpl.rcParams["xtick.labelsize"] = 11
-mpl.rcParams["ytick.labelsize"] = 11
-
-def plot_lifecycle(df, output_path):
-    fig, ax = plt.subplots(figsize=(7, 4.5))
-
-    ax.plot(df["age"], df["earnings"] / 1000,
-            color="firebrick", linewidth=2.5, label="Income")
-    ax.plot(df["age"], df["total_consumption"] / 1000,
-            color="royalblue", linewidth=2.5, label="Total Consumption")
-    ax.plot(df["age"], df["wealth"] / 1000,
-            color="forestgreen", linewidth=2.5, label="Liquid Assets")
-    ax.plot(df["age"], df["wealth_illiquid"] / 10000,
-            color="goldenrod", linewidth=2.5, label="Illiquid Assets/10")
-
-    ax.set_xlabel("Age")
-    ax.set_ylabel("Units (thousands)")
-    ax.set_xlim(df["age"].min(), df["age"].max())
-    ax.xaxis.set_major_locator(mpl.ticker.MultipleLocator(10))
-    ax.tick_params(axis="both", which="major", labelsize=14)
-    ax.legend(fontsize=10, frameon=True, fancybox=False,
-              edgecolor="black", loc="upper right")
-    ax.grid(linestyle=":", linewidth=0.5, alpha=0.4)
-    for spine in ax.spines.values():
-        spine.set_visible(True)
-        spine.set_color("black")
-        spine.set_linewidth(1)
-
-    plt.tight_layout()
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    plt.savefig(output_path, dpi=300, bbox_inches="tight")
-    plt.close()
-
-
-plot_lifecycle(df_mean,       SRC / BLD / "figures" / "exponential.png")
-plot_lifecycle(df_mean_naive, SRC / BLD / "figures" / "present_biased.png")

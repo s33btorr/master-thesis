@@ -39,7 +39,7 @@ def compute_simulated_moments(df: pd.DataFrame) -> pd.Series:
 
     # simW__ en Matlab = riqueza total ANTES de recibir ingreso
     # = illiquid + liquid (antes de ingreso)
-    df_alive["simW"] = df_alive["wealth_illiquid"] + df_alive["wealth"]
+    df_alive["simW"] = df_alive["wealth_z"] + df_alive["wealth"]
 
     # ingreso promedio por edad — avgY_ en Matlab
     avg_income = compute_avg_income_by_age(df_alive)

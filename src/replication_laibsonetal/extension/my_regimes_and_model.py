@@ -49,8 +49,8 @@ from extension.my_model_functions import (
     )
 
 from extension.my_transition_functions import (
-    end_of_period_wealth,
-    next_wealth,
+    end_of_period_x_wealth,
+    next_wealth_x,
     end_of_period_z_wealth,
     next_wealth_z,
     next_regime_working,
@@ -88,8 +88,8 @@ working_life = Regime(
     transition=MarkovTransition(next_regime_working),
     active=lambda age: age < retirement_age,
     states={
-        "wealth": wealth_x_grid,
-        "wealth_illiquid": wealth_z_grid,
+        "wealth_x": wealth_x_grid,
+        "wealth_z": wealth_z_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
@@ -107,8 +107,8 @@ working_life = Regime(
         ),
     },
     state_transitions={
-        "wealth": next_wealth,
-        "wealth_illiquid": next_wealth_z,
+        "wealth_x": next_wealth_x,
+        "wealth_z": next_wealth_z,
     },
     actions={
         "investment_x": investment_x_grid,
@@ -123,7 +123,7 @@ working_life = Regime(
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
-        "end_of_period_wealth": end_of_period_wealth,
+        "end_of_period_x_wealth": end_of_period_x_wealth,
         "end_of_period_z_wealth": end_of_period_z_wealth,
         "average_income": average_income,
         "credit_limit": credit_limit,
@@ -144,8 +144,8 @@ retirement = Regime(
     transition=MarkovTransition(next_regime_retirement),
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
-        "wealth": wealth_x_grid,
-        "wealth_illiquid": wealth_z_grid,
+        "wealth_x": wealth_x_grid,
+        "wealth_z": wealth_z_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
@@ -163,8 +163,8 @@ retirement = Regime(
         ),
     },
     state_transitions={
-        "wealth": next_wealth,
-        "wealth_illiquid": next_wealth_z,
+        "wealth_x": next_wealth_x,
+        "wealth_z": next_wealth_z,
     },
      actions={
         "investment_x": investment_x_grid,
@@ -179,7 +179,7 @@ retirement = Regime(
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
-        "end_of_period_wealth": end_of_period_wealth,
+        "end_of_period_x_wealth": end_of_period_x_wealth,
         "end_of_period_z_wealth": end_of_period_z_wealth,
         "average_income": average_income,
         "credit_limit": credit_limit,
@@ -205,8 +205,8 @@ dead = Regime(
         "average_earnings": average_earnings,
         },
     states={
-        "wealth": wealth_x_grid,
-        "wealth_illiquid": wealth_z_grid,
+        "wealth_x": wealth_x_grid,
+        "wealth_z": wealth_z_grid,
     },
 )
 

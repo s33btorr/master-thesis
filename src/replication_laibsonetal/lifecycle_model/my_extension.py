@@ -19,7 +19,7 @@ result = model.simulate(
         "regime": np.zeros(n_agents, dtype=int),
         "age": np.full(n_agents, float(age_grid.exact_values[0])),  
         "wealth": np.full(n_agents, (4709)), 
-        "wealth_illiquid": np.linspace(1, 83188, n_agents),   
+        "wealth_z": np.linspace(1, 83188, n_agents),   
         "perm_income": np.zeros(n_agents),          
         "trans_income": np.zeros(n_agents),
     },
@@ -115,7 +115,7 @@ for group in groups:
 
     fig.add_trace(go.Scatter(
         x=df_mean["age"],
-        y=df_mean["wealth_illiquid"] / 10,
+        y=df_mean["wealth_z"] / 10,
         name="Illiquid Assets / 10",
         line=dict(color='goldenrod', width=3)
     ))
@@ -147,7 +147,7 @@ result_naive = model_naive.simulate(
         "regime": np.zeros(n_agents, dtype=int),
         "age": np.full(n_agents, float(age_grid.exact_values[0])),  # todos empiezan a los 20
         "wealth": np.full(n_agents, (4709)), #np.linspace(1, 20, n_agents), wealth = np.full(n_agents, (3.5894 - 0.1923) * earnings)
-        "wealth_illiquid": np.full(n_agents, 83188),   # riqueza inicial varía de 1 a 20 np.linspace(1, 20, n_agents),  wealth = np.full(n_agents, (0.1923) * earnings)
+        "wealth_z": np.full(n_agents, 83188),   # riqueza inicial varía de 1 a 20 np.linspace(1, 20, n_agents),  wealth = np.full(n_agents, (0.1923) * earnings)
         "perm_income": np.zeros(n_agents),              # media del AR(1)
         "trans_income": np.zeros(n_agents),             # media del shock iid
         #"enable_jit": np.False,
@@ -244,7 +244,7 @@ for group in groups:
 
     fig.add_trace(go.Scatter(
         x=df_mean["age"],
-        y=df_mean["wealth_illiquid"] / 10,
+        y=df_mean["wealth_z"] / 10,
         name="Illiquid Assets / 10",
         line=dict(color='goldenrod', width=3)
     ))

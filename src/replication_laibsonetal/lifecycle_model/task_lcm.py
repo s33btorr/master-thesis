@@ -39,7 +39,7 @@ result = model.simulate(
         "regime": np.zeros(n_agents, dtype=int),
         "age": np.full(n_agents, float(age_grid.exact_values[0])),  # todos empiezan a los 20
         "wealth": np.full(n_agents, (4709)), #np.linspace(1, 20, n_agents), wealth = np.full(n_agents, (3.5894 - 0.1923) * earnings)
-        "wealth_illiquid": np.full(n_agents, 83188),   # riqueza inicial varía de 1 a 20 np.linspace(1, 20, n_agents),  wealth = np.full(n_agents, (0.1923) * earnings)
+        "wealth_z": np.full(n_agents, 83188),   # riqueza inicial varía de 1 a 20 np.linspace(1, 20, n_agents),  wealth = np.full(n_agents, (0.1923) * earnings)
         "perm_income": np.zeros(n_agents),              # media del AR(1)
         "trans_income": np.zeros(n_agents),             # media del shock iid
     },
@@ -76,7 +76,7 @@ fig = go.Figure()
 fig.add_trace(go.Scatter(x=df_mean["age"], y=df_mean["earnings"], name="Income", line=dict(color='firebrick', width=3)))
 fig.add_trace(go.Scatter(x=df_mean["age"], y=df_mean["consumption"], name="Prox Total Consumption", line=dict(color='royalblue', width=3)))
 fig.add_trace(go.Scatter(x=df_mean["age"], y=df_mean["wealth"], name="Liquid Assets", line=dict(color='forestgreen', width=3)))
-fig.add_trace(go.Scatter(x=df_mean["age"], y=df_mean["wealth_illiquid"]/10, name="Illiquid Assets/10", line=dict(color='goldenrod', width=3)))
+fig.add_trace(go.Scatter(x=df_mean["age"], y=df_mean["wealth_z"]/10, name="Illiquid Assets/10", line=dict(color='goldenrod', width=3)))
 # borre /10 porque no es ni tan grande al dividir...
 fig.update_layout(
     title="Average Lifecycle Profile for Exponential Estimate",
@@ -102,7 +102,7 @@ fig.show()
         "regime": np.zeros(n_agents, dtype=int),
         "age": np.full(n_agents, float(age_grid.exact_values[0])),  # todos empiezan a los 20
         "wealth": np.full(n_agents, (4709)), #np.linspace(1, 20, n_agents), wealth = np.full(n_agents, (3.5894 - 0.1923) * earnings)
-        "wealth_illiquid": np.full(n_agents, 83188),   # riqueza inicial varía de 1 a 20 np.linspace(1, 20, n_agents),  wealth = np.full(n_agents, (0.1923) * earnings)
+        "wealth_z": np.full(n_agents, 83188),   # riqueza inicial varía de 1 a 20 np.linspace(1, 20, n_agents),  wealth = np.full(n_agents, (0.1923) * earnings)
         "perm_income": np.zeros(n_agents),              # media del AR(1)
         "trans_income": np.zeros(n_agents),             # media del shock iid
         #"enable_jit": np.False,
@@ -121,7 +121,7 @@ fig_exp = go.Figure()
 fig_exp.add_trace(go.Scatter(x=df_mean_exp["age"], y=df_mean_exp["earnings"], name="Income", line=dict(color='firebrick', width=3)))
 fig_exp.add_trace(go.Scatter(x=df_mean_exp["age"], y=df_mean_exp["consumption"], name="Total Consumption", line=dict(color='royalblue', width=3)))
 fig_exp.add_trace(go.Scatter(x=df_mean_exp["age"], y=df_mean_exp["wealth"], name="Liquid Assets", line=dict(color='forestgreen', width=3)))
-fig_exp.add_trace(go.Scatter(x=df_mean_exp["age"], y=df_mean_exp["wealth_illiquid"] / 10, name="Illiquid Assets/10", line=dict(color='goldenrod', width=3)))
+fig_exp.add_trace(go.Scatter(x=df_mean_exp["age"], y=df_mean_exp["wealth_z"] / 10, name="Illiquid Assets/10", line=dict(color='goldenrod', width=3)))
 
 fig_exp.update_layout(
     title="Average Lifecycle Profile",
@@ -155,7 +155,7 @@ result_naive = model_naive.simulate(
         "regime": np.zeros(n_agents, dtype=int),
         "age": np.full(n_agents, float(age_grid.exact_values[0])),  # todos empiezan a los 20
         "wealth": np.full(n_agents, (4709)), #np.linspace(1, 20, n_agents), wealth = np.full(n_agents, (3.5894 - 0.1923) * earnings)
-        "wealth_illiquid": np.full(n_agents, 83188),   # riqueza inicial varía de 1 a 20 np.linspace(1, 20, n_agents),  wealth = np.full(n_agents, (0.1923) * earnings)
+        "wealth_z": np.full(n_agents, 83188),   # riqueza inicial varía de 1 a 20 np.linspace(1, 20, n_agents),  wealth = np.full(n_agents, (0.1923) * earnings)
         "perm_income": np.zeros(n_agents),              # media del AR(1)
         "trans_income": np.zeros(n_agents),             # media del shock iid
         #"enable_jit": np.False,
@@ -174,7 +174,7 @@ fig_naive = go.Figure()
 fig_naive.add_trace(go.Scatter(x=df_mean_naive["age"], y=df_mean_naive["earnings"], name="Income", line=dict(color='firebrick', width=3)))
 fig_naive.add_trace(go.Scatter(x=df_mean_naive["age"], y=df_mean_naive["consumption"], name="Total Consumption", line=dict(color='royalblue', width=3)))
 fig_naive.add_trace(go.Scatter(x=df_mean_naive["age"], y=df_mean_naive["wealth"], name="Liquid Assets", line=dict(color='forestgreen', width=3)))
-fig_naive.add_trace(go.Scatter(x=df_mean_naive["age"], y=df_mean_naive["wealth_illiquid"] / 10, name="Illiquid Assets/10", line=dict(color='goldenrod', width=3)))
+fig_naive.add_trace(go.Scatter(x=df_mean_naive["age"], y=df_mean_naive["wealth_z"] / 10, name="Illiquid Assets/10", line=dict(color='goldenrod', width=3)))
 
 fig_naive.update_layout(
     title="Average lifecycle profile for present-biased estimate",

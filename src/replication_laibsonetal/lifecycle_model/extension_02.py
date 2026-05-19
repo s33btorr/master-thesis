@@ -45,7 +45,7 @@ result = model.simulate(
 
         "wealth": np.full(n_agents, 4709),
 
-        "wealth_illiquid": initial_illiquid,
+        "wealth_z": initial_illiquid,
 
         "perm_income": np.zeros(n_agents),
 
@@ -70,7 +70,7 @@ print(df)
 
 initial_illiquid_df = (
     df[df["period"] == 0]
-    .groupby("subject_id")["wealth_illiquid"]
+    .groupby("subject_id")["wealth_z"]
     .first()
     .reset_index(name="initial_illiquid_wealth")
 )
@@ -167,7 +167,7 @@ for group in groups:
     # Illiquid wealth
     fig.add_trace(go.Scatter(
         x=df_mean["age"],
-        y=df_mean["wealth_illiquid"] / 10,
+        y=df_mean["wealth_z"] / 10,
         name="Illiquid Assets / 10",
         line=dict(
             color="goldenrod",

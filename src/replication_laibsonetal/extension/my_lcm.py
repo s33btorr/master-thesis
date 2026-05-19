@@ -30,8 +30,8 @@ result = model.simulate(
     initial_conditions={
         "regime": np.zeros(n_agents, dtype=int),
         "age": np.full(n_agents, float(age_grid.exact_values[0])), 
-        "wealth": np.full(n_agents, (4709)), 
-        "wealth_illiquid": np.full(n_agents, 83188),  
+        "wealth_x": np.full(n_agents, (4709)), 
+        "wealth_z": np.full(n_agents, 83188),  
         "perm_income": np.zeros(n_agents),            
         "trans_income": np.zeros(n_agents),          
     },
@@ -43,32 +43,6 @@ result = model.simulate(
 df = result.to_dataframe(additional_targets="all")
 df["age"] = df["age"].astype(int)
 print(df)
-
-# =========================================================
-# Estadísticas de apoyo para la tesis
-# =========================================================
-
-print("\n--- Consumo mínimo observado ---")
-min_row = df.loc[df["total_consumption"].idxmin()]
-print(min_row[["age", "total_consumption", "earnings",
-               "wealth", "wealth_illiquid"]])
-
-print(f"\n--- Hogares con consumo < $12,000 en algún período ---")
-print(f"Observaciones: {(df['total_consumption'] < 12_000).sum():,}")
-print(f"Agentes únicos: "
-      f"{df.loc[df['total_consumption'] < 12_000, 'subject_id'].nunique():,}")
-
-df_low_episodes = df[df["total_consumption"] < 12_000]
-print(df_low_episodes.groupby("age")["subject_id"].count())
-
-# Episodios en edades laborales activas del modelo (21-60)
-df_working = df_low_episodes[
-    df_low_episodes["age"].between(21, 60)
-]
-print(f"Episodios en edades 21-60: {len(df_working)}")
-print(f"Agentes únicos en edades 21-60: "
-      f"{df_working['subject_id'].nunique()}")
-
 
 fig = go.Figure()
 
@@ -110,55 +84,4 @@ fig.update_layout(
     legend=dict(x=0.7, y=0.95)
 )
 
-#fig.show()
-
-
-
-mpl.rcParams["font.family"] = "serif"
-mpl.rcParams["font.size"] = 10
-mpl.rcParams["axes.labelsize"] = 12
-mpl.rcParams["xtick.labelsize"] = 10
-mpl.rcParams["ytick.labelsize"] = 10
-
-THRESHOLD = 15_996
-df_above = df[df["total_consumption"] >= THRESHOLD]
-df_below = df[df["total_consumption"] < THRESHOLD]
-
-y_above = df_above["total_consumption"] / 1000
-y_below = df_below["total_consumption"] / 1000
-threshold_k = THRESHOLD / 1000
-
-fig, ax = plt.subplots(figsize=(9, 5.8))
-
-ax.scatter(df_above["age"], y_above,
-           s=4, alpha=0.45, color="steelblue", edgecolors="none",
-           label=r"Consumption $\geq \$15{,}996$")
-ax.scatter(df_below["age"], y_below,
-           s=5, alpha=0.8, color="firebrick", edgecolors="none",
-           label=r"Consumption $< \$15{,}996$")
-ax.axhline(threshold_k, linestyle="--", linewidth=1.8, color="black",
-           label=r"$\$15{,}996$ threshold")
-
-ax.set_xlabel("Age")
-ax.set_ylabel("Total consumption (thousands of USD)")
-ax.set_xlim(21, 60)
-ax.set_ylim(0, 50)
-ax.xaxis.set_major_locator(mpl.ticker.MultipleLocator(5))
-ax.tick_params(axis="both", which="major", labelsize=14)
-
-for spine in ax.spines.values():
-    spine.set_visible(True)
-    spine.set_color("black")
-    spine.set_linewidth(1)
-
-legend = ax.legend(fontsize=10, frameon=True, fancybox=False,
-                   edgecolor="black", loc="upper right")
-legend.get_frame().set_alpha(1)
-
-ax.grid(linestyle=":", linewidth=0.5, alpha=0.4)
-
-plt.tight_layout()
-output_path = SRC / BLD / "figures" / "consumption_episodes.png"
-output_path.resolve().parent.mkdir(parents=True, exist_ok=True)
-plt.savefig(output_path, dpi=300, bbox_inches="tight")
-plt.close()
+fig.show()
