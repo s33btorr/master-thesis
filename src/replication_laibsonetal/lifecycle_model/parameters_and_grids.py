@@ -51,15 +51,7 @@ from lifecycle_model.model_functions import load_survival_probs
         #Piece(interval="[50_000, 400_000]", n_points=31), #n_points=62
     )
 )"""
-"""wealth_x_grid    = LinSpacedGrid(start=-45_000, stop=400_000, n_points=25) # con menos falla pero no me hace logica. max de deuda posible es 30.000 anyways
-wealth_z_grid  = LinSpacedGrid(start=0.1, stop=3_500_000, n_points=25)
-investment_x_grid     = LinSpacedGrid(start=-45_000, stop=100_000, n_points=100)
-investment_z_grid     = LinSpacedGrid(start=-400_000, stop=400_000, n_points=100)"""
 
-"""wealth_x_grid    = LinSpacedGrid(start=-10_000, stop=20_000, n_points=25) # cORIGINALES QUE FUNCIONAN CON 0.5...
-wealth_z_grid  = LinSpacedGrid(start=0.1, stop=400_000, n_points=25)
-investment_x_grid     = LinSpacedGrid(start=-10_000, stop=20_000, n_points=100)
-investment_z_grid     = LinSpacedGrid(start=-40_000, stop=40_000, n_points=100)"""
 
 wealth_x_grid    = LinSpacedGrid(start=-5_000, stop=400_000, n_points=25) 
 wealth_z_grid  = LinSpacedGrid(start=2_000, stop=3_500_000, n_points=25)

@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import scipy.stats as stats
-from final.simulate_model import simulate_moments
+from moments.simulate_model import simulate_moments
 
 
 def get_simulation_distribution(n_simulations, master_seed, **kwargs):

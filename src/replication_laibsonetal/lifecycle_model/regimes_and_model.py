@@ -49,8 +49,8 @@ from lifecycle_model.model_functions import (
     )
 
 from lifecycle_model.transition_functions import (
-    end_of_period_wealth,
-    next_wealth,
+    end_of_period_x_wealth,
+    next_wealth_x,
     end_of_period_z_wealth,
     next_wealth_z,
     next_regime_working,
@@ -74,49 +74,37 @@ from lifecycle_model.parameters_and_grids import (
     investment_z_grid,
 )
  
-# esto no se donde va en realidad #
 @categorical(ordered=False)
 class RegimeId:
     working_life: int
     retirement: int
     dead: int
-###### ######
 
 
 working_life = Regime(
     transition=MarkovTransition(next_regime_working),
     active=lambda age: age < retirement_age,
     states={
-        "wealth": wealth_x_grid,
+        "wealth_x": wealth_x_grid,
         "wealth_z": wealth_z_grid,
-        # Permanent income shock: AR(1) via Rouwenhorst
-        # Preferred over Tauchen for persistent processes (rho close to 1) EN MATLAB USAN TAUCHEN...
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
             rho=0.840,
-            sigma=(0.057**0.5), # squared root of sigma e
+            sigma=(0.057**0.5), 
             mu=0.0,
-            n_std=1.5, #m esta en lifecycle sim pag 3
+            n_std=1.5, 
         ),
-        #"perm_income": lcm.shocks.ar1.Rouwenhorst(
-        #    n_points=3, # mirar si el numero de estados en matlab tb es 3
-        #    rho=0.95,    # ywork_auto from fs_params
-        #    sigma=0.1,  # sqrt(ywork_vareps) from fs_params
-        #    mu=0,     # 0 — mean already captured in deterministic_income
-        #),
-
-        # Transitory income shock: iid Normal EN MATLAB CREO QUE ESTO ES MIL VECES MAS COMPLEJO... parece que sigue una grilla toda complicada...
         "trans_income": lcm.shocks.iid.Normal(
             n_points=3,
             gauss_hermite=False,
             mu=0,     # 0
-            sigma=(0.045**0.5),  # sqrt(ywork_varnu) from fs_params
+            sigma=(0.045**0.5),  
             n_std=3,
         ),
     },
     state_transitions={
-        "wealth": next_wealth,
+        "wealth_x": next_wealth_x,
         "wealth_z": next_wealth_z,
     },
     actions={
@@ -132,7 +120,7 @@ working_life = Regime(
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
-        "end_of_period_wealth": end_of_period_wealth,
+        "end_of_period_x_wealth": end_of_period_x_wealth,
         "end_of_period_z_wealth": end_of_period_z_wealth,
         "average_income": average_income,
         "credit_limit": credit_limit,
@@ -151,35 +139,26 @@ retirement = Regime(
     transition=MarkovTransition(next_regime_retirement),
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
-        "wealth": wealth_x_grid,
+        "wealth_x": wealth_x_grid,
         "wealth_z": wealth_z_grid,
-        # Permanent income shock: AR(1) via Rouwenhorst
-        # Preferred over Tauchen for persistent processes (rho close to 1) NO SE EN REALIDAD SI ES EL AR1 QUE HACEN EN MATLAB
-        #"perm_income": lcm.shocks.ar1.Rouwenhorst(
-        #    n_points=3, # mirar si el numero de estados en matlab tb es 3: SI
-        #    rho=0.90,    # ywork_auto from fs_params
-        #    sigma=0.05,  # sqrt(ywork_vareps) from fs_params
-        #    mu=0,     # 0 — mean already captured in deterministic_income
-        #),
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
             rho=0.840,
-            sigma=(0.057**0.5), # squared root of sigma e
+            sigma=(0.057**0.5),
             mu=0.0,
-            n_std=1.5, #m esta en lifecycle sim pag 3
+            n_std=1.5,
         ),
-
         "trans_income": lcm.shocks.iid.Normal(
             n_points=3,
             gauss_hermite=False,
-            mu=0,     # 0
-            sigma=(0.045**0.5),  # sqrt(ywork_varnu) from fs_params
+            mu=0,    
+            sigma=(0.045**0.5),  
             n_std=3,
         ),
     },
     state_transitions={
-        "wealth": next_wealth,
+        "wealth_x": next_wealth_x,
         "wealth_z": next_wealth_z,
     },
      actions={
@@ -192,11 +171,10 @@ retirement = Regime(
         "household_size": household_size,
         "deterministic": deterministic_income,
         "total_consumption": total_consumption,
-        #"deterministic": deterministic_retirement_income,
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
-        "end_of_period_wealth": end_of_period_wealth,
+        "end_of_period_x_wealth": end_of_period_x_wealth,
         "end_of_period_z_wealth": end_of_period_z_wealth,
         "average_income": average_income,
         "credit_limit": credit_limit,
@@ -220,7 +198,7 @@ dead = Regime(
         "average_earnings": average_earnings,
         },
     states={
-        "wealth": wealth_x_grid,
+        "wealth_x": wealth_x_grid,
         "wealth_z": wealth_z_grid,
     },
 )
@@ -234,7 +212,6 @@ model = Model(
     ages=age_grid,
     regime_id_class=RegimeId,
     description="Lifecycle consumption-savings model.",
-    #enable_jit=False, # QUITAR CUANDO LO RESUELVA
 )
 
 
@@ -244,26 +221,25 @@ working_exp = Regime(
     transition=MarkovTransition(next_regime_working),
     active=lambda age: age < retirement_age,
     states={
-        "wealth": wealth_x_grid,
+        "wealth_x": wealth_x_grid,
         "wealth_z": wealth_z_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
             rho=0.840,
-            sigma=(0.057**0.5), # squared root of sigma e
+            sigma=(0.057**0.5), 
             mu=0.0,
-            n_std=1.5, #m esta en lifecycle sim pag 3
+            n_std=1.5, 
         ),
         "trans_income": lcm.shocks.iid.Normal(
             n_points=5,
             gauss_hermite=False,
             mu=0,     # 0
-            sigma=(0.045**0.5),  # sqrt(ywork_varnu) from fs_params
-            n_std=3,
+            sigma=(0.045**0.5), 
         ),
     },
     state_transitions={
-        "wealth": next_wealth,
+        "wealth_x": next_wealth_x,
         "wealth_z": next_wealth_z,
     },
     actions={
@@ -280,7 +256,7 @@ working_exp = Regime(
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
-        "end_of_period_wealth": end_of_period_wealth,
+        "end_of_period_x_wealth": end_of_period_x_wealth,
         "end_of_period_z_wealth": end_of_period_z_wealth,
         "average_income": average_income,
         "credit_limit": credit_limit,
@@ -299,26 +275,26 @@ retirement_exp = Regime(
     transition=MarkovTransition(next_regime_retirement),
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
-        "wealth": wealth_x_grid,
+        "wealth_x": wealth_x_grid,
         "wealth_z": wealth_z_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
             rho=0.840,
-            sigma=(0.057**0.5), # squared root of sigma e
+            sigma=(0.057**0.5), 
             mu=0.0,
-            n_std=1.5, #m esta en lifecycle sim pag 3
+            n_std=1.5,
         ),
         "trans_income": lcm.shocks.iid.Normal(
             n_points=5,
             gauss_hermite=False,
-            mu=0,     # 0
-            sigma=(0.045**0.5),  # sqrt(ywork_varnu) from fs_params
+            mu=0,   
+            sigma=(0.045**0.5),  
             n_std=3,
         ),
     },
     state_transitions={
-        "wealth": next_wealth,
+        "wealth_x": next_wealth_x,
         "wealth_z": next_wealth_z,
     },
      actions={
@@ -335,7 +311,7 @@ retirement_exp = Regime(
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
-        "end_of_period_wealth": end_of_period_wealth,
+        "end_of_period_x_wealth": end_of_period_x_wealth,
         "end_of_period_z_wealth": end_of_period_z_wealth,
         "average_income": average_income,
         "credit_limit": credit_limit,
@@ -364,26 +340,26 @@ working_naive = Regime(
     transition=MarkovTransition(next_regime_working),
     active=lambda age: age < retirement_age,
     states={
-        "wealth": wealth_x_grid,
+        "wealth_x": wealth_x_grid,
         "wealth_z": wealth_z_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
             rho=0.840,
-            sigma=(0.057**0.5), # squared root of sigma e
+            sigma=(0.057**0.5), 
             mu=0.0,
-            n_std=1.5, #m esta en lifecycle sim pag 3
+            n_std=1.5, 
         ),
         "trans_income": lcm.shocks.iid.Normal(
             n_points=5,
             gauss_hermite=False,
             mu=0,     # 0
-            sigma=(0.045**0.5),  # sqrt(ywork_varnu) from fs_params
+            sigma=(0.045**0.5),  
             n_std=3,
         ),
     },
     state_transitions={
-        "wealth": next_wealth,
+        "wealth_x": next_wealth_x,
         "wealth_z": next_wealth_z,
     },
     actions={
@@ -403,7 +379,7 @@ working_naive = Regime(
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
-        "end_of_period_wealth": end_of_period_wealth,
+        "end_of_period_x_wealth": end_of_period_x_wealth,
         "end_of_period_z_wealth": end_of_period_z_wealth,
         "average_income": average_income,
         "credit_limit": credit_limit,
@@ -423,26 +399,26 @@ retirement_naive = Regime(
     transition=MarkovTransition(next_regime_retirement),
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
-        "wealth": wealth_x_grid,
+        "wealth_x": wealth_x_grid,
         "wealth_z": wealth_z_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
             rho=0.840,
-            sigma=(0.057**0.5), # squared root of sigma e
+            sigma=(0.057**0.5), 
             mu=0.0,
-            n_std=1.5, #m esta en lifecycle sim pag 3
+            n_std=1.5, 
         ),
         "trans_income": lcm.shocks.iid.Normal(
             n_points=5,
             gauss_hermite=False,
             mu=0,     # 0
-            sigma=(0.045**0.5),  # sqrt(ywork_varnu) from fs_params
+            sigma=(0.045**0.5),  
             n_std=3,
         ),
     },
     state_transitions={
-        "wealth": next_wealth,
+        "wealth_x": next_wealth_x,
         "wealth_z": next_wealth_z,
     },
      actions={
@@ -462,7 +438,7 @@ retirement_naive = Regime(
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
-        "end_of_period_wealth": end_of_period_wealth,
+        "end_of_period_x_wealth": end_of_period_x_wealth,
         "end_of_period_z_wealth": end_of_period_z_wealth,
         "average_income": average_income,
         "credit_limit": credit_limit,

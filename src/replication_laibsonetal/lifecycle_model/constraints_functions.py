@@ -34,7 +34,7 @@ def budget_constraint(
     return total_consumption > 0 
 
 def borrowing_constraint(
-    end_of_period_wealth: FloatND,
+    end_of_period_x_wealth: FloatND,
     credit_limit: float,
 ) -> BoolND:
     """
@@ -60,13 +60,13 @@ def z_wealth_constraint(
 #El fragmento EV____(1:currix0-1,:,:,t) = -Inf; es fundamental. Evita que el agente muera con deudas. Al asignar una utilidad de −∞ a cualquier estado donde los activos sean negativos al final de la vida, el modelo obliga al agente a pagar todas sus deudas antes de que el ciclo termine.
 
 def ponzi_constraint(
-    end_of_period_wealth: FloatND,
+    end_of_period_x_wealth: FloatND,
     age: float,
 ) -> BoolND:
-    return jnp.where(age == 90, end_of_period_wealth>=0, True)
+    return jnp.where(age == 90, end_of_period_x_wealth>=0, True)
 
 def special_x_constraint(
-    end_of_period_wealth: FloatND,
+    end_of_period_x_wealth: FloatND,
 ) -> BoolND:
     """
     I do not 100% understand why I need it...
