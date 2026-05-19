@@ -21,8 +21,8 @@ error1_result = error1_model.simulate(
     initial_conditions={
         "regime": np.zeros(n_agents, dtype=int),
         "age": np.full(n_agents, float(age_grid.exact_values[0])), 
-        "wealth": np.full(n_agents, (4709)), 
-        "wealth_illiquid": np.full(n_agents, 83188),  
+        "wealth_x": np.full(n_agents, (4709)), 
+        "wealth_z": np.full(n_agents, 83188),  
         "perm_income": np.zeros(n_agents),            
         "trans_income": np.zeros(n_agents),          
     },
