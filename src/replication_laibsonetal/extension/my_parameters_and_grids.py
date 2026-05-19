@@ -38,7 +38,7 @@ from extension.my_model_functions import load_survival_probs
 
 ### Grids ###
 
-wealth_liquid_grid    = LinSpacedGrid(start=-5_000, stop=400_000, n_points=25) 
+wealth_x_grid    = LinSpacedGrid(start=-5_000, stop=400_000, n_points=25) 
 wealth_illiquid_grid  = LinSpacedGrid(start=2_000, stop=3_500_000, n_points=25)
 investment_x_grid     = LinSpacedGrid(start=-50_000, stop=50_000, n_points=100)
 investment_z_grid     = LinSpacedGrid(start=-100_000, stop=100_000, n_points=100)

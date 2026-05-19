@@ -69,7 +69,7 @@ from extension.my_constraints_functions import (
 
 from extension.my_parameters_and_grids import (
     wealth_illiquid_grid, 
-    wealth_liquid_grid, age_grid, 
+    wealth_x_grid, age_grid, 
     retirement_age, dead_age, 
     investment_x_grid, 
     investment_z_grid,
@@ -88,7 +88,7 @@ working_life = Regime(
     transition=MarkovTransition(next_regime_working),
     active=lambda age: age < retirement_age,
     states={
-        "wealth": wealth_liquid_grid,
+        "wealth": wealth_x_grid,
         "wealth_illiquid": wealth_illiquid_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
@@ -144,7 +144,7 @@ retirement = Regime(
     transition=MarkovTransition(next_regime_retirement),
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
-        "wealth": wealth_liquid_grid,
+        "wealth": wealth_x_grid,
         "wealth_illiquid": wealth_illiquid_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
@@ -205,7 +205,7 @@ dead = Regime(
         "average_earnings": average_earnings,
         },
     states={
-        "wealth": wealth_liquid_grid,
+        "wealth": wealth_x_grid,
         "wealth_illiquid": wealth_illiquid_grid,
     },
 )
