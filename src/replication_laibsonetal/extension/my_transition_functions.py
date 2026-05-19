@@ -63,7 +63,7 @@ def end_of_period_z_wealth(
     return wealth_illiquid + investment_z
     
 
-def next_wealth_illiquid(
+def next_wealth_z(
     end_of_period_z_wealth: FloatND,
     interest_rate_illiquid: float,
 ) -> ContinuousState:

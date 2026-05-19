@@ -49,10 +49,10 @@ from lifecycle_model.model_functions import (
     )
 
 from lifecycle_model.transition_functions import (
-    end_of_period_wealth,
-    next_wealth,
+    end_of_period_x_wealth,
+    next_wealth_x,
     end_of_period_z_wealth,
-    next_wealth_illiquid,
+    next_wealth_z,
     next_regime_working,
     next_regime_retirement,
 )
@@ -90,8 +90,8 @@ error1_working_life = Regime(
     transition=MarkovTransition(next_regime_working),
     active=lambda age: age < retirement_age,
     states={
-        "wealth": error1_wealth_x_grid,
-        "wealth_illiquid": wealth_z_grid,
+        "wealth_x": error1_wealth_x_grid,
+        "wealth_z": wealth_z_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
@@ -109,8 +109,8 @@ error1_working_life = Regime(
         ),
     },
     state_transitions={
-        "wealth": next_wealth,
-        "wealth_illiquid": next_wealth_illiquid,
+        "wealth_x": next_wealth_x,
+        "wealth_z": next_wealth_z,
     },
     actions={
         "investment_x": investment_x_grid,
@@ -125,7 +125,7 @@ error1_working_life = Regime(
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
-        "end_of_period_wealth": end_of_period_wealth,
+        "end_of_period_x_wealth": end_of_period_x_wealth,
         "end_of_period_z_wealth": end_of_period_z_wealth,
         "average_income": average_income,
         "credit_limit": credit_limit,
@@ -144,8 +144,8 @@ error1_retirement = Regime(
     transition=MarkovTransition(next_regime_retirement),
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
-        "wealth": error1_wealth_x_grid,
-        "wealth_illiquid": wealth_z_grid,
+        "wealth_x": error1_wealth_x_grid,
+        "wealth_z": wealth_z_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
@@ -163,8 +163,8 @@ error1_retirement = Regime(
         ),
     },
     state_transitions={
-        "wealth": next_wealth,
-        "wealth_illiquid": next_wealth_illiquid,
+        "wealth_x": next_wealth_x,
+        "wealth_z": next_wealth_z,
     },
      actions={
         "investment_x": investment_x_grid,
@@ -179,7 +179,7 @@ error1_retirement = Regime(
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
-        "end_of_period_wealth": end_of_period_wealth,
+        "end_of_period_x_wealth": end_of_period_x_wealth,
         "end_of_period_z_wealth": end_of_period_z_wealth,
         "average_income": average_income,
         "credit_limit": credit_limit,
@@ -203,8 +203,8 @@ error1_dead = Regime(
         "average_earnings": average_earnings,
         },
     states={
-        "wealth": error1_wealth_x_grid,
-        "wealth_illiquid": wealth_z_grid,
+        "wealth_x": error1_wealth_x_grid,
+        "wealth_z": wealth_z_grid,
     },
 )
 
@@ -226,8 +226,8 @@ error2_working_life = Regime(
     transition=MarkovTransition(next_regime_working),
     active=lambda age: age < retirement_age,
     states={
-        "wealth": error2_wealth_x_grid,
-        "wealth_illiquid": error2_wealth_z_grid,
+        "wealth_x": error2_wealth_x_grid,
+        "wealth_z": error2_wealth_z_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
@@ -245,8 +245,8 @@ error2_working_life = Regime(
         ),
     },
     state_transitions={
-        "wealth": next_wealth,
-        "wealth_illiquid": next_wealth_illiquid,
+        "wealth_x": next_wealth_x,
+        "wealth_z": next_wealth_z,
     },
     actions={
         "investment_x": investment_x_grid,
@@ -261,7 +261,7 @@ error2_working_life = Regime(
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
-        "end_of_period_wealth": end_of_period_wealth,
+        "end_of_period_x_wealth": end_of_period_x_wealth,
         "end_of_period_z_wealth": end_of_period_z_wealth,
         "average_income": average_income,
         "credit_limit": credit_limit,
@@ -280,8 +280,8 @@ error2_retirement = Regime(
     transition=MarkovTransition(next_regime_retirement),
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
-        "wealth": error2_wealth_x_grid,
-        "wealth_illiquid": error2_wealth_z_grid,
+        "wealth_x": error2_wealth_x_grid,
+        "wealth_z": error2_wealth_z_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
@@ -299,8 +299,8 @@ error2_retirement = Regime(
         ),
     },
     state_transitions={
-        "wealth": next_wealth,
-        "wealth_illiquid": next_wealth_illiquid,
+        "wealth_x": next_wealth_x,
+        "wealth_z": next_wealth_z,
     },
      actions={
         "investment_x": investment_x_grid,
@@ -315,7 +315,7 @@ error2_retirement = Regime(
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
-        "end_of_period_wealth": end_of_period_wealth,
+        "end_of_period_x_wealth": end_of_period_x_wealth,
         "end_of_period_z_wealth": end_of_period_z_wealth,
         "average_income": average_income,
         "credit_limit": credit_limit,
@@ -339,8 +339,8 @@ error2_dead = Regime(
         "average_earnings": average_earnings,
         },
     states={
-        "wealth": error2_wealth_x_grid,
-        "wealth_illiquid": error2_wealth_z_grid,
+        "wealth_x": error2_wealth_x_grid,
+        "wealth_z": error2_wealth_z_grid,
     },
 )
 
@@ -361,8 +361,8 @@ error3_working_naive = Regime(
     transition=MarkovTransition(next_regime_working),
     active=lambda age: age < retirement_age,
     states={
-        "wealth": wealth_x_grid,
-        "wealth_illiquid": wealth_z_grid,
+        "wealth_x": wealth_x_grid,
+        "wealth_z": wealth_z_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
@@ -380,8 +380,8 @@ error3_working_naive = Regime(
         ),
     },
     state_transitions={
-        "wealth": next_wealth,
-        "wealth_illiquid": next_wealth_illiquid,
+        "wealth_x": next_wealth_x,
+        "wealth_z": next_wealth_z,
     },
     actions={
         "investment_x": investment_x_grid,
@@ -400,7 +400,7 @@ error3_working_naive = Regime(
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
-        "end_of_period_wealth": end_of_period_wealth,
+        "end_of_period_x_wealth": end_of_period_x_wealth,
         "end_of_period_z_wealth": end_of_period_z_wealth,
         "average_income": average_income,
         "credit_limit": credit_limit,
@@ -418,8 +418,8 @@ error3_retirement_naive = Regime(
     transition=MarkovTransition(next_regime_retirement),
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
-        "wealth": wealth_x_grid,
-        "wealth_illiquid": wealth_z_grid,
+        "wealth_x": wealth_x_grid,
+        "wealth_z": wealth_z_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
@@ -437,8 +437,8 @@ error3_retirement_naive = Regime(
         ),
     },
     state_transitions={
-        "wealth": next_wealth,
-        "wealth_illiquid": next_wealth_illiquid,
+        "wealth_x": next_wealth_x,
+        "wealth_z": next_wealth_z,
     },
      actions={
         "investment_x": investment_x_grid,
@@ -457,7 +457,7 @@ error3_retirement_naive = Regime(
         "number_of_kids": number_of_kids,
         "number_of_depadul": number_of_depadul,
         "earnings": earnings,
-        "end_of_period_wealth": end_of_period_wealth,
+        "end_of_period_x_wealth": end_of_period_x_wealth,
         "end_of_period_z_wealth": end_of_period_z_wealth,
         "average_income": average_income,
         "credit_limit": credit_limit,
@@ -479,8 +479,8 @@ error3_dead = Regime(
         "average_earnings": average_earnings,
         },
     states={
-        "wealth": wealth_x_grid,
-        "wealth_illiquid": wealth_z_grid,
+        "wealth_x": wealth_x_grid,
+        "wealth_z": wealth_z_grid,
     },
 )
 

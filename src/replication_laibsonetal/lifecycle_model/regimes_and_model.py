@@ -52,7 +52,7 @@ from lifecycle_model.transition_functions import (
     end_of_period_wealth,
     next_wealth,
     end_of_period_z_wealth,
-    next_wealth_illiquid,
+    next_wealth_z,
     next_regime_working,
     next_regime_retirement,
 )
@@ -117,7 +117,7 @@ working_life = Regime(
     },
     state_transitions={
         "wealth": next_wealth,
-        "wealth_illiquid": next_wealth_illiquid,
+        "wealth_illiquid": next_wealth_z,
     },
     actions={
         "investment_x": investment_x_grid,
@@ -180,7 +180,7 @@ retirement = Regime(
     },
     state_transitions={
         "wealth": next_wealth,
-        "wealth_illiquid": next_wealth_illiquid,
+        "wealth_illiquid": next_wealth_z,
     },
      actions={
         "investment_x": investment_x_grid,
@@ -264,7 +264,7 @@ working_exp = Regime(
     },
     state_transitions={
         "wealth": next_wealth,
-        "wealth_illiquid": next_wealth_illiquid,
+        "wealth_illiquid": next_wealth_z,
     },
     actions={
         "investment_x": investment_x_grid,
@@ -319,7 +319,7 @@ retirement_exp = Regime(
     },
     state_transitions={
         "wealth": next_wealth,
-        "wealth_illiquid": next_wealth_illiquid,
+        "wealth_illiquid": next_wealth_z,
     },
      actions={
         "investment_x": investment_x_grid,
@@ -384,7 +384,7 @@ working_naive = Regime(
     },
     state_transitions={
         "wealth": next_wealth,
-        "wealth_illiquid": next_wealth_illiquid,
+        "wealth_illiquid": next_wealth_z,
     },
     actions={
         "investment_x": investment_x_grid,
@@ -443,7 +443,7 @@ retirement_naive = Regime(
     },
     state_transitions={
         "wealth": next_wealth,
-        "wealth_illiquid": next_wealth_illiquid,
+        "wealth_illiquid": next_wealth_z,
     },
      actions={
         "investment_x": investment_x_grid,
