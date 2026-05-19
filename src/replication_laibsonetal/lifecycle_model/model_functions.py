@@ -43,16 +43,7 @@ def household_size(
     """
     Effective household size as a function of age.
  
-    Mirrors the Matlab specification (LifecycleSim.m, baseline sqrtscale=False):
-        spouse   = 2  (always)
-        kids     = a0kids * exp(a1kids*age - a2kids*age^2)
-        depadul  = a0depadul * exp(a1depadul*age - a2depadul*age^2)
-        hhs      = 1*spouse + 0.4*kids + 1*depadul
- 
-    Parameters come from first-stage demographics regression (IPUMS-USA).
-    Loaded in main.m from: IPUMS/output/{educ}/nlsur_nkids_ndepad_est_{educ}.xlsx
- 
-    TODO: add mortality correction to spouse term when mortalityn is implemented.
+    Parameters come from first-stage demographics regression.
     """
     spouse  = 2.0
     kids    = a0kids * jnp.exp(a1kids * age - a2kids * age ** 2)
@@ -65,6 +56,9 @@ def number_of_kids(
         a1kids: float,
         a2kids: float,
 ) -> FloatND:
+    """
+    Number of kids as a function of age.
+    """
     return a0kids * jnp.exp((a1kids * age) - (a2kids * (age ** 2)/100))
 
 def number_of_depadul(
@@ -73,12 +67,19 @@ def number_of_depadul(
         a1depadul: float,
         a2depadul: float,
 ) -> FloatND:
+    """
+    Number of dependent adults as a function of age.
+    """
     return a0depadul * jnp.exp((a1depadul * age) - (a2depadul * (age ** 2)/100))
 
 def liquidation_cost(
     age: float,
     #zilliq: float,
 ) -> FloatND:
+    """
+    Liquidation cost as a function of age.
+    """
+
     return 0.5 / (1 + jnp.exp((age - 50) / 10)) # tengo que incluir activos iliquidos completamente y que estos cuestan siempre 2 (200%) liquidarlos
 
 
@@ -100,14 +101,8 @@ def deterministic_income(
 ) -> FloatND:
     """
     Deterministic component of log income (cubic age polynomial).
-
-    Mirrors the Matlab specification:
-        ymean = cons + age*coeff + (age^2/100)*coeff2 + (age^3/10000)*coeff3
-
-    Note: spouse, kids, depadul terms omitted for simplicity.
-    They can be added as additional float arguments once the profiles are fixed.
     """
-    spouse = 2 # ponen que es siempre 2...
+    spouse = 2
     return (
         ywork_cons
         + ywork_kidscoeff * number_of_kids
@@ -117,7 +112,6 @@ def deterministic_income(
         + ywork_age2coeff * (age ** 2) / 100
         + ywork_age3coeff * (age ** 3) / 10000     
     ) 
-# CREAR FUNCION QUE GENERE KIDS, DEPADUL Y SPOUSE POR SEPARADO.
 
 def deterministic_retirement_income(
     age: float,
@@ -125,13 +119,7 @@ def deterministic_retirement_income(
     yret_agecoeff: float,
 ) -> FloatND:
     """
-    Deterministic component of log income (cubic age polynomial).
-
-    Mirrors the Matlab specification:
-        ymean = cons + age*coeff + (age^2/100)*coeff2 + (age^3/10000)*coeff3
-
-    Note: spouse, kids, depadul terms omitted for simplicity.
-    They can be added as additional float arguments once the profiles are fixed.
+    Deterministic component of log income for retirement (cubic age polynomial).
     """
     return (
         yret_cons
@@ -144,10 +132,8 @@ def earnings(
     deterministic: FloatND,
 ) -> FloatND:
     """
-    Total labor earnings in levels.
-
+    Total earnings in levels.
     Log income = deterministic_mean + permanent_AR1_shock + transitory_iid_shock.
-    Exponentiate to get level earnings.
     """
     return jnp.exp(deterministic + (perm_income + trans_income)) # asi lo entiendo yo del codigo...
 
@@ -171,7 +157,8 @@ def average_earnings( # separar Y cambiar nombre.. confunde con la otra (es mas 
     ywork_varnu: float,
 ) -> float:
     """
-    The shocks are mot included because they have expected value 0.
+    Average earnings among years.
+    The shocks are not included because they have expected value 0.
     """
     ages = jnp.arange(20, 91, dtype=jnp.float32)
     spouse = 2
@@ -206,6 +193,10 @@ def average_income(
     ywork_vareps: float,
     ywork_varnu: float,
 ) -> float:
+    """
+    Average income in specific period t.
+    Same for all households, varies with age.
+    """
     ywork_eps = ywork_vareps * 0.5
     ywork_nu = ywork_varnu * 0.5
     var_ar1 = ywork_eps / (1 - ywork_auto**2)
@@ -219,6 +210,9 @@ def credit_limit(
     c2credit: float,
     average_income: float,
 ) -> float:
+    """
+    Absolute value of credit limit that depends on average income in period t.
+    """
     credit_limit_rate = c0credit + (c1credit*age) + (c2credit*(age**2)/100) # en el paper esta con el (age**2)/ 100, en el codigo esta sin el 100... PROBAR CON AMBOS
     return average_income * credit_limit_rate
 
@@ -231,6 +225,9 @@ def total_consumption(
     liquidation_cost: FloatND,
     wealth_z: ContinuousState,
 ) -> FloatND:
+    """
+    Consumption including illiquid wealth, as it enters in the utility.
+    """
     liq_cost = liquidation_cost * jnp.minimum(investment_z, 0)
     consumption = earnings - investment_x - investment_z + liq_cost
     return consumption + (0.05*wealth_z)
@@ -242,14 +239,9 @@ def utility(
     risk_aversion: float,
 ) -> FloatND:
   
-    """CRRA utility scaled by household size.
- 
-    Mirrors the Matlab baseline (sqrtscale=False, LifecycleSim_BackwardInduct.m):
-        U = hhs * (c/hhs)^(1-rho) / (1-rho)
- 
-    TODO: add sqrtscale variant (divides by sqrt(hhs) instead of hhs).
-    TODO: add mortality-weighted discounting when mortalityn is implemented.
-    TODO: add bequest utility at terminal age.
+    """
+    CRRA utility scaled by household size.
+    Note: Changes if rho=1.
     """
     c_per_hh = total_consumption / household_size
     numerador = household_size * ((c_per_hh**(1 - risk_aversion)) - 1) # hice todo esto porque me estaba dando valores raros para ver si se acomoda. Asi lo hacen en matlab
@@ -282,6 +274,9 @@ def exponential_H(
     E_next_V: float,
     discount_factor: float,
 ) -> float:
+    """
+    Value function for exponential agent.
+    """
     return utility + discount_factor * E_next_V
 
 def beta_delta_H(
@@ -290,6 +285,9 @@ def beta_delta_H(
     beta: float,
     delta: float,
 ) -> float:
+    """
+    Value function for naive agent.
+    """
     return utility + beta * delta * E_next_V
 
 ### function for params ###
@@ -297,8 +295,7 @@ def beta_delta_H(
 def load_survival_probs(survival_document_paths_woman, survival_document_paths_man):
     
     """
-    Uploads survival probabilities of man and woman for later use.
-
+    Uploads survival probabilities of man and woman from data.
     """
     
     death_m = pd.read_csv(survival_document_paths_man, skiprows=2, header=None).iloc[:, 1:].values
