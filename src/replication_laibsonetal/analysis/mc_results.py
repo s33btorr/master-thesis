@@ -65,7 +65,8 @@ comparison_with_paper = dataframe_results(
 
 print (comparison_with_paper)
 
-latex_table = (
+# Use this for latex table
+"""latex_table = (
         comparison_with_paper.style
         .format({
             "Own Simulation": "{:.3f}",
@@ -83,4 +84,4 @@ latex_table = (
 
 output_path = SRC / BLD / "tables" / "exponential.tex"
 output_path.resolve().parent.mkdir(parents=True, exist_ok=True)
-output_path.write_text(latex_table)
+output_path.write_text(latex_table)"""
