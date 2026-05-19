@@ -55,7 +55,7 @@ def next_wealth(
 
 ### Illiquid Wealth Z ###
 
-def end_of_period_wealth_illiquid(
+def end_of_period_z_wealth(
     wealth_illiquid: ContinuousState,
     investment_z: ContinuousAction,
 ) -> FloatND:
@@ -64,10 +64,10 @@ def end_of_period_wealth_illiquid(
     
 
 def next_wealth_illiquid(
-    end_of_period_wealth_illiquid: FloatND,
+    end_of_period_z_wealth: FloatND,
     interest_rate_illiquid: float,
 ) -> ContinuousState:
-    return (end_of_period_wealth_illiquid) * (1 + interest_rate_illiquid)
+    return (end_of_period_z_wealth) * (1 + interest_rate_illiquid)
 
 
 ### Regime transitions ###

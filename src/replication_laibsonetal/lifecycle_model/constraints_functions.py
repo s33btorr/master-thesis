@@ -49,12 +49,12 @@ def borrowing_constraint(
     return end_of_period_x_wealth>= - (credit_limit)
 
 def illiquid_wealth_constraint(
-    end_of_period_wealth_illiquid: FloatND,
+    end_of_period_z_wealth: FloatND,
 ) -> BoolND:
     """
     NO SE SI ESTA ES NECESARIA PORQUE YA DE POR SI NO PERMITO EN LA GRILLA QUE PILLE VALORES NEGATIVOS... de todas formas, no funciono....
     """
-    return end_of_period_wealth_illiquid >= 0 # quiza agregar que ocurre cuando es falso esto
+    return end_of_period_z_wealth >= 0 # quiza agregar que ocurre cuando es falso esto
 
 
 #El fragmento EV____(1:currix0-1,:,:,t) = -Inf; es fundamental. Evita que el agente muera con deudas. Al asignar una utilidad de −∞ a cualquier estado donde los activos sean negativos al final de la vida, el modelo obliga al agente a pagar todas sus deudas antes de que el ciclo termine.
@@ -75,13 +75,13 @@ def special_constraint(
     return (end_of_period_x_wealth>= -5_000) & (end_of_period_x_wealth<= 400_000)
 
 def special_illiquid_constraint(
-    end_of_period_wealth_illiquid: FloatND,
+    end_of_period_z_wealth: FloatND,
 ) -> BoolND:
     """
     I do not 100% understand it...
     It does not work because it starts acumulating under the grid
     """
-    return end_of_period_wealth_illiquid <= 3_500_000
+    return end_of_period_z_wealth <= 3_500_000
 
 """def liquid_wealth_constraint_last_period(
     end_of_period_wealth: FloatND,

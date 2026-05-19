@@ -17,19 +17,19 @@ from lcm.typing import (
 )
 
 def error1_special_constraint(
-    end_of_period_wealth: FloatND,
+    end_of_period_x_wealth: FloatND,
 ) -> BoolND:
     """
     Function that limits state grid: Liquid Wealth. 
     Used to obtain error when changing lowest value in wealth_x_grid.
     """
-    return (end_of_period_wealth >= -45_000) & (end_of_period_wealth <= 400_000)
+    return (end_of_period_x_wealth >= -45_000) & (end_of_period_x_wealth <= 400_000)
 
 def error2_special_constraint(
-    end_of_period_wealth: FloatND,
+    end_of_period_x_wealth: FloatND,
 ) -> BoolND:
     """
     Function that limits state grid: Liquid Wealth. 
     Used to obtain error when changing lowest value in wealth_z_grid.
     """
-    return (end_of_period_wealth >= -6_000) & (end_of_period_wealth <= 400_000)
+    return (end_of_period_x_wealth >= -6_000) & (end_of_period_x_wealth <= 400_000)
