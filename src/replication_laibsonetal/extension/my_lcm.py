@@ -12,7 +12,6 @@ from matplotlib.ticker import FuncFormatter
 
 from extension.my_regimes_and_model import model
 from extension.my_parameters_and_grids import params, age_grid
-from final.moments_calculation import compute_simulated_moments
 
 from config import BLD, SRC, SEED
 

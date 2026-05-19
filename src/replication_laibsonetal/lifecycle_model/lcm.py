@@ -12,7 +12,7 @@ from matplotlib.ticker import FuncFormatter
 
 from lifecycle_model.regimes_and_model import model, model_exp, model_naive
 from lifecycle_model.parameters_and_grids import params, age_grid, params_naive
-from final.moments_calculation import compute_simulated_moments
+from moments.moments_calculation import compute_simulated_moments
 
 from config import BLD, SRC, SEED
 

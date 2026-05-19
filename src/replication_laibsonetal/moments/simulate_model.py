@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from final.moments_calculation import compute_simulated_moments, MOMENT_NAMES
+from moments.moments_calculation import compute_simulated_moments, MOMENT_NAMES
 
 INITIAL_WEALTH          = 4709.0    # med_liq_wealth * Ymean_(1)
 INITIAL_WEALTH_ILLIQUID = 83188.0   # (med_total_wealth - med_liq_wealth) * Ymean_(1)
