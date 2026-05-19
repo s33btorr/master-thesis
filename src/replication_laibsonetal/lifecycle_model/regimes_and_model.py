@@ -67,7 +67,7 @@ from lifecycle_model.constraints_functions import (
 )
 
 from lifecycle_model.parameters_and_grids import (
-    wealth_illiquid_grid, 
+    wealth_z_grid, 
     wealth_x_grid, age_grid, 
     retirement_age, dead_age, 
     investment_x_grid, 
@@ -88,7 +88,7 @@ working_life = Regime(
     active=lambda age: age < retirement_age,
     states={
         "wealth": wealth_x_grid,
-        "wealth_illiquid": wealth_illiquid_grid,
+        "wealth_illiquid": wealth_z_grid,
         # Permanent income shock: AR(1) via Rouwenhorst
         # Preferred over Tauchen for persistent processes (rho close to 1) EN MATLAB USAN TAUCHEN...
         "perm_income": lcm.shocks.ar1.Tauchen(
@@ -152,7 +152,7 @@ retirement = Regime(
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
         "wealth": wealth_x_grid,
-        "wealth_illiquid": wealth_illiquid_grid,
+        "wealth_illiquid": wealth_z_grid,
         # Permanent income shock: AR(1) via Rouwenhorst
         # Preferred over Tauchen for persistent processes (rho close to 1) NO SE EN REALIDAD SI ES EL AR1 QUE HACEN EN MATLAB
         #"perm_income": lcm.shocks.ar1.Rouwenhorst(
@@ -221,7 +221,7 @@ dead = Regime(
         },
     states={
         "wealth": wealth_x_grid,
-        "wealth_illiquid": wealth_illiquid_grid,
+        "wealth_illiquid": wealth_z_grid,
     },
 )
 
@@ -245,7 +245,7 @@ working_exp = Regime(
     active=lambda age: age < retirement_age,
     states={
         "wealth": wealth_x_grid,
-        "wealth_illiquid": wealth_illiquid_grid,
+        "wealth_illiquid": wealth_z_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
@@ -300,7 +300,7 @@ retirement_exp = Regime(
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
         "wealth": wealth_x_grid,
-        "wealth_illiquid": wealth_illiquid_grid,
+        "wealth_illiquid": wealth_z_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
@@ -365,7 +365,7 @@ working_naive = Regime(
     active=lambda age: age < retirement_age,
     states={
         "wealth": wealth_x_grid,
-        "wealth_illiquid": wealth_illiquid_grid,
+        "wealth_illiquid": wealth_z_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
@@ -424,7 +424,7 @@ retirement_naive = Regime(
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
         "wealth": wealth_x_grid,
-        "wealth_illiquid": wealth_illiquid_grid,
+        "wealth_illiquid": wealth_z_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,

@@ -67,7 +67,7 @@ from lifecycle_model.constraints_functions import (
 )
 
 from lifecycle_model.parameters_and_grids import (
-    wealth_illiquid_grid, 
+    wealth_z_grid, 
     wealth_x_grid, age_grid, 
     retirement_age, dead_age, 
     investment_x_grid, 
@@ -76,7 +76,7 @@ from lifecycle_model.parameters_and_grids import (
 
 from errors.error_constraints_functions import(error1_special_constraint, error2_special_constraint)
 
-from errors.error_grids import(error1_wealth_x_grid, error2_wealth_illiquid_grid, error2_wealth_x_grid)
+from errors.error_grids import(error1_wealth_x_grid, error2_wealth_z_grid, error2_wealth_x_grid)
  
 @categorical(ordered=False)
 class RegimeId:
@@ -91,7 +91,7 @@ error1_working_life = Regime(
     active=lambda age: age < retirement_age,
     states={
         "wealth": error1_wealth_x_grid,
-        "wealth_illiquid": wealth_illiquid_grid,
+        "wealth_illiquid": wealth_z_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
@@ -145,7 +145,7 @@ error1_retirement = Regime(
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
         "wealth": error1_wealth_x_grid,
-        "wealth_illiquid": wealth_illiquid_grid,
+        "wealth_illiquid": wealth_z_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
@@ -204,7 +204,7 @@ error1_dead = Regime(
         },
     states={
         "wealth": error1_wealth_x_grid,
-        "wealth_illiquid": wealth_illiquid_grid,
+        "wealth_illiquid": wealth_z_grid,
     },
 )
 
@@ -227,7 +227,7 @@ error2_working_life = Regime(
     active=lambda age: age < retirement_age,
     states={
         "wealth": error2_wealth_x_grid,
-        "wealth_illiquid": error2_wealth_illiquid_grid,
+        "wealth_illiquid": error2_wealth_z_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
@@ -281,7 +281,7 @@ error2_retirement = Regime(
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
         "wealth": error2_wealth_x_grid,
-        "wealth_illiquid": error2_wealth_illiquid_grid,
+        "wealth_illiquid": error2_wealth_z_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
@@ -340,7 +340,7 @@ error2_dead = Regime(
         },
     states={
         "wealth": error2_wealth_x_grid,
-        "wealth_illiquid": error2_wealth_illiquid_grid,
+        "wealth_illiquid": error2_wealth_z_grid,
     },
 )
 
@@ -362,7 +362,7 @@ error3_working_naive = Regime(
     active=lambda age: age < retirement_age,
     states={
         "wealth": wealth_x_grid,
-        "wealth_illiquid": wealth_illiquid_grid,
+        "wealth_illiquid": wealth_z_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
@@ -419,7 +419,7 @@ error3_retirement_naive = Regime(
     active=lambda age: (age >= retirement_age) & (age < dead_age),
     states={
         "wealth": wealth_x_grid,
-        "wealth_illiquid": wealth_illiquid_grid,
+        "wealth_illiquid": wealth_z_grid,
         "perm_income": lcm.shocks.ar1.Tauchen(
             n_points=3,
             gauss_hermite=False,
@@ -480,7 +480,7 @@ error3_dead = Regime(
         },
     states={
         "wealth": wealth_x_grid,
-        "wealth_illiquid": wealth_illiquid_grid,
+        "wealth_illiquid": wealth_z_grid,
     },
 )
 

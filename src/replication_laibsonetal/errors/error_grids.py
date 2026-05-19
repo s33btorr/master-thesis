@@ -19,5 +19,5 @@ from pathlib import Path
 error1_wealth_x_grid    = LinSpacedGrid(start=-45_000, stop=400_000, n_points=25) 
 
 error2_wealth_x_grid    = LinSpacedGrid(start=-6_000, stop=400_000, n_points=25) 
-error2_wealth_illiquid_grid  = LinSpacedGrid(start=0.1, stop=3_500_000, n_points=25)
+error2_wealth_z_grid  = LinSpacedGrid(start=0.1, stop=3_500_000, n_points=25)
 
