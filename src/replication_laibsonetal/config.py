@@ -7,6 +7,7 @@ SRC = Path(__file__).parent.resolve()
 ROOT = SRC.joinpath("..", "..").resolve()
 
 BLD = ROOT.joinpath("bld").resolve()
+DEBUG = ROOT.joinpath("debug").resolve()
 
 
 DOCUMENTS = ROOT.joinpath("documents").resolve()

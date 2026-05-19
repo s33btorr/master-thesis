@@ -6,6 +6,9 @@ import jax.numpy as jnp
 import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+from matplotlib.ticker import FuncFormatter
 
 from extension.my_regimes_and_model import model
 from extension.my_parameters_and_grids import params, age_grid
@@ -107,8 +110,55 @@ fig.update_layout(
     legend=dict(x=0.7, y=0.95)
 )
 
-fig.show()
+#fig.show()
 
+
+
+mpl.rcParams["font.family"] = "serif"
+mpl.rcParams["font.size"] = 10
+mpl.rcParams["axes.labelsize"] = 12
+mpl.rcParams["xtick.labelsize"] = 10
+mpl.rcParams["ytick.labelsize"] = 10
+
+THRESHOLD = 15_996
+df_above = df[df["total_consumption"] >= THRESHOLD]
+df_below = df[df["total_consumption"] < THRESHOLD]
+
+y_above = df_above["total_consumption"] / 1000
+y_below = df_below["total_consumption"] / 1000
+threshold_k = THRESHOLD / 1000
+
+fig, ax = plt.subplots(figsize=(9, 5.8))
+
+ax.scatter(df_above["age"], y_above,
+           s=4, alpha=0.45, color="steelblue", edgecolors="none",
+           label=r"Consumption $\geq \$15{,}996$")
+ax.scatter(df_below["age"], y_below,
+           s=5, alpha=0.8, color="firebrick", edgecolors="none",
+           label=r"Consumption $< \$15{,}996$")
+ax.axhline(threshold_k, linestyle="--", linewidth=1.8, color="black",
+           label=r"$\$15{,}996$ threshold")
+
+ax.set_xlabel("Age")
+ax.set_ylabel("Total consumption (thousands of USD)")
+ax.set_xlim(21, 60)
+ax.set_ylim(0, 50)
+ax.xaxis.set_major_locator(mpl.ticker.MultipleLocator(5))
+ax.tick_params(axis="both", which="major", labelsize=14)
+
+for spine in ax.spines.values():
+    spine.set_visible(True)
+    spine.set_color("black")
+    spine.set_linewidth(1)
+
+legend = ax.legend(fontsize=10, frameon=True, fancybox=False,
+                   edgecolor="black", loc="upper right")
+legend.get_frame().set_alpha(1)
+
+ax.grid(linestyle=":", linewidth=0.5, alpha=0.4)
+
+plt.tight_layout()
 output_path = SRC / BLD / "figures" / "consumption_episodes.png"
 output_path.resolve().parent.mkdir(parents=True, exist_ok=True)
-fig.write_html(output_path)
+plt.savefig(output_path, dpi=300, bbox_inches="tight")
+plt.close()

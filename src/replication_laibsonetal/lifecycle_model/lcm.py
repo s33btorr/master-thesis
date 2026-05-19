@@ -5,6 +5,9 @@ import numpy as np
 import jax.numpy as jnp
 import pandas as pd
 import plotly.graph_objects as go
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+from matplotlib.ticker import FuncFormatter
 
 
 from lifecycle_model.regimes_and_model import model, model_exp, model_naive
@@ -140,3 +143,50 @@ print((df["total_consumption"] < 12000).sum())
 print(df_naive.loc[df["total_consumption"].idxmin()])
 
 print((df_naive["total_consumption"] < 12000).sum())
+
+
+
+
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+
+mpl.rcParams["font.family"] = "serif"
+mpl.rcParams["axes.linewidth"] = 1.0
+mpl.rcParams["font.size"] = 13
+mpl.rcParams["axes.labelsize"] = 13
+mpl.rcParams["xtick.labelsize"] = 11
+mpl.rcParams["ytick.labelsize"] = 11
+
+def plot_lifecycle(df, output_path):
+    fig, ax = plt.subplots(figsize=(7, 4.5))
+
+    ax.plot(df["age"], df["earnings"] / 1000,
+            color="firebrick", linewidth=2.5, label="Income")
+    ax.plot(df["age"], df["total_consumption"] / 1000,
+            color="royalblue", linewidth=2.5, label="Total Consumption")
+    ax.plot(df["age"], df["wealth"] / 1000,
+            color="forestgreen", linewidth=2.5, label="Liquid Assets")
+    ax.plot(df["age"], df["wealth_illiquid"] / 10000,
+            color="goldenrod", linewidth=2.5, label="Illiquid Assets/10")
+
+    ax.set_xlabel("Age")
+    ax.set_ylabel("Units (thousands)")
+    ax.set_xlim(df["age"].min(), df["age"].max())
+    ax.xaxis.set_major_locator(mpl.ticker.MultipleLocator(10))
+    ax.tick_params(axis="both", which="major", labelsize=14)
+    ax.legend(fontsize=10, frameon=True, fancybox=False,
+              edgecolor="black", loc="upper right")
+    ax.grid(linestyle=":", linewidth=0.5, alpha=0.4)
+    for spine in ax.spines.values():
+        spine.set_visible(True)
+        spine.set_color("black")
+        spine.set_linewidth(1)
+
+    plt.tight_layout()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    plt.savefig(output_path, dpi=300, bbox_inches="tight")
+    plt.close()
+
+
+plot_lifecycle(df_mean,       SRC / BLD / "figures" / "exponential.png")
+plot_lifecycle(df_mean_naive, SRC / BLD / "figures" / "present_biased.png")
