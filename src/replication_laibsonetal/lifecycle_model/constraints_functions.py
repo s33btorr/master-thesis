@@ -38,13 +38,8 @@ def borrowing_constraint(
     credit_limit: float,
 ) -> BoolND:
     """
-    Fixed borrowing constraint: end-of-period wealth >= -credit_limit.
-
-    credit_limit >= 0 is the maximum borrowing allowed.
-    Set credit_limit=0 for a no-borrowing constraint.
-
-    TODO: replace with age-varying limit:
-        credit_limit(age) = c0credit + c1credit*age + c2credit*age^2
+    There is a credit limit depending on age.
+    Total liquid wealth before interest rates must be bigger than the credit limit.
     """
     return end_of_period_x_wealth>= - (credit_limit)
 
@@ -52,7 +47,7 @@ def z_wealth_constraint(
     end_of_period_z_wealth: FloatND,
 ) -> BoolND:
     """
-    NO SE SI ESTA ES NECESARIA PORQUE YA DE POR SI NO PERMITO EN LA GRILLA QUE PILLE VALORES NEGATIVOS... de todas formas, no funciono....
+    Illiquid wealth cannot be negative.
     """
     return end_of_period_z_wealth >= 0 # quiza agregar que ocurre cuando es falso esto
 
@@ -63,14 +58,16 @@ def ponzi_constraint(
     end_of_period_x_wealth: FloatND,
     age: float,
 ) -> BoolND:
+    """
+    Households cannot die with negative liquid wealth (debt).
+    """
     return jnp.where(age == 90, end_of_period_x_wealth>=0, True)
 
 def special_x_constraint(
     end_of_period_x_wealth: FloatND,
 ) -> BoolND:
     """
-    I do not 100% understand why I need it...
-    It does not work because it starts acumulating under the grid
+    Limits grid of state: liquid wealth.
     """
     return (end_of_period_x_wealth>= -5_000) & (end_of_period_x_wealth<= 400_000)
 
@@ -78,13 +75,6 @@ def special_z_constraint(
     end_of_period_z_wealth: FloatND,
 ) -> BoolND:
     """
-    I do not 100% understand it...
-    It does not work because it starts acumulating under the grid
+    Limits grid of state: illiquid wealth.
     """
     return end_of_period_z_wealth <= 3_500_000
-
-"""def liquid_wealth_constraint_last_period(
-    end_of_period_wealth: FloatND,
-) -> BoolND:
-    
-    return end_of_period_x_wealth>= 0 """
