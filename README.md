@@ -9,6 +9,7 @@ For the original code, the link is [*here*](https://doi.org/10.7910/DVN/ZVAZVN).
 The first commands needed to run the Lifecycle simulation are:
 
 ```bash
+pixi install
 pixi shell -e cuda12
 cd src/replication_laibsonetal
 ```
