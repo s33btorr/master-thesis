@@ -45,3 +45,5 @@ pixi run python -m errors.error1_lcm
 ```
 
 For this code I used the template by @hmgaudecker @timmens @tobiasraabe @mj023 (https://github.com/OpenSourceEconomics/econ-project-templates/tree/v0.6.5)
+
+This thesis was completed with assistance from AI tools for coding support, debugging, and language improvement.
